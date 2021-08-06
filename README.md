@@ -1,12 +1,13 @@
 # COMP30019 Assignment 1 - Ray Tracer
+
 This is your README.md... you should write anything relevant to your implementation here.
 
-Please ensure your student details are specified below (*exactly* as on UniMelb records):
+Please ensure your student details are specified below (_exactly_ as on UniMelb records):
 
-**Name:** ... \
-**Student Number:** XXXXXXX \
-**Username:** ... \
-**Email:** ...@student.unimelb.edu.au
+**Name:** Ryan Puhalovich \
+**Student Number:** 1064808 \
+**Username:** rpuhalovich \
+**Email:** rpuhalovich@student.unimelb.edu.au
 
 ## Completed stages
 
@@ -43,13 +44,11 @@ Tip: To tick, place an x between the square brackes [ ], like so: [x]
 - [ ] Option F - Beer's law (+3)
 - [ ] Option G - Depth of field (+3)
 
-*Please summarise your approach(es) to stage 3 here.*
-
-
+_Please summarise your approach(es) to stage 3 here._
 
 ## Final scene render
 
-Be sure to replace ```/images/final_scene.png``` with your final render so it shows up here:
+Be sure to replace `/images/final_scene.png` with your final render so it shows up here:
 
 ![My final render](/images/final_scene.png)
 
@@ -63,12 +62,14 @@ dotnet run -- (... your command line args)
 
 ## Sample outputs
 
-We have provided you with some sample tests located at ```/tests/*```. So you have some point of comparison, here are the outputs our ray tracer solution produces for given command line inputs (for the first two stages, left and right respectively):
+We have provided you with some sample tests located at `/tests/*`. So you have some point of comparison, here are the outputs our ray tracer solution produces for given command line inputs (for the first two stages, left and right respectively):
 
 ###### Sample 1
+
 ```
 dotnet run -- -f tests/sample_scene_1.txt -o images/sample_scene_1.png -x 4
 ```
+
 <p float="left">
   <img src="/images/sample_scene_1_s1.png" />
   <img src="/images/sample_scene_1_s2.png" /> 
@@ -79,6 +80,7 @@ dotnet run -- -f tests/sample_scene_1.txt -o images/sample_scene_1.png -x 4
 ```
 dotnet run -- -f tests/sample_scene_2.txt -o images/sample_scene_2.png -x 4
 ```
+
 <p float="left">
   <img src="/images/sample_scene_2_s1.png" />
   <img src="/images/sample_scene_2_s2.png" /> 
@@ -86,15 +88,14 @@ dotnet run -- -f tests/sample_scene_2.txt -o images/sample_scene_2.png -x 4
 
 ## References
 
-*You must list any references you used!*
+_You must list any references you used!_
 
 To get you started, here is some good reading material:
 
 Working through a ray tracer, from the head of the xbox games studio: https://www.linkedin.com/pulse/writing-simple-ray-tracer-c-matt-booty/
 
-*Ray Tracing in a Weekend*: https://raytracing.github.io/
+_Ray Tracing in a Weekend_: https://raytracing.github.io/
 
 Great walkthrough of some of the basic maths: https://blog.scottlogic.com/2020/03/10/raytracer-how-to.html
 
 Scratchapixel: intro to ray tracing: https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/how-does-it-work
-
