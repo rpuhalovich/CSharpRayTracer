@@ -20,7 +20,7 @@ Tip: To tick, place an x between the square brackes [ ], like so: [x]
 ##### Stage 1
 
 - [x] Stage 1.1 - Familiarise yourself with the template
-- [ ] Stage 1.2 - Implement vector mathematics
+- [x] Stage 1.2 - Implement vector mathematics
 - [ ] Stage 1.3 - Fire a ray for each pixel
 - [ ] Stage 1.4 - Calculate ray-entity intersections
 - [ ] Stage 1.5 - Output primitives as solid colours
@@ -99,3 +99,9 @@ _Ray Tracing in a Weekend_: https://raytracing.github.io/
 Great walkthrough of some of the basic maths: https://blog.scottlogic.com/2020/03/10/raytracer-how-to.html
 
 Scratchapixel: intro to ray tracing: https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/how-does-it-work
+
+### My References
+
+C# version of the Fast Inverse Square Root: https://stackoverflow.com/questions/268853/is-it-possible-to-write-quakes-fast-invsqrt-function-in-c
+
+Fast Inverse Square Root if other libraries were permitted: https://docs.microsoft.com/en-us/dotnet/api/opentk.functions.inversesqrtfast?view=xamarin-ios-sdk-12
