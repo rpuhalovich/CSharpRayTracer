@@ -189,7 +189,8 @@ public readonly struct Vector3
         int i = BitConverter.SingleToInt32Bits(x);
         i = 0x5f3759df - (i >> 1);
         x = BitConverter.Int32BitsToSingle(i);
-        x = x * (1.5f - xhalf * x * x);
+        x = x * (1.5f - xhalf * x * x); // 1st iteration
+        // x = x * (1.5f - xhalf * x * x); // 2nd iteration (can be removed)
         return x;
     }
 }
