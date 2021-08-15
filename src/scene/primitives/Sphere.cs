@@ -45,7 +45,7 @@ public class Sphere : SceneEntity
                        new Vector3(0.0f, 0.0f, 0.0f),
                        new Material(
                            Material.MaterialType.Diffuse,
-                           new Color(0.0f, 0.0f, 0.0f)
+                           new Color(1.0f, 0.0f, 1.0f)
                        )
                    );
         }

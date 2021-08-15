@@ -60,6 +60,22 @@ namespace RayTracer
 
                     double x_adj = (x * 2.0f) - 1.0f;
                     double y_adj = 1.0f - (y * 2.0f);
+
+                    Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
+
+                    foreach (SceneEntity e in entities)
+                    {
+                        RayHit rh = e.Intersect(r);
+                        if (rh != null)
+                        {
+                            outputImage.SetPixel(j, i, rh.Material.Color);
+                        }
+                        else
+                        {
+                            outputImage.SetPixel(j, i, new Color(1.0f, 1.0f, 1.0f));
+                        }
+                    }
+
                 }
             }
         }
