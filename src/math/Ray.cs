@@ -44,6 +44,14 @@ namespace RayTracer
         }
 
         /// <summary>
+        /// Position of a ray at length t from origin.
+        /// </summary>
+        public Vector3 At(double t)
+        {
+            return this.origin + (t * this.direction);
+        }
+
+        /// <summary>
         /// The Color of the ray.
         /// </summary>
         public Color rayColor(Ray r)

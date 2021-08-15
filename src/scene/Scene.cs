@@ -50,35 +50,16 @@ namespace RayTracer
         /// <param name="outputImage">Image to store render output</param>
         public void Render(Image outputImage)
         {
-            // Begin writing your code here...
-            // Camera
-            Vector3 origin = new Vector3(0.0f, 0.0f, 0.0f);
-
-            Vector3 focalLength = new Vector3(0.0f, 0.0f, 1.0f);
-            Vector3 horiz = new Vector3(outputImage.Width, 0.0f, 0.0f);
-            Vector3 vert = new Vector3(0.0f, outputImage.Height, 0.0f);
-
-            Vector3 bottomLeft = origin - horiz / 2 - vert / 2;
-
             for (int i = 0; i < outputImage.Height; i++)
             {
                 for (int j = 0; j < outputImage.Width; j++)
                 {
-                    // Calculate ray
-                    double x = ((double) j) / outputImage.Width;
-                    double y = ((double) i) / outputImage.Height;
-                    Ray r = new Ray(origin, bottomLeft + x * horiz + y * vert - origin);
+                    double x = (double)(j + 0.5f) / outputImage.Width;
+                    double y = (double)(i + 0.5f) / outputImage.Height;
+                    double z = 1.0f;
 
-                    outputImage.SetPixel(j, i, r.rayColor(r)); // this is dumb but temporary
-
-                    //foreach (SceneEntity e in entities)
-                    //{
-                    //    RayHit rh = e.Intersect(r);
-                    //    if (rh != null)
-                    //        outputImage.SetPixel(j, i, new Color(1.0f, 0.0f, 0.0f));
-                    //    else
-                    //        outputImage.SetPixel(j, i, new Color(0.0f, 0.3f, 1.0f));
-                    //}
+                    double x_adj = (x * 2.0f) - 1.0f;
+                    double y_adj = 1.0f - (y * 2.0f);
                 }
             }
         }
