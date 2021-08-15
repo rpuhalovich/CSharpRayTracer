@@ -40,13 +40,14 @@ public class Sphere : SceneEntity
         if (discriminant > 0) // Hit
         {
             return new RayHit(
-                new Vector3(0.0f, 0.0f, 0.0f),
-                new Vector3(0.0f, 0.0f, 0.0f),
-                new Vector3(0.0f, 0.0f, 0.0f),
-                new Material(Material.MaterialType.Diffuse,
-                    new Color(0.0f, 0.0f, 0.0f)
-                    )
-                );
+                       new Vector3(0.0f, 0.0f, 0.0f),
+                       new Vector3(0.0f, 0.0f, 0.0f),
+                       new Vector3(0.0f, 0.0f, 0.0f),
+                       new Material(
+                           Material.MaterialType.Diffuse,
+                           new Color(0.0f, 0.0f, 0.0f)
+                       )
+                   );
         }
 
         return null;
