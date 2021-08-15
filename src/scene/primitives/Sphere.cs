@@ -3,7 +3,7 @@ using System;
 namespace RayTracer
 {
 /// <summary>
-/// Class to represent an (infinite) plane in a scene.
+/// Class to represent an triangle in a scene.
 /// </summary>
 public class Sphere : SceneEntity
 {
@@ -31,7 +31,24 @@ public class Sphere : SceneEntity
     /// <returns>Hit data (or null if no intersection)</returns>
     public RayHit Intersect(Ray ray)
     {
-        // Write your code here...
+        Vector3 oc = ray.Origin - this.center;
+        double a = ray.Direction.Dot(ray.Direction);
+        double b = 2.0f * oc.Dot(ray.Direction);
+        double c = oc.Dot(oc) - (this.radius * this.radius);
+        double discriminant = (b * b) - (4.0f * a * c);
+
+        if (discriminant > 0) // Hit
+        {
+            return new RayHit(
+                new Vector3(0.0f, 0.0f, 0.0f),
+                new Vector3(0.0f, 0.0f, 0.0f),
+                new Vector3(0.0f, 0.0f, 0.0f),
+                new Material(Material.MaterialType.Diffuse,
+                    new Color(0.0f, 0.0f, 0.0f)
+                    )
+                );
+        }
+
         return null;
     }
 

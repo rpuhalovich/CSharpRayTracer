@@ -69,7 +69,7 @@ public readonly struct Vector3
     /// <returns>Dot product result</returns>
     public double Dot(Vector3 with)
     {
-        return this.x * with.x + this.y * with.y + this.z * with.z;
+        return (this.x * with.x) + (this.y * with.y) + (this.z * with.z);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public readonly struct Vector3
     /// <returns>Cross product result</returns>
     public Vector3 Cross(Vector3 with)
     {
-        return new Vector3(this.y * with.z - this.z * with.y, this.z * with.x - this.x * with.z, this.x * with.y - this.y * with.x);
+        return new Vector3((this.y * with.z) - (this.z * with.y), (this.z * with.x) - (this.x * with.z), (this.x * with.y) - (this.y * with.x));
     }
 
     /// <summary>

@@ -136,14 +136,14 @@ public class Program
                 // - Pass options based on command line arguments
                 // - Populate the scene based on the parsed file
                 Scene scene = new Scene(new SceneOptions(
-                    options.AAMultiplier,
-                    options.AmbientLightingEnabled,
-                    CmdStrToVector3(options.CameraPosition),
-                    CmdStrToVector3(options.CameraAxis),
-                    options.CameraAngle,
-                    options.ApertureRadius,
-                    options.FocalLength
-                ));
+                                            options.AAMultiplier,
+                                            options.AmbientLightingEnabled,
+                                            CmdStrToVector3(options.CameraPosition),
+                                            CmdStrToVector3(options.CameraAxis),
+                                            options.CameraAngle,
+                                            options.ApertureRadius,
+                                            options.FocalLength
+                                        ));
                 sceneReader.PopulateScene(scene);
 
                 // Render the scene by executing the core ray tracing logic

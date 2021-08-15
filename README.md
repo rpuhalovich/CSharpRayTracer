@@ -105,3 +105,7 @@ Scratchapixel: intro to ray tracing: https://www.scratchapixel.com/lessons/3d-ba
 C# version of the Fast Inverse Square Root: https://stackoverflow.com/questions/268853/is-it-possible-to-write-quakes-fast-invsqrt-function-in-c
 
 Fast Inverse Square Root if other libraries were permitted: https://docs.microsoft.com/en-us/dotnet/api/opentk.functions.inversesqrtfast?view=xamarin-ios-sdk-12
+
+Next Generation Post Processing in Call of Duty: Advanced Warfare: http://www.iryoku.com/next-generation-post-processing-in-call-of-duty-advanced-warfare
+
+Unity Bloom Shader: https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.postprocessing/PostProcessing/Shaders/Builtins/Bloom.shader
