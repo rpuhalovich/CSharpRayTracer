@@ -66,12 +66,8 @@ namespace RayTracer
                     foreach (SceneEntity e in entities)
                     {
                         RayHit rh = e.Intersect(r);
-                        if (rh != null)
-                        {
-                            outputImage.SetPixel(j, i, rh.Material.Color);
-                        }
+                        if (rh != null) outputImage.SetPixel(j, i, rh.Material.Color);
                     }
-
                 }
             }
         }
