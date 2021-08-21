@@ -1,4 +1,6 @@
 .vscode/
+
+.editorconfig
 .DS_Store
 
 ## Ignore Visual Studio temporary files, build results, and
