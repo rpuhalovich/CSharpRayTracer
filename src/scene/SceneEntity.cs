@@ -15,22 +15,22 @@ namespace RayTracer
 /// we need to be able to check what the material of the entity is in
 /// order to figure out how the ray should interact with it.
 /// </summary>
-public interface SceneEntity
-{
-    /// <summary>
-    /// Check whether a given ray intersects with this entity.
-    /// If so, return hit data. Otherwise, return null.
-    /// </summary>
-    /// <param name="ray">Ray data</param>
-    /// <returns>Ray hit data, or null if no intersection</returns>
-    RayHit Intersect(Ray ray);
-
-    /// <summary>
-    /// The material assigned to this entity.
-    /// </summary>
-    Material Material
+    public interface SceneEntity
     {
-        get;
+        /// <summary>
+        /// Check whether a given ray intersects with this entity.
+        /// If so, return hit data. Otherwise, return null.
+        /// </summary>
+        /// <param name="ray">Ray data</param>
+        /// <returns>Ray hit data, or null if no intersection</returns>
+        RayHit Intersect(Ray ray);
+
+        /// <summary>
+        /// The material assigned to this entity.
+        /// </summary>
+        Material Material
+        {
+            get;
+        }
     }
-}
 }
