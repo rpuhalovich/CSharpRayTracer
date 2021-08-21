@@ -2,9 +2,9 @@ using System;
 
 namespace RayTracer
 {
-/// <summary>
-/// Immutable structure to represent a three-dimensional vector.
-/// </summary>
+    /// <summary>
+    /// Immutable structure to represent a three-dimensional vector.
+    /// </summary>
     public readonly struct Vector3
     {
         private readonly double x, y, z;

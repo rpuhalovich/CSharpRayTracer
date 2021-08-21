@@ -2,9 +2,9 @@ using System.IO;
 
 namespace RayTracer
 {
-/// <summary>
-/// Add-on option C. You should implement your solution in this class template.
-/// </summary>
+    /// <summary>
+    /// Add-on option C. You should implement your solution in this class template.
+    /// </summary>
     public class ObjModel : SceneEntity
     {
         private Material material;
@@ -51,5 +51,4 @@ namespace RayTracer
             }
         }
     }
-
 }

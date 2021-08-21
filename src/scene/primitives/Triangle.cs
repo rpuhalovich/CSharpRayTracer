@@ -2,9 +2,9 @@ using System;
 
 namespace RayTracer
 {
-/// <summary>
-/// Class to represent a triangle in a scene represented by three vertices.
-/// </summary>
+    /// <summary>
+    /// Class to represent a triangle in a scene represented by three vertices.
+    /// </summary>
     public class Triangle : SceneEntity
     {
         private Vector3 v0, v1, v2;

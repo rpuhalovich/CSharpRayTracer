@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace RayTracer
 {
-/// <summary>
-/// Class to represent a ray traced scene, including the objects,
-/// light sources, and associated rendering logic.
-/// </summary>
+    /// <summary>
+    /// Class to represent a ray traced scene, including the objects,
+    /// light sources, and associated rendering logic.
+    /// </summary>
     public class Scene
     {
         private SceneOptions options;
@@ -50,19 +50,32 @@ namespace RayTracer
         /// <param name="outputImage">Image to store render output</param>
         public void Render(Image outputImage)
         {
-            double ratio = outputImage.Width / outputImage.Height;
-            double focalLen = 1.0f;
-
-            for (int y = 0; y < outputImage.Height; y++)
+            for (int i = 0; i < outputImage.Height; i++)
             {
-                for (int x = 0; x < outputImage.Width; x++)
+                for (int j = 0; j < outputImage.Width; j++)
                 {
-                    // outputImage.SetPixel(x, y, new Color(0.5f, 0.5f, 0.5f));
+                    double x = (double)(j + 0.5f) / outputImage.Width;
+                    double y = (double)(i + 0.5f) / outputImage.Height;
+                    double z = 1.0f;
+
+                    double x_adj = (x * 2.0f) - 1.0f;
+                    double y_adj = 1.0f - (y * 2.0f);
+
+                    Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
 
                     foreach (SceneEntity e in entities)
                     {
-
+                        RayHit rh = e.Intersect(r);
+                        if (rh != null)
+                        {
+                            outputImage.SetPixel(j, i, rh.Material.Color);
+                        }
+                        else
+                        {
+                            outputImage.SetPixel(j, i, new Color(1.0f, 1.0f, 1.0f));
+                        }
                     }
+
                 }
             }
         }

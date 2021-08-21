@@ -2,11 +2,11 @@ using System;
 
 namespace RayTracer
 {
-/// <summary>
-/// Immutable structure representing various scene options.
-/// You may not utilise all of these variables - this will depend
-/// on which add-ons you choose to implement.
-/// </summary>
+    /// <summary>
+    /// Immutable structure representing various scene options.
+    /// You may not utilise all of these variables - this will depend
+    /// on which add-ons you choose to implement.
+    /// </summary>
     public readonly struct SceneOptions
     {
         private readonly int aaMultiplier;

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace RayTracer
 {
-/// <summary>
-/// Class to read/parse a scene file. You don't need to understand
-/// how it works in detail - just know that it loads the scene
-/// data for you so you don't need to worry about that aspect of
-/// the project. Modify this file **AT YOUR OWN RISK** (i.e. don't!)
-/// </summary>
+    /// <summary>
+    /// Class to read/parse a scene file. You don't need to understand
+    /// how it works in detail - just know that it loads the scene
+    /// data for you so you don't need to worry about that aspect of
+    /// the project. Modify this file **AT YOUR OWN RISK** (i.e. don't!)
+    /// </summary>
     public class SceneReader
     {
         /// <summary>

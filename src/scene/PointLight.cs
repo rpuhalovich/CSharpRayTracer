@@ -2,9 +2,9 @@ using System;
 
 namespace RayTracer
 {
-/// <summary>
-/// Immutable structure to represent a point light source (position, color).
-/// </summary>
+    /// <summary>
+    /// Immutable structure to represent a point light source (position, color).
+    /// </summary>
     public readonly struct PointLight
     {
         private readonly Vector3 position;

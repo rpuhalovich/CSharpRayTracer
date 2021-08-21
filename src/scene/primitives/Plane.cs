@@ -2,9 +2,9 @@ using System;
 
 namespace RayTracer
 {
-/// <summary>
-/// Class to represent an (infinite) plane in a scene.
-/// </summary>
+    /// <summary>
+    /// Class to represent an (infinite) plane in a scene.
+    /// </summary>
     public class Plane : SceneEntity
     {
         private Vector3 center;
@@ -46,5 +46,4 @@ namespace RayTracer
             }
         }
     }
-
 }

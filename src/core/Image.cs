@@ -4,10 +4,10 @@ using StbImageWriteSharp;
 
 namespace RayTracer
 {
-/// <summary>
-/// Class to represent an image in memory and allow for I/O operations
-/// relating to that image.
-/// </summary>
+    /// <summary>
+    /// Class to represent an image in memory and allow for I/O operations
+    /// relating to that image.
+    /// </summary>
     public class Image
     {
         private byte[] data;

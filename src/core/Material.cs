@@ -1,11 +1,10 @@
-
 namespace RayTracer
 {
-/// <summary>
-/// Class to represent a material that is associated with an entity
-/// that is to be rendered by the ray tracer. Materials contain
-/// properties that describe how light should interact with an object.
-/// </summary>
+    /// <summary>
+    /// Class to represent a material that is associated with an entity
+    /// that is to be rendered by the ray tracer. Materials contain
+    /// properties that describe how light should interact with an object.
+    /// </summary>
     public class Material
     {
         /// <summary>

@@ -4,13 +4,13 @@ using CommandLine;
 
 namespace RayTracer
 {
-/// <summary>
-/// Main program. Modify this file **AT YOUR OWN RISK**. Doing so may break how
-/// our automated testing system checks your solution, since the command line
-/// arguments need to exactly match the specification. Note we have already
-/// parsed these for you here, and they are passed to the Scene class. If you feel
-/// the need to modify this file, you are probably doing something wrong.
-/// </summary>
+    /// <summary>
+    /// Main program. Modify this file **AT YOUR OWN RISK**. Doing so may break how
+    /// our automated testing system checks your solution, since the command line
+    /// arguments need to exactly match the specification. Note we have already
+    /// parsed these for you here, and they are passed to the Scene class. If you feel
+    /// the need to modify this file, you are probably doing something wrong.
+    /// </summary>
     public class Program
     {
         /// <summary>
