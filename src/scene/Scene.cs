@@ -56,7 +56,7 @@ namespace RayTracer
                 {
                     double x = (double)(j + 0.5f) / outputImage.Width;
                     double y = (double)(i + 0.5f) / outputImage.Height;
-                    double z = 1.0f;
+                    double z = 2.0f; // TODO: Fix weird distance.
 
                     double x_adj = (x * 2.0f) - 1.0f;
                     double y_adj = 1.0f - (y * 2.0f);
@@ -69,10 +69,6 @@ namespace RayTracer
                         if (rh != null)
                         {
                             outputImage.SetPixel(j, i, rh.Material.Color);
-                        }
-                        else
-                        {
-                            outputImage.SetPixel(j, i, new Color(1.0f, 1.0f, 1.0f));
                         }
                     }
 

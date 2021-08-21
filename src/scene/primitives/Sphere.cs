@@ -39,15 +39,7 @@ namespace RayTracer
 
             if (discriminant > 0) // Hit
             {
-                return new RayHit(
-                           new Vector3(0.0f, 0.0f, 0.0f),
-                           new Vector3(0.0f, 0.0f, 0.0f),
-                           new Vector3(0.0f, 0.0f, 0.0f),
-                           new Material(
-                               Material.MaterialType.Diffuse,
-                               new Color(1.0f, 0.0f, 1.0f)
-                           )
-                       );
+                return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }
 
             return null;

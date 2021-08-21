@@ -31,7 +31,24 @@ namespace RayTracer
         /// <returns>Hit data (or null if no intersection)</returns>
         public RayHit Intersect(Ray ray)
         {
-            // Write your code here...
+            /*
+                // assuming vectors are all normalized
+                float denom = dotProduct(n, l); 
+                if (denom > 1e-6) { 
+                    Vec3f p0l0 = p0 - l0; 
+                    t = dotProduct(p0l0, n) / denom; 
+                    return (t >= 0); 
+                }
+                return false; 
+             */
+
+            double denom = ray.Origin.Dot(this.normal);
+            if (denom > 1e-6)
+            {
+                Vector3 pointAndOrigin = ray.Origin;
+                double t = pointAndOrigin.Dot(this.normal) / denom;
+                return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f),this.material);
+            }
             return null;
         }
 
