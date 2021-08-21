@@ -50,13 +50,19 @@ public class Scene
     /// <param name="outputImage">Image to store render output</param>
     public void Render(Image outputImage)
     {
+        double ratio = outputImage.Width / outputImage.Height;
+        double focalLen = 1.0f;
 
-
-        for (int i = 0; i < outputImage.Height; i++)
+        for (int y = 0; y < outputImage.Height; y++)
         {
-            for (int j = 0; j < outputImage.Width; j++)
+            for (int x = 0; x < outputImage.Width; x++)
             {
-                
+                // outputImage.SetPixel(x, y, new Color(0.5f, 0.5f, 0.5f));
+
+                foreach (SceneEntity e in entities)
+                {
+                    
+                }
             }
         }
     }
