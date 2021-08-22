@@ -100,7 +100,7 @@ namespace RayTracer
         /// <returns>Negated vector</returns>
         public static Vector3 operator -(Vector3 a)
         {
-            return new Vector3(a.x * -1, a.y * -1, a.z * -1);
+            return new Vector3(a.x * -1.0f, a.y * -1.0f, a.z * -1.0f);
         }
 
         /// <summary>
