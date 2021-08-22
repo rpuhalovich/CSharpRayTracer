@@ -31,14 +31,15 @@ namespace RayTracer
         /// <returns>Hit data (or null if no intersection)</returns>
         public RayHit Intersect(Ray ray)
         {
-            // Normalise vectors
+            // TODO: Plane is upside down for some reason...
             Vector3 rd = ray.Direction, ro = ray.Origin, norm = this.normal, cent = this.center;
 
             double denom = norm.Dot(rd);
-            if (denom > 0.00001f)
+            if (denom > 0.00001f || denom < 0.00001f)
             {
                 double t = (cent - ro).Dot(norm) / denom;
-                if (t <= 0.0f) return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
+                if (t <= 0.0f)
+                    return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }
             return null;
         }
