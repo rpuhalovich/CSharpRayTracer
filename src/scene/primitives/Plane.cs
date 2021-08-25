@@ -35,7 +35,7 @@ namespace RayTracer
             Vector3 rd = ray.Direction, ro = ray.Origin, norm = this.normal, cent = this.center;
 
             double denom = norm.Dot(rd);
-            if (denom > 0.00001f || denom < 0.00001f)
+            if (denom > Double.MinValue || denom < Double.MinValue)
             {
                 double t = (cent - ro).Dot(norm) / denom;
                 if (t >= 0.0f)

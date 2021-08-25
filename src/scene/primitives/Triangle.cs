@@ -32,22 +32,18 @@ namespace RayTracer
         /// <returns>Hit data (or null if no intersection)</returns>
         public RayHit Intersect(Ray ray)
         {
-            double epsilon = 0.0001f;
-
             // Compute planes normal
             Vector3 v0v1 = v1 - v0;
             Vector3 v0v2 = v2 - v0;
-            Vector3 norm = v0v1.Cross(v0v2);
-            double area2 = norm.Length();
+            Vector3 norm = v0v2.Cross(v0v1);
 
             // Find P
             double normDotRayDir = norm.Dot(ray.Direction);
-            if (Math.Abs(normDotRayDir) < epsilon) return null;
+            if (Math.Abs(normDotRayDir) < Double.MinValue) return null;
 
             double d = norm.Dot(v0);
-
-            double t = (norm.Dot(ray.Origin) + d) / (-1 * normDotRayDir);
-            if (t >= 0.0f) return null; // left hand rule triangle is behind.
+            double t = -1.0f * ((norm.Dot(ray.Origin) + d) / normDotRayDir);
+            if (t <= 0.0f) return null; // left hand rule triangle is behind.
 
             Vector3 P = ray.Origin + t * ray.Direction;
 
@@ -57,19 +53,19 @@ namespace RayTracer
             Vector3 edge0 = v1 - v0;
             Vector3 vp0 = P - v0;
             C = edge0.Cross(vp0);
-            if (norm.Dot(C) < 0) return null;
+            if (norm.Dot(C) > 0) return null;
 
             // edge1
             Vector3 edge1 = v2 - v1;
             Vector3 vp1 = P - v1;
             C = edge0.Cross(vp1);
-            if (norm.Dot(C) < 0) return null;
+            if (norm.Dot(C) > 0) return null;
         
             // edge2
             Vector3 edge2 = v0 - v2;
             Vector3 vp2 = P - v2;
             C = edge0.Cross(vp2);
-            if (norm.Dot(C) < 0) return null;
+            if (norm.Dot(C) > 0) return null;
 
             return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
         }

@@ -37,7 +37,7 @@ namespace RayTracer
             double c = oc.Dot(oc) - (this.radius * this.radius);
             double discriminant = (b * b) - (4.0f * a * c);
 
-            if (discriminant >= 0) // Hit
+            if (discriminant >= 0.0f) // Hit
             {
                 return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }
