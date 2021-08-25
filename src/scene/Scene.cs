@@ -53,9 +53,16 @@ namespace RayTracer
             double fov = 60.0f;
             double aspectRatio = outputImage.Width / outputImage.Height;
 
-            // Vector3 norm = (new Vector3(3.0f, 4.0f, 5.0f)).Normalized();
+            double portHeight = 2.0f;
+            double portWidth = aspectRatio * portHeight;
+            double focalLen = options.FocalLength;
 
-            for (int i = 0; i < outputImage.Height; i++)
+            Vector3 origin = new Vector3(0.0f, 0.0f, 0.0f);
+            Vector3 horizontal = new Vector3(portWidth, 0.0f, 0.0f);
+            Vector3 vertical = new Vector3(0.0f, portHeight, 0.0f);
+            Vector3 lowerLeft = origin - horizontal / 2.0f - vertical / 2.0f - new Vector3(0.0f, 0.0f, focalLen);
+
+            for (int i = outputImage.Height - 1; i >= 0; i--)
             {
                 for (int j = 0; j < outputImage.Width; j++)
                 {

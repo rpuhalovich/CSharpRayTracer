@@ -10,4 +10,8 @@
     <PackageReference Include="StbImageWriteSharp" Version="1.13.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="images\NewFolder\" />
+  </ItemGroup>
+
 </Project>
