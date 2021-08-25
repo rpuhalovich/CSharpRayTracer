@@ -38,7 +38,7 @@ namespace RayTracer
             if (denom > 0.00001f || denom < 0.00001f)
             {
                 double t = (cent - ro).Dot(norm) / denom;
-                if (t <= 0.0f)
+                if (t >= 0.0f)
                     return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }
             return null;

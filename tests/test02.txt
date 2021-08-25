@@ -1,0 +1,4 @@
+
+Material "Red" Diffuse (1, .5, .5) 1
+
+Plane "Plane" (0, -1, 0) (0, 1, 0) "Red"

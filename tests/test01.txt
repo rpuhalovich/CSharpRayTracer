@@ -1,0 +1,4 @@
+
+Material "Blue" Diffuse (.5, .5, 1) 1
+
+Triangle "Triangle" (-1.0, 1.0, 1.0) (1.0, -1.0, 1.0) (-1.0, -1.0, 1.0) "Blue"

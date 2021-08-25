@@ -47,7 +47,7 @@ namespace RayTracer
             double d = norm.Dot(v0);
 
             double t = (norm.Dot(ray.Origin) + d) / normDotRayDir;
-            if (t > 0) return null; // left hand rule triangle is behind.
+            if (t >= 0.0f) return null; // left hand rule triangle is behind.
 
             Vector3 P = ray.Origin + t * ray.Direction;
 
