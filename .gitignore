@@ -401,3 +401,5 @@ FodyWeavers.xsd
 # Another exception... allow .obj files in /tests/models
 # Annoyingly .obj is a shared file extension, not just for 3D models
 !tests/**/*.obj
+images/_sample_scene_2.png
+images/_sample_scene_1.png

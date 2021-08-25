@@ -56,10 +56,10 @@ namespace RayTracer
                 {
                     double x = (double)(j + 0.5f) / outputImage.Width;
                     double y = (double)(i + 0.5f) / outputImage.Height;
-                    double z = 1.0f; // TODO: Fix weird distance.
+                    double z = options.FocalLength; // TODO: Fix weird distance.
 
                     double x_adj = (x * 2.0f) - 1.0f;
-                    double y_adj = 1.0f - (y * 2.0f);
+                    double y_adj = (1.0f - (y * 2.0f)) * -1;
 
                     Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
 
