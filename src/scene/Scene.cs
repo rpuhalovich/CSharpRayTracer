@@ -62,7 +62,7 @@ namespace RayTracer
             Vector3 vertical = new Vector3(0.0f, portHeight, 0.0f);
             Vector3 lowerLeft = origin - horizontal / 2.0f - vertical / 2.0f - new Vector3(0.0f, 0.0f, focalLen);
 
-            for (int i = outputImage.Height - 1; i >= 0; i--)
+            for (int i = 0; i < outputImage.Width; i++)
             {
                 for (int j = 0; j < outputImage.Width; j++)
                 {
@@ -70,13 +70,13 @@ namespace RayTracer
                     double y = (double)(i + 0.5f) / outputImage.Height;
                     double z = options.FocalLength; // TODO: Fix weird distance.
 
-                    double x_adj = (x * 2.0f) - 1.0f;
-                    double y_adj = (1.0f - (y * 2.0f));
+                    //double x_adj = (x * 2.0f) - 1.0f;
+                    //double y_adj = (1.0f - (y * 2.0f)) * -1.0f;
 
-                    x_adj *= Math.Tan(fov / 2.0f);
-                    y_adj *= (Math.Tan(fov / 2.0f) / aspectRatio);
+                    //x_adj *= Math.Tan(fov / 2.0f);
+                    //y_adj *= (Math.Tan(fov / 2.0f) / aspectRatio);
 
-                    Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
+                    Ray r = new Ray(origin, lowerLeft + x * horizontal + y * vertical - origin);
 
                     foreach (SceneEntity e in entities)
                     {
