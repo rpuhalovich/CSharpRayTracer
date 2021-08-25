@@ -6,12 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="StbImageWriteSharp" Version="1.13.5" />
+    <Compile Remove="images\NewFolder\**" />
+    <EmbeddedResource Remove="images\NewFolder\**" />
+    <None Remove="images\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="images\NewFolder\" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="StbImageWriteSharp" Version="1.13.5" />
   </ItemGroup>
 
 </Project>

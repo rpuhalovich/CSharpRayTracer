@@ -50,7 +50,7 @@ namespace RayTracer
         /// <param name="outputImage">Image to store render output</param>
         public void Render(Image outputImage)
         {
-            double fov = 60.0f;
+            double fov = (Math.PI / 180) * 60.0f;
             double aspectRatio = outputImage.Width / outputImage.Height;
 
             double portHeight = 2.0f;
@@ -70,13 +70,14 @@ namespace RayTracer
                     double y = (double)(i + 0.5f) / outputImage.Height;
                     double z = options.FocalLength; // TODO: Fix weird distance.
 
-                    //double x_adj = (x * 2.0f) - 1.0f;
-                    //double y_adj = (1.0f - (y * 2.0f)) * -1.0f;
+                    double x_adj = (x * 2.0f) - 1.0f;
+                    double y_adj = (1.0f - (y * 2.0f)) * -1.0f;
 
-                    //x_adj *= Math.Tan(fov / 2.0f);
-                    //y_adj *= (Math.Tan(fov / 2.0f) / aspectRatio);
+                    x_adj *= Math.Tan(fov / 2.0f);
+                    y_adj *= (Math.Tan(fov / 2.0f) / aspectRatio);
 
-                    Ray r = new Ray(origin, lowerLeft + x * horizontal + y * vertical - origin);
+                    //Ray r = new Ray(origin, lowerLeft + x * horizontal + y * vertical - origin);
+                    Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
 
                     foreach (SceneEntity e in entities)
                     {
