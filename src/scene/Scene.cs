@@ -54,31 +54,38 @@ namespace RayTracer
             double aspectRatio = ((double) outputImage.Width) / ((double) outputImage.Height);
 
             for (int i = 0; i < outputImage.Width; i++)
-            {
                 for (int j = 0; j < outputImage.Height; j++)
-                {
-                    double x = (double)(i + 0.5f) / ((double) outputImage.Width);
-                    double y = (double)(j + 0.5f) / ((double) outputImage.Height);
-                    double z = options.FocalLength;
+                    PixelIteration(i, j, outputImage, fov, aspectRatio);
+        }
 
-                    double x_adj = (x * 2.0f) - 1.0f;
-                    double y_adj = 1.0f - (y * 2.0f);
+        /// <summary>
+        /// Purely for use in the double for loop in the Render method.
+        /// Cleaner.
+        /// </summary>
+        private void PixelIteration(int i, int j, Image outputImage, double fov, double aspectRatio)
+        {
+            double x = (double)(i + 0.5f) / ((double) outputImage.Width);
+            double y = (double)(j + 0.5f) / ((double) outputImage.Height);
+            double z = options.FocalLength;
 
-                    x_adj *= Math.Tan(fov / 2.0f);
-                    y_adj *= (Math.Tan(fov / 2.0f) / aspectRatio);
+            double x_adj = (x * 2.0f) - 1.0f;
+            double y_adj = 1.0f - (y * 2.0f);
 
-                    Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
+            x_adj *= Math.Tan(fov / 2.0f);
+            y_adj *= (Math.Tan(fov / 2.0f) / aspectRatio);
 
-                    foreach (SceneEntity e in entities)
-                    {
-                        RayHit rh = e.Intersect(r);
+            Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
 
-                        // TODO: have minimum distance to camera entity rendered first.
+            // Finding the nearest hit point to the camera.
+            RayHit closest = RayHit.MaxRayHit();
+            foreach (SceneEntity e in entities)
+            {
+                RayHit rh = e.Intersect(r);
 
-                        if (rh != null) outputImage.SetPixel(i, j, rh.Material.Color);
-                    }
-                }
+                if (rh != null && rh.Position.Z < closest.Position.Z) closest = rh;
             }
+
+            if (closest.Material != null) outputImage.SetPixel(i, j, closest.Material.Color);
         }
     }
 }

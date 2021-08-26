@@ -39,7 +39,8 @@ namespace RayTracer
 
             if (discriminant >= 0.0f) // Hit
             {
-                return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
+                double t = (-b - Math.Sqrt(discriminant)) / (2.0f * a);
+                return new RayHit(ray.At(t), (ray.At(t) - new Vector3(0.0f, 0.0f, -1.0f)).Normalized(), new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }
 
             return null;

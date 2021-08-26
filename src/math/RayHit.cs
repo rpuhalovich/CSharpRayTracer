@@ -24,6 +24,16 @@ namespace RayTracer
         // You may wish to write methods to compute other vectors,
         // e.g. reflection, transmission, etc
 
+        static public RayHit MaxRayHit()
+        {
+            return new RayHit(
+                new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
+                new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
+                new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
+                null
+            );
+        }
+
         public Vector3 Position
         {
             get

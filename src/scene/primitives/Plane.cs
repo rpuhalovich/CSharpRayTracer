@@ -40,7 +40,7 @@ namespace RayTracer
             double t = (cent - ro).Dot(norm) / denom;
             if (t < 0.0f) return null; // Behind camera.
 
-            return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
+            return new RayHit(ray.At(t), norm, new Vector3(0.0f, 0.0f, 0.0f), this.material);
         }
 
         /// <summary>
