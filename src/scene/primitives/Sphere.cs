@@ -33,18 +33,19 @@ namespace RayTracer
         {
             Vector3 oc = ray.Origin - this.center;
             double a = ray.Direction.Dot(ray.Direction);
-            double b = 2.0f * ray.Direction.Dot(oc);
+            double halfb = ray.Direction.Dot(oc);
             double c = oc.Dot(oc) - (this.radius * this.radius);
-            double discriminant = (b * b) - (4.0f * a * c);
+            double discriminant = (halfb * halfb) - (a * c);
 
             if (discriminant >= 0.0f) // Hit
             {
-                double t = (-b - Math.Sqrt(discriminant)) / (2.0f * a);
+                double t = (-halfb - Math.Sqrt(discriminant)) / a;
 
                 Vector3 position = ray.At(t);
                 Vector3 normal = (position - new Vector3(0.0f, 0.0f, -1.0f)).Normalized();
 
-                //Color testColor = new Color(0.5f * (normal.X + 1), 0.5f * (normal.Y + 1), 0.5f * (normal.Z + 1)); // For testing...
+                // For testing...
+                //Color testColor = new Color(0.5f * (normal.X + 1), 0.5f * (normal.Y + 1), 0.5f * (normal.Z + 1));
                 //return new RayHit(position, normal, new Vector3(0.0f, 0.0f, 0.0f), new Material(Material.MaterialType.Diffuse, testColor));
 
                 return new RayHit(position, normal, new Vector3(0.0f, 0.0f, 0.0f), this.material);

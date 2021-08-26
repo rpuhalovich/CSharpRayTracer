@@ -60,7 +60,6 @@ namespace RayTracer
 
         /// <summary>
         /// Purely for use in the double for loop in the Render method.
-        /// Cleaner.
         /// </summary>
         private void PixelIteration(int i, int j, Image outputImage, double fov, double aspectRatio)
         {
@@ -81,7 +80,6 @@ namespace RayTracer
             foreach (SceneEntity e in entities)
             {
                 RayHit rh = e.Intersect(r);
-
                 if (rh != null && rh.Position.Z < closest.Position.Z) closest = rh;
             }
 
