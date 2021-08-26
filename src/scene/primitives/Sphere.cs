@@ -40,7 +40,14 @@ namespace RayTracer
             if (discriminant >= 0.0f) // Hit
             {
                 double t = (-b - Math.Sqrt(discriminant)) / (2.0f * a);
-                return new RayHit(ray.At(t), (ray.At(t) - new Vector3(0.0f, 0.0f, -1.0f)).Normalized(), new Vector3(0.0f, 0.0f, 0.0f), this.material);
+
+                Vector3 position = ray.At(t);
+                Vector3 normal = (position - new Vector3(0.0f, 0.0f, -1.0f)).Normalized();
+
+                //Color testColor = new Color(0.5f * (normal.X + 1), 0.5f * (normal.Y + 1), 0.5f * (normal.Z + 1)); // For testing...
+                //return new RayHit(position, normal, new Vector3(0.0f, 0.0f, 0.0f), new Material(Material.MaterialType.Diffuse, testColor));
+
+                return new RayHit(position, normal, new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }
 
             return null;
