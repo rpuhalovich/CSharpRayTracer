@@ -51,14 +51,14 @@ namespace RayTracer
         public void Render(Image outputImage)
         {
             double fov = (Math.PI / 180) * 60.0f;
-            double aspectRatio = outputImage.Width / outputImage.Height;
+            double aspectRatio = ((double) outputImage.Width) / ((double) outputImage.Height);
 
             for (int i = 0; i < outputImage.Width; i++)
             {
-                for (int j = 0; j < outputImage.Width; j++)
+                for (int j = 0; j < outputImage.Height; j++)
                 {
-                    double x = (double)(j + 0.5f) / outputImage.Width;
-                    double y = (double)(i + 0.5f) / outputImage.Height;
+                    double x = (double)(i + 0.5f) / ((double) outputImage.Width);
+                    double y = (double)(j + 0.5f) / ((double) outputImage.Height);
                     double z = options.FocalLength;
 
                     double x_adj = (x * 2.0f) - 1.0f;
@@ -75,7 +75,7 @@ namespace RayTracer
 
                         // TODO: have minimum distance to camera entity rendered first.
 
-                        if (rh != null) outputImage.SetPixel(j, i, rh.Material.Color);
+                        if (rh != null) outputImage.SetPixel(i, j, rh.Material.Color);
                     }
                 }
             }
