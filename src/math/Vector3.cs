@@ -79,7 +79,11 @@ namespace RayTracer
         /// <returns>Cross product result</returns>
         public Vector3 Cross(Vector3 with)
         {
-            return new Vector3((this.y * with.z) - (this.z * with.y), (this.z * with.x) - (this.x * with.z), (this.x * with.y) - (this.y * with.x));
+            return new Vector3(
+                (this.y * with.z) - (this.z * with.y),
+                (this.z * with.x) - (this.x * with.z),
+                (this.x * with.y) - (this.y * with.x)
+            );
         }
 
         /// <summary>

@@ -1,5 +1,9 @@
 .vscode/
-images/my_images
+images/my_images/*
+!images/my_images/_sample_scene_1_s1.png
+!images/my_images/_sample_scene_1_s2.png
+!images/my_images/_sample_scene_2_s1.png
+!images/my_images/_sample_scene_2_s2.png
 
 .editorconfig
 .DS_Store
