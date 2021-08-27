@@ -77,6 +77,17 @@ namespace RayTracer
         }
 
         /// <summary>
+        /// Multiply each color component by a single scalar value.
+        /// </summary>
+        /// <param name="a">Color structure</param>
+        /// <param name="b">Scalar multiple</param>
+        /// <returns>Multiplied color structure</returns>
+        public static Color operator *(double a, Color b)
+        {
+            return new Color(a * b.r, a * b.g, a * b.b);
+        }
+
+        /// <summary>
         /// Multiply two colors together component-wise.
         /// </summary>
         /// <param name="a">First color structure</param>
@@ -99,6 +110,17 @@ namespace RayTracer
         }
 
         /// <summary>
+        /// Divide each color component by a single scalar value.
+        /// </summary>
+        /// <param name="a">Scalar divisor</param>
+        /// <param name="b">Color structure</param>
+        /// <returns>Divided color structure</returns>
+        public static Color operator /(double a, Color b)
+        {
+            return new Color(a/ b.r, a / b.g, a / b.b);
+        }
+
+        /// <summary>
         /// Divide two colors component-wise.
         /// </summary>
         /// <param name="a">Color structure</param>
@@ -118,6 +140,16 @@ namespace RayTracer
         public static Color operator +(Color a, Color b)
         {
             return new Color(a.r + b.r, a.g + b.g, a.b + b.b);
+        }
+
+        /// <summary>
+        /// Returns the input color except all values below 0 and above 1 have been
+        /// clamped down to 0 and 1 respectively.
+        /// </summary>
+        public static Color Clamp(Color c)
+        {
+            double min = 0.0f, max = 1.0f;
+            return new Color(Math.Clamp(c.r, min, max), Math.Clamp(c.g, min, max), Math.Clamp(c.b, min, max));
         }
     }
 }

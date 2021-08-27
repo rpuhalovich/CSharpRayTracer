@@ -54,6 +54,16 @@ namespace RayTracer
         }
 
         /// <summary>
+        /// Computes length of vector from given argument vector.
+        /// </summary>
+        /// <returns>Length of the vector</returns>
+        public double LengthWith(Vector3 with)
+        {
+            double x = (this - with).x, y = (this - with).y, z = (this - with).z;
+            return Math.Sqrt(x * x + y * y + z * z);
+        }
+
+        /// <summary>
         /// Compute a length 1 vector in the same direction.
         /// </summary>
         /// <returns>Normalized vector</returns>

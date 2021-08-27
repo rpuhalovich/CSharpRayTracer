@@ -42,11 +42,7 @@ namespace RayTracer
                 double t = (-halfb - Math.Sqrt(discriminant)) / a;
 
                 Vector3 position = ray.At(t);
-                Vector3 normal = (position - new Vector3(0.0f, 0.0f, -1.0f)).Normalized();
-
-                //Color testColor = new Color(0.5f * (normal.X + 1.0f), 0.5f * (normal.Y + 1.0f), 0.5f * (normal.Z + 1.0f));
-                //Material testMaterial = new Material(Material.MaterialType.Diffuse, testColor);
-                //return new RayHit(position, normal, new Vector3(0.0f, 0.0f, 0.0f), testMaterial);
+                Vector3 normal = (position - center).Normalized();
 
                 return new RayHit(position, normal, new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }

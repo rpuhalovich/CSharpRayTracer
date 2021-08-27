@@ -25,7 +25,7 @@ namespace RayTracer
     public class Scene
     {
         private const int MAX_DEPTH = 50;
-        private Vector3 origin = new Vector3(0.0f, 0.0f, 0.0f);
+        private Vector3 cameraOrigin = new Vector3(0.0f, 0.0f, 0.0f);
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -96,25 +96,52 @@ namespace RayTracer
             x_adj *= Math.Tan(fov / 2.0f);
             y_adj *= Math.Tan(fov / 2.0f) / aspectRatio;
 
-            Ray r = new Ray(this.origin, new Vector3(x_adj, y_adj, z));
+            Ray r = new Ray(this.cameraOrigin, new Vector3(x_adj, y_adj, z));
 
             // Finding the nearest hit point to the camera.
             RayHit closest = RayHit.MaxRayHit();
             foreach (SceneEntity e in entities)
             {
                 RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.Length() < closest.Position.Length()) closest = rh;
+                if (rh != null && rh.Position.Length() < closest.Position.Length() && rh.Position.LengthWith(cameraOrigin) > options.FocalLength)
+                    closest = rh;
             }
 
-            if (closest.Material != null) outputImage.SetPixel(pind.x, pind.y, closest.Material.Color);
+            // Finding the color of the nearest entity.
+            if (closest.Material != null)
+            {
+                Color pixColor = RayColor(closest);
+                outputImage.SetPixel(pind.x, pind.y, pixColor);
+            }
         }
 
         /// <summary>
         /// Sets the color of the pixel pind.
         /// </summary>
-        private Color RayColor(Ray r, int depth)
+        private Color RayColor(RayHit rh)
         {
-            return new Color(0.0f, 0.0f, 0.0f);
+            double vecOffset = 0.0001f;
+            Color c = new Color(0.0f, 0.0f, 0.0f);
+
+            foreach (PointLight pl in lights)
+            {
+                Vector3 lightDir = (pl.Position - rh.Position).Normalized();
+
+                // Check if rh is in shadow. If not, don't add this light to pixel color c. Ray.At to move vector along line.
+                Ray r = new Ray(rh.Position, lightDir);
+                Ray r2 = new Ray(r.At(vecOffset), lightDir);
+                foreach (SceneEntity e in entities)
+                {
+                    if (e.Intersect(r2) == null)
+                    {
+                        // Stage 2.1: C = (N^ · L^)CmCl
+                        c += rh.Material.Color * pl.Color * (rh.Normal.Normalized().Dot(lightDir));
+                        c = Color.Clamp(c);
+                    }
+                }
+            }
+
+            return c;
         }
     }
 }

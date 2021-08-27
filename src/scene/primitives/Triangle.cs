@@ -38,15 +38,12 @@ namespace RayTracer
             double nDotRayDir = norm.Dot(ray.Direction);
             if (Math.Abs(nDotRayDir) < Double.MinValue) return null; // Parallel, therefore no hit.
 
-            double d = norm.Dot(v0);
+            double t = norm.Dot(v0 - ray.Origin) / nDotRayDir;
 
-            double t = (norm.Dot(ray.Origin) + d) / nDotRayDir;
-            if (t <= 0.0f) return null; // Ray behind camera (origin).
-
-            // Computer intersection point.
+            // Compute intersection point.
             Vector3 P = ray.At(t);
 
-            // Barycentric inside test.
+            // Inside outside test.
             Vector3 C;
 
             // e0
