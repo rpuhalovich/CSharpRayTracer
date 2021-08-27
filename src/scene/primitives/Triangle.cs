@@ -32,44 +32,42 @@ namespace RayTracer
         /// <returns>Hit data (or null if no intersection)</returns>
         public RayHit Intersect(Ray ray)
         {
-        //// Remember to convert to LHR
-        //Vector3 norm = (v2 - v0).Cross(v1 - v0);
-        //double area = norm.Length() / 2;
+            // Remember to convert to LHR
+            Vector3 norm = (v1 - v0).Cross(v2 - v0).Normalized();
 
-        //double denom = norm.Dot(ray.Direction);
-        //if (Math.Abs(denom) < Double.MinValue) return null; // Parallel, therefore no hit.
+            double nDotRayDir = norm.Dot(ray.Direction);
+            if (Math.Abs(nDotRayDir) < Double.MinValue) return null; // Parallel, therefore no hit.
 
-        //double t = norm.Dot(ray.Origin) / denom;
-        //if (t < 0.0f) return null; // Ray behind camera (origin).
+            double d = norm.Dot(v0);
 
-        //// Computer intersection point.
-        //Vector3 P = ray.Origin + t * ray.Direction;
+            double t = (norm.Dot(ray.Origin) + d) / nDotRayDir;
+            if (t < 0.0f) return null; // Ray behind camera (origin).
 
-        //// Barycentric inside test.
+            // Computer intersection point.
+            Vector3 P = ray.At(t);
 
-        //Vector3 C;
+            // Barycentric inside test.
+            Vector3 C;
 
-        //// e0
-        //Vector3 e0 = v2 - v0;
-        //Vector3 vp0 = P - v0;
-        //C = e0.Cross(vp0);
-        //if (norm.Dot(C) < 0) return null;
+            // e0
+            Vector3 e0 = v1 - v0;
+            Vector3 vp0 = P - v0;
+            C = e0.Cross(vp0);
+            if (norm.Dot(C) < 0.0f) return null;
 
-        //// e1
-        //Vector3 e1 = v1 - v2;
-        //Vector3 vp1 = P - v2;
-        //C = e1.Cross(vp1);
-        //if (norm.Dot(C) < 0) return null;
+            // e1
+            Vector3 e1 = v2 - v1;
+            Vector3 vp1 = P - v1;
+            C = e1.Cross(vp1);
+            if (norm.Dot(C) < 0.0f) return null;
 
-        //// e2
-        //Vector3 e2 = v0 - v1;
-        //Vector3 vp2 = P - v1;
-        //C = e2.Cross(vp2);
-        //if (norm.Dot(C) < 0) return null;
+            // e2
+            Vector3 e2 = v0 - v2;
+            Vector3 vp2 = P - v2;
+            C = e2.Cross(vp2);
+            if (norm.Dot(C) < 0.0f) return null;
 
-        //return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
-
-        return null;
+            return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
         }
 
         /// <summary>

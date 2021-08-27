@@ -51,7 +51,7 @@ namespace RayTracer
         public void Render(Image outputImage)
         {
             double fov = (Math.PI / 180) * 60.0f;
-            double aspectRatio = ((double) outputImage.Width) / ((double) outputImage.Height);
+            double aspectRatio = ((double) outputImage.Width) / outputImage.Height;
 
             for (int i = 0; i < outputImage.Width; i++)
                 for (int j = 0; j < outputImage.Height; j++)
@@ -63,15 +63,15 @@ namespace RayTracer
         /// </summary>
         private void PixelIteration(int i, int j, Image outputImage, double fov, double aspectRatio)
         {
-            double x = (double)(i + 0.5f) / ((double) outputImage.Width);
-            double y = (double)(j + 0.5f) / ((double) outputImage.Height);
+            double x = (double)(i + 0.5f) / outputImage.Width;
+            double y = (double)(j + 0.5f) / outputImage.Height;
             double z = options.FocalLength;
 
             double x_adj = (x * 2.0f) - 1.0f;
             double y_adj = 1.0f - (y * 2.0f);
 
             x_adj *= Math.Tan(fov / 2.0f);
-            y_adj *= (Math.Tan(fov / 2.0f) / aspectRatio);
+            y_adj *= Math.Tan(fov / 2.0f) / aspectRatio;
 
             Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
 

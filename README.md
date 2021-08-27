@@ -109,3 +109,5 @@ Fast Inverse Square Root if other libraries were permitted: https://docs.microso
 Next Generation Post Processing in Call of Duty: Advanced Warfare: http://www.iryoku.com/next-generation-post-processing-in-call-of-duty-advanced-warfare
 
 Unity Bloom Shader: https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.postprocessing/PostProcessing/Shaders/Builtins/Bloom.shader
+
+
