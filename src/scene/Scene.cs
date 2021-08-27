@@ -114,21 +114,6 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(Ray r, int depth)
         {
-            //if (depth <= 0) return new Color(0.0f, 0.0f, 0.0f);
-
-            //foreach (SceneEntity e in entities)
-            //{
-            //    RayHit newHit = e.Intersect(r);
-            //    if (newHit != null)
-            //    {
-            //        Vector3 target = newHit.Position + newHit.Normal + Vector3.RandomNormSphere();
-            //        return RayColor(new Ray(newHit.Position, target - newHit.Position), depth - 1) * 0.5f;
-            //    }
-            //}
-
-            // C = (N^ · L^)CmCl
-            // Color C =
-
             return new Color(0.0f, 0.0f, 0.0f);
         }
     }

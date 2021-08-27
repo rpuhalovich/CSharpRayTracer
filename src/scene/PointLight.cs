@@ -10,6 +10,8 @@ namespace RayTracer
         private readonly Vector3 position;
         private readonly Color color;
 
+        // NOTE: Add intensity?
+
         /// <summary>
         /// Construct a new point light.
         /// </summary>
