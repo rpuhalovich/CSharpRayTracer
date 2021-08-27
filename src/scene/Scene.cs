@@ -120,6 +120,7 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(RayHit rh)
         {
+            bool contrib = false;
             double vecOffset = 0.0001f;
             Color c = new Color(0.0f, 0.0f, 0.0f);
 
@@ -134,10 +135,15 @@ namespace RayTracer
                 {
                     if (e.Intersect(r2) == null)
                     {
-                        // Stage 2.1: C = (N^ · L^)CmCl
-                        c += rh.Material.Color * pl.Color * (rh.Normal.Normalized().Dot(lightDir));
-                        c = Color.Clamp(c);
+                        contrib = true;
                     }
+                }
+
+                if (contrib)
+                {
+                    // Stage 2.1: C = (N^ · L^)CmCl
+                    c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
+                    c = Color.Clamp(c);
                 }
             }
 
@@ -145,3 +151,8 @@ namespace RayTracer
         }
     }
 }
+
+
+//// Stage 2.1: C = (N^ · L^)CmCl
+//c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
+//c = Color.Clamp(c);
