@@ -31,16 +31,14 @@ namespace RayTracer
         /// <returns>Hit data (or null if no intersection)</returns>
         public RayHit Intersect(Ray ray)
         {
-            Vector3 rd = ray.Direction, ro = ray.Origin, norm = this.normal, cent = this.center;
-
-            double denom = norm.Dot(rd);
+            double denom = this.normal.Dot(ray.Direction);
 
             if (Math.Abs(denom) < Double.MinValue) return null; // Parallel therefore no hit.
 
-            double t = (cent - ro).Dot(norm) / denom;
+            double t = (this.center - ray.Origin).Dot(this.normal) / denom;
             if (t < 0.0f) return null; // Behind camera.
 
-            return new RayHit(ray.At(t), norm, new Vector3(0.0f, 0.0f, 0.0f), this.material);
+            return new RayHit(ray.At(t), this.normal, new Vector3(0.0f, 0.0f, 0.0f), this.material);
         }
 
         /// <summary>

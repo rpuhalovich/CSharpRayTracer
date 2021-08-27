@@ -153,36 +153,42 @@ namespace RayTracer
         }
 
         /// <summary>
-        /// X component of the vector.
+        /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html
         /// </summary>
-        public double X
+        public static Vector3 Random()
         {
-            get
+            Random rand = new Random();
+            return new Vector3(rand.NextDouble(), rand.NextDouble(), rand.NextDouble());
+        }
+
+        /// <summary>
+        /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html
+        /// </summary>
+        public static Vector3 Random(double min, double max)
+        {
+            return new Vector3(NextDoubleMinMax(min, max), NextDoubleMinMax(min, max), NextDoubleMinMax(min, max));
+        }
+
+        /// <summary>
+        /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html
+        /// </summary>
+        public static Vector3 RandomNormSphere()
+        {
+            while (true)
             {
-                return this.x;
+                Vector3 p = Random(-1.0f, 1.0f);
+                if (p.LengthSq() >= 1.0f) continue;
+                return p;
             }
         }
 
         /// <summary>
-        /// Y component of the vector.
+        /// https://stackoverflow.com/questions/1064901/random-number-between-2-double-numbers
         /// </summary>
-        public double Y
+        private static double NextDoubleMinMax(double min, double max)
         {
-            get
-            {
-                return this.y;
-            }
-        }
-
-        /// <summary>
-        /// Z component of the vector.
-        /// </summary>
-        public double Z
-        {
-            get
-            {
-                return this.z;
-            }
+            Random rand = new Random();
+            return rand.NextDouble() * (max - min) + min;
         }
 
         /// <summary>
@@ -197,6 +203,39 @@ namespace RayTracer
             x = x * (1.5f - xhalf * x * x); // 1st iteration
             // x = x * (1.5f - xhalf * x * x); // 2nd iteration (can be removed)
             return x;
+        }
+
+        /// <summary>
+        /// X component of the vector.
+        /// </summary>
+        public double X
+        {
+            get
+            {
+            return this.x;
+            }
+        }
+
+        /// <summary>
+        /// Y component of the vector.
+        /// </summary>
+        public double Y
+        {
+            get
+            {
+            return this.y;
+            }
+        }
+
+        /// <summary>
+        /// Z component of the vector.
+        /// </summary>
+        public double Z
+        {
+            get
+            {
+            return this.z;
+            }
         }
     }
 }
