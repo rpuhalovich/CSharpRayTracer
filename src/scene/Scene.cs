@@ -110,11 +110,6 @@ namespace RayTracer
             // Finding the color of the nearest entity.
             if (closest.Material != null)
             {
-                if (pind.x == 200 && pind.y == 200)
-                {
-                    int ye = 50;
-                }
-
                 Color pixColor = RayColor(closest);
                 outputImage.SetPixel(pind.x, pind.y, pixColor);
             }
@@ -157,7 +152,6 @@ namespace RayTracer
         }
     }
 }
-
 
 //// Stage 2.1: C = (N^ · L^)CmCl
 //c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
