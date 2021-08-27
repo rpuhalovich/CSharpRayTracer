@@ -45,6 +45,7 @@ namespace RayTracer
 
         /// <summary>
         /// Compute the length of the vector.
+        /// Where the length is the length from the origin.
         /// </summary>
         /// <returns>Length of the vector</returns>
         public double Length()

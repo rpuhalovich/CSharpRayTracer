@@ -63,6 +63,8 @@ namespace RayTracer
         /// </summary>
         private void PixelIteration(int i, int j, Image outputImage, double fov, double aspectRatio)
         {
+            Vector3 origin = new Vector3(0.0f, 0.0f, 0.0f);
+
             double x = (double)(i + 0.5f) / outputImage.Width;
             double y = (double)(j + 0.5f) / outputImage.Height;
             double z = options.FocalLength;
@@ -73,14 +75,14 @@ namespace RayTracer
             x_adj *= Math.Tan(fov / 2.0f);
             y_adj *= Math.Tan(fov / 2.0f) / aspectRatio;
 
-            Ray r = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(x_adj, y_adj, z));
+            Ray r = new Ray(origin, new Vector3(x_adj, y_adj, z));
 
             // Finding the nearest hit point to the camera.
             RayHit closest = RayHit.MaxRayHit();
             foreach (SceneEntity e in entities)
             {
                 RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.Z < closest.Position.Z) closest = rh;
+                if (rh != null && rh.Position.Length() < closest.Position.Length()) closest = rh;
             }
 
             if (closest.Material != null) outputImage.SetPixel(i, j, closest.Material.Color);

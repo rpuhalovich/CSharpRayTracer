@@ -2,7 +2,7 @@
   "profiles": {
     "RayTracer": {
       "commandName": "Project",
-      "commandLineArgs": "-f tests/sample_scene_1.txt -o images/my_images/hires.png -x 4 -w 1920 -h 1080",
+      "commandLineArgs": "-f tests/sample_scene_2.txt -o images/my_images/my_sample_scene_2.png -x 4",
       "workingDirectory": "C:\\dev\\project-1-ray-tracer-rpuhalovich"
     }
   }

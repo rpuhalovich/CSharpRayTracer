@@ -41,7 +41,7 @@ namespace RayTracer
             double d = norm.Dot(v0);
 
             double t = (norm.Dot(ray.Origin) + d) / nDotRayDir;
-            if (t < 0.0f) return null; // Ray behind camera (origin).
+            if (t <= 0.0f) return null; // Ray behind camera (origin).
 
             // Computer intersection point.
             Vector3 P = ray.At(t);
@@ -67,7 +67,7 @@ namespace RayTracer
             C = e2.Cross(vp2);
             if (norm.Dot(C) < 0.0f) return null;
 
-            return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), this.material);
+            return new RayHit(P, norm, new Vector3(0.0f, 0.0f, 0.0f), this.material);
         }
 
         /// <summary>
