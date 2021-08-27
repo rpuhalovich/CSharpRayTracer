@@ -36,10 +36,10 @@ namespace RayTracer
             double halfb = ray.Direction.Dot(oc);
             double c = oc.Dot(oc) - (this.radius * this.radius);
             double discriminant = (halfb * halfb) - (a * c);
+            double t = (-halfb - Math.Sqrt(discriminant)) / a;
 
-            if (discriminant >= 0.0f) // Hit
+            if (discriminant >= 0.0f && t >= 0.0f) // Hit
             {
-                double t = (-halfb - Math.Sqrt(discriminant)) / a;
                 return new RayHit(ray.At(t), (ray.At(t) - this.center).Normalized(), new Vector3(0.0f, 0.0f, 0.0f), this.material);
             }
 

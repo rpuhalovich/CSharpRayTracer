@@ -110,6 +110,11 @@ namespace RayTracer
             // Finding the color of the nearest entity.
             if (closest.Material != null)
             {
+                if (pind.x == 200 && pind.y == 200)
+                {
+                    int ye = 50;
+                }
+
                 Color pixColor = RayColor(closest);
                 outputImage.SetPixel(pind.x, pind.y, pixColor);
             }
@@ -120,7 +125,7 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(RayHit rh)
         {
-            bool contrib = false;
+            bool contrib = true;
             double vecOffset = 0.0001f;
             Color c = new Color(0.0f, 0.0f, 0.0f);
 
@@ -133,9 +138,10 @@ namespace RayTracer
                 Ray r2 = new Ray(r.At(vecOffset), lightDir);
                 foreach (SceneEntity e in entities)
                 {
-                    if (e.Intersect(r2) == null)
+                    RayHit hit = e.Intersect(r2);
+                    if (hit != null)
                     {
-                        contrib = true;
+                        contrib = false;
                     }
                 }
 

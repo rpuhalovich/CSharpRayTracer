@@ -39,6 +39,7 @@ namespace RayTracer
             if (Math.Abs(nDotRayDir) < Double.MinValue) return null; // Parallel, therefore no hit.
 
             double t = norm.Dot(v0 - ray.Origin) / nDotRayDir;
+            if (t < 0.0f) return null;
 
             // Compute intersection point.
             Vector3 P = ray.At(t);
