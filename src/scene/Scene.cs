@@ -102,40 +102,42 @@ namespace RayTracer
                 RayHit closest = ClosestHit(r);
 
                 // Finding the color of the nearest entity.
-                if (closest.Material != null)
+                if (closest != null)
                 {
-                    pixColor += RayColor(closest);
+                    pixColor += RayColor(closest, MAX_DEPTH);
                 }
             }
             cam.WriteColor(pixColor);
         }
 
         /// <summary>
-        /// Sets the color of the pixel pind.
+        /// Sets the color of the pixel at pind.
         /// </summary>
-        private Color RayColor(RayHit rh)
+        private Color RayColor(RayHit rh, int depth)
         {
             Color c = Color.Black();
 
             foreach (PointLight pl in lights)
             {
-                bool contrib = true;
                 // Check if rh is in shadow. If not, don't add this light to pixel color c. Ray.At to move vector along line.
+                bool contrib = true;
                 Vector3 lightDir = (pl.Position - rh.Position).Normalized();
                 Ray r = new Ray(rh.Position, lightDir).Offset();
 
                 RayHit hit = ClosestHit(r);
 
-                // If the ray hits something.
+                // If the ray hits something, and it's less than the distance bettwen the ray origin and light position.
                 if (hit != null && r.Origin.LengthWith(hit.Position) < r.Origin.LengthWith(pl.Position))
                 {
-                    contrib = false;
+                    // RayHit is in shadow if material is diffuse.
+                    if (hit.Material.Type == Material.MaterialType.Diffuse) contrib = false;
 
-                    //// RayHit is in shadow if material is diffuse.
-                    //if (hit.Material.Type == Material.MaterialType.Diffuse) contrib = false;
-
-                    //// Rayhit is reflective if material is reflective.
-                    //if (hit.Material.Type == Material.MaterialType.Reflective) c += RayReflection(hit, MAX_DEPTH);
+                    // Rayhit is reflective if material is reflective.
+                    if (hit.Material.Type == Material.MaterialType.Reflective)
+                    {
+                        //RayHit newRayHit = new RayHit(hit.Position, hit.Normal, hit.Reflect();
+                        c += RayReflection(hit, depth - 1);
+                    }
                 }
 
                 if (contrib)
@@ -160,6 +162,7 @@ namespace RayTracer
 
         /// <summary>
         /// Finds the nearest hit point to the ray origin.
+        /// Returns null if no hit occurs.
         /// </summary>
         private RayHit ClosestHit(Ray r)
         {
@@ -170,6 +173,7 @@ namespace RayTracer
                 if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin) && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
                     closest = rh;
             }
+            if (closest.Equals(RayHit.MaxRayHit())) return null;
             return closest;
         }
     }

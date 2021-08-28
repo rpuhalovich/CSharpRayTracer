@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RayTracer
 {
@@ -38,9 +39,23 @@ namespace RayTracer
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
         /// </summary>
         /// <returns>Vector3 incident reflected.</returns>
-        public static Vector3 Reflect(RayHit rh)
+        public Vector3 Reflect()
         {
-            return rh.Incident - 2 * rh.Incident.Dot(rh.Normal.Normalized()) * rh.Normal.Normalized();
+            return this.Incident - 2 * this.Incident.Dot(this.Normal.Normalized()) * this.Normal.Normalized();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RayHit hit &&
+                   EqualityComparer<Vector3>.Default.Equals(position, hit.position) &&
+                   EqualityComparer<Vector3>.Default.Equals(normal, hit.normal) &&
+                   EqualityComparer<Vector3>.Default.Equals(incident, hit.incident) &&
+                   EqualityComparer<Material>.Default.Equals(material, hit.material);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(position, normal, incident, material);
         }
 
         public Vector3 Position
