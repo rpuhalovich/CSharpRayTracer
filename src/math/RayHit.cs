@@ -24,7 +24,7 @@ namespace RayTracer
         // You may wish to write methods to compute other vectors,
         // e.g. reflection, transmission, etc
 
-        static public RayHit MaxRayHit()
+        public static RayHit MaxRayHit()
         {
             return new RayHit(
                 new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
@@ -32,6 +32,16 @@ namespace RayTracer
                 new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
                 null
             );
+        }
+
+        /// <summary>
+        /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
+        /// </summary>
+        /// <returns>Vector 3 with the incident reflected.</returns>
+        public static Vector3 Reflect(RayHit rh)
+        {
+            // return v - 2*dot(v,n)*n;
+            return rh.Incident - 2 * rh.Incident.Dot(rh.Normal.Normalized()) * rh.Normal.Normalized();
         }
 
         public Vector3 Position

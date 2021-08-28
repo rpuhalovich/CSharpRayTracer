@@ -32,6 +32,8 @@ namespace RayTracer
         private const bool STOPWATCH = true;
         private MyStopwatch msw = new MyStopwatch();
 
+        private const int MAX_DEPTH = 10;
+
         private SceneOptions options;
         private ISet<SceneEntity> entities;
         private ISet<PointLight> lights;
@@ -118,6 +120,8 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(RayHit rh)
         {
+
+
             bool contrib = true;
             double vecOffset = 0.0001f;
             Color c = new Color(0.0f, 0.0f, 0.0f);
@@ -132,9 +136,15 @@ namespace RayTracer
                 foreach (SceneEntity e in entities)
                 {
                     RayHit hit = e.Intersect(r);
+
+                    // If the ray hits something.
                     if (hit != null && r.Origin.LengthWith(hit.Position) < r.Origin.LengthWith(pl.Position))
                     {
-                        contrib = false;
+                        // RayHit is in shadow if material is diffuse.
+                        if (hit.Material.Type == Material.MaterialType.Diffuse) contrib = false;
+
+                        // Rayhit is reflective if material is reflective.
+                        if (hit.Material.Type == Material.MaterialType.Reflective) c += RayReflection(hit, MAX_DEPTH);
                     }
                 }
 
@@ -147,6 +157,17 @@ namespace RayTracer
             }
 
             return c;
+        }
+
+        private Color RayReflection(RayHit rh, int depth)
+        {
+            if (depth <= 0) return new Color(0.0f, 0.0f, 0.0f);
+
+
+
+
+
+            return new Color(0.0f, 0.0f, 0.0f);
         }
     }
 }

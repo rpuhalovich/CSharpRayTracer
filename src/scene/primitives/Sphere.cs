@@ -40,7 +40,7 @@ namespace RayTracer
 
             if (discriminant >= 0.0f && t >= 0.0f) // Hit
             {
-                return new RayHit(ray.At(t), (ray.At(t) - this.center).Normalized(), new Vector3(0.0f, 0.0f, 0.0f), this.material);
+                return new RayHit(ray.At(t), (ray.At(t) - this.center).Normalized(), ray.Direction, this.material);
             }
 
             return null;
