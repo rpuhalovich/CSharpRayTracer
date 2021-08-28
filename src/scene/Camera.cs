@@ -16,7 +16,7 @@ namespace RayTracer
         private PixelIndex pind;
         private Vector3 origin;
 
-        private int aaMultiplier; // Not sure if this should be here.
+        private int aaMultiplier;
         private int numRays;
         private Vector2[,] subPixelGrid;
 
@@ -39,12 +39,8 @@ namespace RayTracer
             
             double increment = 1.0f / (aaMultiplier + 1);
             for (int i = 0; i < aaMultiplier; i++)
-            {
                 for (int j = 0; j < aaMultiplier; j++)
-                {
                     subPixelGrid[i,j] = new Vector2(increment * (1 + i), increment * (1 + j));
-                }
-            }
 
             this.cameraPosition = options.CameraPosition;
             this.cameraAxis = options.CameraAxis;
