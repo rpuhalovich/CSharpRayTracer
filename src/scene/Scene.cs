@@ -29,6 +29,9 @@ namespace RayTracer
     /// </summary>
     public class Scene
     {
+        private const bool STOPWATCH = true;
+        private MyStopwatch msw = new MyStopwatch();
+
         private SceneOptions options;
         private ISet<SceneEntity> entities;
         private ISet<PointLight> lights;
@@ -70,6 +73,8 @@ namespace RayTracer
         /// <param name="outputImage">Image to store render output</param>
         public void Render(Image outputImage)
         {
+            if (STOPWATCH) msw.Start();
+
             Camera cam = new Camera(options, outputImage, 60.0f);
 
             for (int i = 0; i < outputImage.Width; i++)
@@ -78,6 +83,8 @@ namespace RayTracer
                     cam.Pind = new PixelIndex(i, j);
                     PixelIteration(cam);
                 }
+
+            if (STOPWATCH) msw.Stop();
         }
 
         /// <summary>
@@ -117,9 +124,8 @@ namespace RayTracer
 
             foreach (PointLight pl in lights)
             {
-                Vector3 lightDir = (pl.Position - rh.Position).Normalized();
-
                 // Check if rh is in shadow. If not, don't add this light to pixel color c. Ray.At to move vector along line.
+                Vector3 lightDir = (pl.Position - rh.Position).Normalized();
                 Ray r = new Ray(rh.Position, lightDir);
                 r = new Ray(r.At(vecOffset), lightDir);
 
@@ -138,10 +144,6 @@ namespace RayTracer
                     c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
                     c = Color.Clamp(c);
                 }
-
-                //// Stage 2.1: C = (N^ · L^)CmCl
-                //c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
-                //c = Color.Clamp(c);
             }
 
             return c;
