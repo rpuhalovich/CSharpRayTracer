@@ -73,6 +73,7 @@ namespace RayTracer
             // from glm::normalized
             // return v * inversesqrt(dot(v, v));
             return this * (1.0f / Math.Sqrt(this.Dot(this)));
+            // return this * MyMath.FastInvSqrt(this.Dot(this)); // For experimenting, faster too.
         }
 
         /// <summary>

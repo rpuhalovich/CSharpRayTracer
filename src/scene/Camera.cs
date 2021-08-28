@@ -17,6 +17,8 @@ namespace RayTracer
         private Vector3 origin;
 
         private int aaMultiplier; // Not sure if this should be here.
+        private int numRays;
+        private Vector2[,] subPixelGrid;
 
         private Vector3 cameraPosition, cameraAxis;
         private double cameraAngle;
@@ -32,12 +34,53 @@ namespace RayTracer
             this.pind = new PixelIndex(0, 0);
 
             this.aaMultiplier = options.AAMultiplier;
+            this.numRays = options.AAMultiplier * options.AAMultiplier;
+            this.subPixelGrid = new Vector2[aaMultiplier, aaMultiplier];
+            
+            double increment = 1.0f / (aaMultiplier + 1);
+            for (int i = 0; i < aaMultiplier; i++)
+            {
+                for (int j = 0; j < aaMultiplier; j++)
+                {
+                    subPixelGrid[i,j] = new Vector2(increment * (1 + i), increment * (1 + j));
+                }
+            }
+
             this.cameraPosition = options.CameraPosition;
             this.cameraAxis = options.CameraAxis;
             this.cameraAngle = options.CameraAngle;
 
             this.focalLength = options.FocalLength;
             this.apertureRadius = options.ApertureRadius;
+        }
+
+        /// <returns>An array of Rays that are to be iterated over to calc the current pixel color.</returns>
+        public Ray[] CalcPixelRays()
+        {
+            List<Ray> rays = new List<Ray>();
+
+            foreach (Vector2 offset in this.subPixelGrid)
+            {
+                double x = (double)(this.Pind.X + offset.X) / this.OutputImage.Width;
+                double y = (double)(this.Pind.Y + offset.Y) / this.OutputImage.Height;
+                double z = this.FocalLength;
+
+                double x_adj = (x * 2.0f) - 1.0f;
+                double y_adj = 1.0f - (y * 2.0f);
+
+                x_adj *= Math.Tan(this.Fov / 2.0f);
+                y_adj *= Math.Tan(this.Fov / 2.0f) / this.AspectRatio;
+
+                rays.Add(new Ray(this.Origin, new Vector3(x_adj, y_adj, z)));
+            }
+
+            return rays.ToArray();
+        }
+
+        public void WriteColor(Color c)
+        {
+            double scale = 1.0f / this.numRays;
+            this.outputImage.SetPixel(this.pind.X, this.pind.Y, Color.Clamp(c * scale));
         }
 
         public Image OutputImage { get => outputImage; set => outputImage = value; }
@@ -53,5 +96,7 @@ namespace RayTracer
         public double ApertureRadius => apertureRadius;
 
         public double FocalLength => focalLength;
+
+        public int NumRays { get => numRays; set => numRays = value; }
     }
 }

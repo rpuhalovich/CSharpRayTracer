@@ -72,7 +72,6 @@ namespace RayTracer
         {
             Camera cam = new Camera(options, outputImage, 60.0f);
 
-            PixelIndex pind = new PixelIndex(0, 0);
             for (int i = 0; i < outputImage.Width; i++)
                 for (int j = 0; j < outputImage.Height; j++)
                 {
@@ -86,33 +85,25 @@ namespace RayTracer
         /// </summary>
         private void PixelIteration(Camera cam)
         {
-            double x = (double)(cam.Pind.X + 0.5f) / cam.OutputImage.Width;
-            double y = (double)(cam.Pind.Y + 0.5f) / cam.OutputImage.Height;
-            double z = options.FocalLength;
-
-            double x_adj = (x * 2.0f) - 1.0f;
-            double y_adj = 1.0f - (y * 2.0f);
-
-            x_adj *= Math.Tan(cam.Fov / 2.0f);
-            y_adj *= Math.Tan(cam.Fov / 2.0f) / cam.AspectRatio;
-
-            Ray r = new Ray(cam.Origin, new Vector3(x_adj, y_adj, z));
-
-            // Finding the nearest hit point to the camera.
-            RayHit closest = RayHit.MaxRayHit();
-            foreach (SceneEntity e in entities)
+            Color pixColor = new Color(0.0f, 0.0f, 0.0f);
+            foreach (Ray r in cam.CalcPixelRays())
             {
-                RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.Length() < closest.Position.Length() && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
-                    closest = rh;
-            }
+                // Finding the nearest hit point to the camera.
+                RayHit closest = RayHit.MaxRayHit();
+                foreach (SceneEntity e in entities)
+                {
+                    RayHit rh = e.Intersect(r);
+                    if (rh != null && rh.Position.Length() < closest.Position.Length() && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
+                        closest = rh;
+                }
 
-            // Finding the color of the nearest entity.
-            if (closest.Material != null)
-            {
-                Color pixColor = RayColor(closest);
-                cam.OutputImage.SetPixel(cam.Pind.X, cam.Pind.Y, pixColor);
+                // Finding the color of the nearest entity.
+                if (closest.Material != null)
+                {
+                    pixColor += RayColor(closest);
+                }
             }
+            cam.WriteColor(pixColor);
         }
 
         /// <summary>

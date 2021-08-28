@@ -16,9 +16,18 @@ namespace RayTracer
         }
 
         /// <summary>
+        /// So I don't have to make a rand instance...
+        /// </summary>
+        public static double MyNextDouble()
+        {
+            Random rand = new Random();
+            return rand.NextDouble();
+        }
+
+        /// <summary>
         /// See: https://stackoverflow.com/questions/268853/is-it-possible-to-write-quakes-fast-invsqrt-function-in-c
         /// </summary>
-        public static double InvSqrt(double y)
+        public static double FastInvSqrt(double y)
         {
             float x = (float)y;
             float xhalf = 0.5f * x;
