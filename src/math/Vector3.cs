@@ -65,12 +65,14 @@ namespace RayTracer
 
         /// <summary>
         /// Compute a length 1 vector in the same direction.
+        /// Assumes that the origin is where the ray came from.
         /// </summary>
         /// <returns>Normalized vector</returns>
         public Vector3 Normalized()
         {
-            double invSquare = MyMath.InvSqrt((float)(this.x * this.x + this.y * this.y + this.z * this.z));
-            return new Vector3(this.x * invSquare, this.y * invSquare, this.z * invSquare);
+            // from glm::normalized
+            // return v * inversesqrt(dot(v, v));
+            return this * (1.0f / Math.Sqrt(this.Dot(this)));
         }
 
         /// <summary>
@@ -176,7 +178,7 @@ namespace RayTracer
         /// </summary>
         public static Vector3 Random(double min, double max)
         {
-            return new Vector3(NextDoubleMinMax(min, max), NextDoubleMinMax(min, max), NextDoubleMinMax(min, max));
+            return new Vector3(MyMath.NextDoubleMinMax(min, max), MyMath.NextDoubleMinMax(min, max), MyMath.NextDoubleMinMax(min, max));
         }
 
         /// <summary>

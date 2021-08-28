@@ -10,13 +10,17 @@ namespace RayTracer
     /// </summary>
     public struct PixelIndex
     {
-        public int x, y;
+        private int y;
+        private int x;
 
         public PixelIndex(int x, int y)
         {
             this.x = x;
             this.y = y;
         }
+
+        public int X { get => x; set => x = value; }
+        public int Y { get => y; set => y = value; }
     }
 
     /// <summary>
@@ -25,9 +29,6 @@ namespace RayTracer
     /// </summary>
     public class Scene
     {
-        private const int MAX_DEPTH = 50;
-        private Vector3 cameraOrigin = new Vector3(0.0f, 0.0f, 0.0f);
-
         private SceneOptions options;
         private ISet<SceneEntity> entities;
         private ISet<PointLight> lights;
@@ -69,42 +70,40 @@ namespace RayTracer
         /// <param name="outputImage">Image to store render output</param>
         public void Render(Image outputImage)
         {
-            double fov = (Math.PI / 180) * 60.0f;
-            double aspectRatio = ((double) outputImage.Width) / outputImage.Height;
+            Camera cam = new Camera(options, outputImage, 60.0f);
 
             PixelIndex pind = new PixelIndex(0, 0);
             for (int i = 0; i < outputImage.Width; i++)
                 for (int j = 0; j < outputImage.Height; j++)
                 {
-                    pind.x = i;
-                    pind.y = j;
-                    PixelIteration(pind, outputImage, fov, aspectRatio);
+                    cam.Pind = new PixelIndex(i, j);
+                    PixelIteration(cam);
                 }
         }
 
         /// <summary>
         /// Purely for use in the double for loop in the Render method.
         /// </summary>
-        private void PixelIteration(PixelIndex pind, Image outputImage, double fov, double aspectRatio)
+        private void PixelIteration(Camera cam)
         {
-            double x = (double)(pind.x + 0.5f) / outputImage.Width;
-            double y = (double)(pind.y + 0.5f) / outputImage.Height;
+            double x = (double)(cam.Pind.X + 0.5f) / cam.OutputImage.Width;
+            double y = (double)(cam.Pind.Y + 0.5f) / cam.OutputImage.Height;
             double z = options.FocalLength;
 
             double x_adj = (x * 2.0f) - 1.0f;
             double y_adj = 1.0f - (y * 2.0f);
 
-            x_adj *= Math.Tan(fov / 2.0f);
-            y_adj *= Math.Tan(fov / 2.0f) / aspectRatio;
+            x_adj *= Math.Tan(cam.Fov / 2.0f);
+            y_adj *= Math.Tan(cam.Fov / 2.0f) / cam.AspectRatio;
 
-            Ray r = new Ray(this.cameraOrigin, new Vector3(x_adj, y_adj, z));
+            Ray r = new Ray(cam.Origin, new Vector3(x_adj, y_adj, z));
 
             // Finding the nearest hit point to the camera.
             RayHit closest = RayHit.MaxRayHit();
             foreach (SceneEntity e in entities)
             {
                 RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.Length() < closest.Position.Length() && rh.Position.LengthWith(cameraOrigin) > options.FocalLength)
+                if (rh != null && rh.Position.Length() < closest.Position.Length() && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
                     closest = rh;
             }
 
@@ -112,7 +111,7 @@ namespace RayTracer
             if (closest.Material != null)
             {
                 Color pixColor = RayColor(closest);
-                outputImage.SetPixel(pind.x, pind.y, pixColor);
+                cam.OutputImage.SetPixel(cam.Pind.X, cam.Pind.Y, pixColor);
             }
         }
 
@@ -148,6 +147,10 @@ namespace RayTracer
                     c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
                     c = Color.Clamp(c);
                 }
+
+                //// Stage 2.1: C = (N^ · L^)CmCl
+                //c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
+                //c = Color.Clamp(c);
             }
 
             return c;
