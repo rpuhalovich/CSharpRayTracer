@@ -36,9 +36,9 @@ namespace RayTracer
             if (Math.Abs(denom) < Double.MinValue) return null; // Parallel therefore no hit.
 
             double t = (this.center - ray.Origin).Dot(this.normal) / denom;
-            if (t < 0.0f) return null; // Behind camera.
+            if (t >= 0.0f) return new RayHit(ray.At(t), this.normal, new Vector3(0.0f, 0.0f, 0.0f), this.material);
 
-            return new RayHit(ray.At(t), this.normal, new Vector3(0.0f, 0.0f, 0.0f), this.material);
+            return null;
         }
 
         /// <summary>

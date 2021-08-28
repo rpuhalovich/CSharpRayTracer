@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RayTracer
 {
@@ -130,10 +131,11 @@ namespace RayTracer
 
                 // Check if rh is in shadow. If not, don't add this light to pixel color c. Ray.At to move vector along line.
                 Ray r = new Ray(rh.Position, lightDir);
-                Ray r2 = new Ray(r.At(vecOffset), lightDir);
+                r = new Ray(r.At(vecOffset), lightDir);
+
                 foreach (SceneEntity e in entities)
                 {
-                    RayHit hit = e.Intersect(r2);
+                    RayHit hit = e.Intersect(r);
                     if (hit != null)
                     {
                         contrib = false;
@@ -152,7 +154,3 @@ namespace RayTracer
         }
     }
 }
-
-//// Stage 2.1: C = (N^ · L^)CmCl
-//c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
-//c = Color.Clamp(c);
