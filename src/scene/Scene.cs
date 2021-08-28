@@ -38,6 +38,8 @@ namespace RayTracer
         private ISet<SceneEntity> entities;
         private ISet<PointLight> lights;
 
+        private Camera cam;
+
         /// <summary>
         /// Construct a new scene with provided options.
         /// </summary>
@@ -77,7 +79,7 @@ namespace RayTracer
         {
             if (STOPWATCH) msw.Start();
 
-            Camera cam = new Camera(options, outputImage, 60.0f);
+            this.cam = new Camera(options, outputImage, 60.0f);
 
             for (int i = 0; i < outputImage.Width; i++)
                 for (int j = 0; j < outputImage.Height; j++)
@@ -97,14 +99,7 @@ namespace RayTracer
             Color pixColor = new Color(0.0f, 0.0f, 0.0f);
             foreach (Ray r in cam.CalcPixelRays())
             {
-                // Finding the nearest hit point to the camera.
-                RayHit closest = RayHit.MaxRayHit();
-                foreach (SceneEntity e in entities)
-                {
-                    RayHit rh = e.Intersect(r);
-                    if (rh != null && rh.Position.Length() < closest.Position.Length() && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
-                        closest = rh;
-                }
+                RayHit closest = ClosestHit(r);
 
                 // Finding the color of the nearest entity.
                 if (closest.Material != null)
@@ -120,32 +115,27 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(RayHit rh)
         {
-
-
-            bool contrib = true;
-            double vecOffset = 0.0001f;
-            Color c = new Color(0.0f, 0.0f, 0.0f);
+            Color c = Color.Black();
 
             foreach (PointLight pl in lights)
             {
+                bool contrib = true;
                 // Check if rh is in shadow. If not, don't add this light to pixel color c. Ray.At to move vector along line.
                 Vector3 lightDir = (pl.Position - rh.Position).Normalized();
-                Ray r = new Ray(rh.Position, lightDir);
-                r = new Ray(r.At(vecOffset), lightDir);
+                Ray r = new Ray(rh.Position, lightDir).Offset();
 
-                foreach (SceneEntity e in entities)
+                RayHit hit = ClosestHit(r);
+
+                // If the ray hits something.
+                if (hit != null && r.Origin.LengthWith(hit.Position) < r.Origin.LengthWith(pl.Position))
                 {
-                    RayHit hit = e.Intersect(r);
+                    contrib = false;
 
-                    // If the ray hits something.
-                    if (hit != null && r.Origin.LengthWith(hit.Position) < r.Origin.LengthWith(pl.Position))
-                    {
-                        // RayHit is in shadow if material is diffuse.
-                        if (hit.Material.Type == Material.MaterialType.Diffuse) contrib = false;
+                    //// RayHit is in shadow if material is diffuse.
+                    //if (hit.Material.Type == Material.MaterialType.Diffuse) contrib = false;
 
-                        // Rayhit is reflective if material is reflective.
-                        if (hit.Material.Type == Material.MaterialType.Reflective) c += RayReflection(hit, MAX_DEPTH);
-                    }
+                    //// Rayhit is reflective if material is reflective.
+                    //if (hit.Material.Type == Material.MaterialType.Reflective) c += RayReflection(hit, MAX_DEPTH);
                 }
 
                 if (contrib)
@@ -161,13 +151,26 @@ namespace RayTracer
 
         private Color RayReflection(RayHit rh, int depth)
         {
-            if (depth <= 0) return new Color(0.0f, 0.0f, 0.0f);
+            if (depth <= 0) return Color.Black();
 
+            // Do processing...
 
+            return Color.Black();
+        }
 
-
-
-            return new Color(0.0f, 0.0f, 0.0f);
+        /// <summary>
+        /// Finds the nearest hit point to the ray origin.
+        /// </summary>
+        private RayHit ClosestHit(Ray r)
+        {
+            RayHit closest = RayHit.MaxRayHit();
+            foreach (SceneEntity e in entities)
+            {
+                RayHit rh = e.Intersect(r);
+                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin) && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
+                    closest = rh;
+            }
+            return closest;
         }
     }
 }

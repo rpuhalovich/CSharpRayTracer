@@ -37,10 +37,9 @@ namespace RayTracer
         /// <summary>
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
         /// </summary>
-        /// <returns>Vector 3 with the incident reflected.</returns>
+        /// <returns>Vector3 incident reflected.</returns>
         public static Vector3 Reflect(RayHit rh)
         {
-            // return v - 2*dot(v,n)*n;
             return rh.Incident - 2 * rh.Incident.Dot(rh.Normal.Normalized()) * rh.Normal.Normalized();
         }
 
