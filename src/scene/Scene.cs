@@ -132,7 +132,7 @@ namespace RayTracer
                 foreach (SceneEntity e in entities)
                 {
                     RayHit hit = e.Intersect(r);
-                    if (hit != null)
+                    if (hit != null && r.Origin.LengthWith(hit.Position) < r.Origin.LengthWith(pl.Position))
                     {
                         contrib = false;
                     }
