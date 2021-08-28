@@ -29,10 +29,10 @@ namespace RayTracer
     /// </summary>
     public class Scene
     {
+        private const double FOV = 60.0f;
+        private const int MAX_DEPTH = 10;
         private const bool STOPWATCH = true;
         private MyStopwatch msw = new MyStopwatch();
-
-        private const int MAX_DEPTH = 10;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -79,7 +79,7 @@ namespace RayTracer
         {
             if (STOPWATCH) msw.Start();
 
-            this.cam = new Camera(options, outputImage, 60.0f);
+            this.cam = new Camera(options, outputImage, FOV);
 
             for (int i = 0; i < outputImage.Width; i++)
                 for (int j = 0; j < outputImage.Height; j++)
@@ -96,7 +96,7 @@ namespace RayTracer
         /// </summary>
         private void PixelIteration(Camera cam)
         {
-            Color pixColor = new Color(0.0f, 0.0f, 0.0f);
+            Color pixColor = Color.Black();
             foreach (Ray r in cam.CalcPixelRays())
             {
                 RayHit closest = ClosestHit(r);
@@ -104,7 +104,8 @@ namespace RayTracer
                 // Finding the color of the nearest entity.
                 if (closest != null)
                 {
-                    pixColor += RayColor(closest, MAX_DEPTH);
+                    Ray hitRay = new Ray(closest.Position, closest.Reflect());
+                    pixColor += RayColor(closest, hitRay, MAX_DEPTH);
                 }
             }
             cam.WriteColor(pixColor);
@@ -113,51 +114,46 @@ namespace RayTracer
         /// <summary>
         /// Sets the color of the pixel at pind.
         /// </summary>
-        private Color RayColor(RayHit rh, int depth)
+        private Color RayColor(RayHit rh, Ray r, int depth)
         {
+            if (depth <= 0) return Color.Black();
+
             Color c = Color.Black();
 
             foreach (PointLight pl in lights)
             {
-                // Check if rh is in shadow. If not, don't add this light to pixel color c. Ray.At to move vector along line.
-                bool contrib = true;
-                Vector3 lightDir = (pl.Position - rh.Position).Normalized();
-                Ray r = new Ray(rh.Position, lightDir).Offset();
+                bool lit = true;
+                Vector3 lightDir = (pl.Position - r.Origin).Normalized();
+                Ray shadowRay = new Ray(rh.Position, lightDir).Offset();
 
-                RayHit hit = ClosestHit(r);
+                RayHit hit = ClosestHit(shadowRay);
 
-                // If the ray hits something, and it's less than the distance bettwen the ray origin and light position.
-                if (hit != null && r.Origin.LengthWith(hit.Position) < r.Origin.LengthWith(pl.Position))
+                if (hit != null && shadowRay.Origin.LengthWith(hit.Position) < shadowRay.Origin.LengthWith(pl.Position))
                 {
-                    // RayHit is in shadow if material is diffuse.
-                    if (hit.Material.Type == Material.MaterialType.Diffuse) contrib = false;
-
-                    // Rayhit is reflective if material is reflective.
-                    if (hit.Material.Type == Material.MaterialType.Reflective)
-                    {
-                        //RayHit newRayHit = new RayHit(hit.Position, hit.Normal, hit.Reflect();
-                        c += RayReflection(hit, depth - 1);
-                    }
+                    lit = false;
                 }
 
-                if (contrib)
+                if (hit != null && lit)
                 {
-                    // Stage 2.1: C = (N^ · L^)CmCl
-                    c += rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color;
-                    c = Color.Clamp(c);
+                    if (hit.Material.Type == Material.MaterialType.Diffuse)
+                    {
+                        // Stage 2.1: C = (N^ · L^)CmCl
+                        c += Color.Clamp(rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color);
+                    }
+
+                    if (hit.Material.Type == Material.MaterialType.Reflective)
+                    {
+                        Ray newRay = new Ray(hit.Position, hit.Reflect());
+                        c += Color.Clamp(RayColor(hit, newRay, depth - 1)); // TODO: Make reflections work.
+                    }
+                }
+                else if (lit)
+                {
+                    c += Color.Clamp(rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color);
                 }
             }
 
             return c;
-        }
-
-        private Color RayReflection(RayHit rh, int depth)
-        {
-            if (depth <= 0) return Color.Black();
-
-            // Do processing...
-
-            return Color.Black();
         }
 
         /// <summary>
