@@ -99,14 +99,7 @@ namespace RayTracer
             Color pixColor = Color.Black();
             foreach (Ray r in cam.CalcPixelRays())
             {
-                RayHit closest = ClosestHit(r);
-
-                // Finding the color of the nearest entity.
-                if (closest != null)
-                {
-                    Ray hitRay = new Ray(closest.Position, closest.Reflect());
-                    pixColor += RayColor(closest, hitRay, MAX_DEPTH);
-                }
+                pixColor += RayColor(r, MAX_DEPTH);
             }
             cam.WriteColor(pixColor);
         }
@@ -114,42 +107,40 @@ namespace RayTracer
         /// <summary>
         /// Sets the color of the pixel at pind.
         /// </summary>
-        private Color RayColor(RayHit rh, Ray r, int depth)
+        private Color RayColor(Ray r, int depth)
         {
             if (depth <= 0) return Color.Black();
 
             Color c = Color.Black();
 
+            RayHit sourceRh = ClosestHit(r); // Input ray hit.
+            if (sourceRh == null) return c;
+
             foreach (PointLight pl in lights)
             {
-                bool lit = true;
-                Vector3 lightDir = (pl.Position - r.Origin).Normalized();
-                Ray shadowRay = new Ray(rh.Position, lightDir).Offset();
+                // Ray to point light hit.
+                Vector3 lightDir = (pl.Position - sourceRh.Position).Normalized();
+                Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
+                RayHit shadowRh = ClosestHit(shadowRay);
 
-                RayHit hit = ClosestHit(shadowRay);
-
-                if (hit != null && shadowRay.Origin.LengthWith(hit.Position) < shadowRay.Origin.LengthWith(pl.Position))
+                // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
+                if (!(shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)))
                 {
-                    lit = false;
-                }
-
-                if (hit != null && lit)
-                {
-                    if (hit.Material.Type == Material.MaterialType.Diffuse)
+                    // And if sourceRh isn't null (doesn't fly out to infinity).
+                    if (sourceRh != null)
                     {
-                        // Stage 2.1: C = (N^ · L^)CmCl
-                        c += Color.Clamp(rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color);
-                    }
+                        if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
+                        {
+                            // Stage 2.1: C = (N^ · L^)CmCl
+                            return c += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
+                        }
 
-                    if (hit.Material.Type == Material.MaterialType.Reflective)
-                    {
-                        Ray newRay = new Ray(hit.Position, hit.Reflect());
-                        c += Color.Clamp(RayColor(hit, newRay, depth - 1)); // TODO: Make reflections work.
+                        if (sourceRh.Material.Type == Material.MaterialType.Reflective)
+                        {
+                            Ray newRay = new Ray(sourceRh.Position, sourceRh.Reflect());
+                            return c += RayColor(newRay, depth - 1); // TODO: Make reflections work.
+                        }
                     }
-                }
-                else if (lit)
-                {
-                    c += Color.Clamp(rh.Normal.Normalized().Dot(lightDir) * rh.Material.Color * pl.Color);
                 }
             }
 
