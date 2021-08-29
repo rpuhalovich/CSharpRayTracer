@@ -6,7 +6,7 @@ using System.Text;
 namespace RayTracer
 {
     /// <summary>
-    /// Wrapper for Andrew's logger.
+    /// Wrapper for Andrew's logger: https://github.com/shangzhel/RayTracer.Debug
     /// </summary>
     class MyLogger
     {
