@@ -29,10 +29,12 @@ namespace RayTracer
     /// </summary>
     public class Scene
     {
+        private const bool DEBUG = true;
+        private MyStopwatch msw = new MyStopwatch();
+        private MyLogger logger = new MyLogger();
+
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 10;
-        private const bool STOPWATCH = true;
-        private MyStopwatch msw = new MyStopwatch();
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -77,7 +79,10 @@ namespace RayTracer
         /// <param name="outputImage">Image to store render output</param>
         public void Render(Image outputImage)
         {
-            if (STOPWATCH) msw.Start();
+            if (DEBUG)
+            {
+                msw.Start();
+            }
 
             this.cam = new Camera(options, outputImage, FOV);
 
@@ -85,37 +90,35 @@ namespace RayTracer
                 for (int j = 0; j < outputImage.Height; j++)
                 {
                     cam.Pind = new PixelIndex(i, j);
-                    PixelIteration(cam);
+                    Color rayColor = Color.Black();
+                    foreach (Ray r in cam.CalcPixelRays()) rayColor += RayColor(r, MAX_DEPTH);
+                    cam.WriteColor(rayColor);
                 }
 
-            if (STOPWATCH) msw.Stop();
-        }
-
-        /// <summary>
-        /// Purely for use in the double for loop in the Render method.
-        /// </summary>
-        private void PixelIteration(Camera cam)
-        {
-            Color pixColor = Color.Black();
-            foreach (Ray r in cam.CalcPixelRays())
+            if (DEBUG)
             {
-                pixColor += RayColor(r, MAX_DEPTH);
+                msw.Stop();
+                logger.WriteFile();
             }
-            cam.WriteColor(pixColor);
         }
 
         /// <summary>
-        /// Sets the color of the pixel at pind.
+        /// Sets the color of the input camera ray.
         /// </summary>
         private Color RayColor(Ray r, int depth)
         {
             if (depth <= 0) return Color.Black();
 
+            // Input ray hit.
+            RayHit sourceRh = ClosestHit(r);
+
+            logger.LogRay(new int[] { cam.Pind.X, cam.Pind.Y }, r, sourceRh);
+
+            // If nothing is hit, you're off to the abyss so return black.
+            // TODO: maybe add bg color?
+            if (sourceRh == null) return Color.Black();
+
             Color c = Color.Black();
-
-            RayHit sourceRh = ClosestHit(r); // Input ray hit.
-            if (sourceRh == null) return c;
-
             foreach (PointLight pl in lights)
             {
                 // Ray to point light hit.
@@ -126,24 +129,25 @@ namespace RayTracer
                 // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                 if (!(shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)))
                 {
-                    // And if sourceRh isn't null (doesn't fly out to infinity).
-                    if (sourceRh != null)
-                    {
-                        if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
-                        {
-                            // Stage 2.1: C = (N^ · L^)CmCl
-                            return c += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
-                        }
+                    //if (cam.PixelIndexDebug(170, 170))
+                    //{
+                    //    int ye = 100;
+                    //}
 
-                        if (sourceRh.Material.Type == Material.MaterialType.Reflective)
-                        {
-                            Ray newRay = new Ray(sourceRh.Position, sourceRh.Reflect());
-                            return c += RayColor(newRay, depth - 1); // TODO: Make reflections work.
-                        }
+                    if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
+                    {
+                        // Stage 2.1: C = (N^ · L^)CmCl
+                        Color diffuseColor = sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
+                        return c += diffuseColor;
+                    }
+
+                    if (sourceRh.Material.Type == Material.MaterialType.Reflective)
+                    {
+                        Ray newRay = new Ray(sourceRh.Position, sourceRh.Reflect());
+                        return c += RayColor(newRay, depth - 1); // TODO: Make reflections work.
                     }
                 }
             }
-
             return c;
         }
 

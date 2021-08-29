@@ -7,7 +7,7 @@ namespace RayTracer
     /// </summary>
     public readonly struct Ray
     {
-        private const double OFFSET = 0.0001f;
+        private const double OFFSET = 0.0000001f;
 
         private readonly Vector3 origin;
         private readonly Vector3 direction;
