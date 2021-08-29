@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="images\NewFolder\**" />
-    <EmbeddedResource Remove="images\NewFolder\**" />
-    <None Remove="images\NewFolder\**" />
+    <Compile Remove="extern\**" />
+    <EmbeddedResource Remove="extern\**" />
+    <None Remove="extern\**" />
   </ItemGroup>
 
   <ItemGroup>
