@@ -129,10 +129,10 @@ namespace RayTracer
                 // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                 if (!(shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)))
                 {
-                    //if (cam.PixelIndexDebug(170, 170))
-                    //{
-                    //    int ye = 100;
-                    //}
+                    if (cam.PixelIndexDebug(170, 170))
+                    {
+                        int ye = 100;
+                    }
 
                     if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
                     {
