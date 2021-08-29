@@ -112,11 +112,11 @@ namespace RayTracer
             // Input ray hit.
             RayHit sourceRh = ClosestHit(r);
 
-            logger.LogRay(new int[] { cam.Pind.X, cam.Pind.Y }, r, sourceRh);
-
             // If nothing is hit, you're off to the abyss so return black.
             // TODO: maybe add bg color?
             if (sourceRh == null) return Color.Black();
+
+            logger.LogRay(new int[] { cam.Pind.X, cam.Pind.Y }, r, sourceRh);
 
             Color c = Color.Black();
             foreach (PointLight pl in lights)
