@@ -31,35 +31,23 @@ namespace RayTracer
         /// <returns>Hit data (or null if no intersection)</returns>
         public RayHit Intersect(Ray ray)
         {
-            Vector3 oc = ray.Origin - this.center;
-            double a = ray.Direction.Dot(ray.Direction);
-            double b = 2.0f * oc.Dot(ray.Direction);
-            double c = oc.Dot(oc) - (this.radius * this.radius);
-            double discriminant = (b * b) - (4.0f * a * c);
-            double t = (-b - Math.Sqrt(discriminant)) / (2.0f * a);
-            Vector3 pos = ray.At(t);
+            double offset = 0.0001f;
 
-            if (discriminant >= 0.0f && t >= 0.0f) // Hit
-            {
-                return new RayHit(pos, pos - this.center, ray.Direction, this.material);
-            }
+            Vector3 L = this.center - ray.Origin;
+            double tca = L.Dot(ray.Direction);
+            double d2 = L.Dot(L) - tca * tca; //float d2 = L*L - tca*tca;
+            if (d2 > this.radius * this.radius) return null;
+            double thc = Math.Sqrt(this.radius * this.radius - d2);
+            double t0 = tca - thc; // t0 is the t value for distance of ray.
+            double t1 = tca + thc;
+            if (t0 < offset) t0 = t1;
+            if (t0 < offset) return null;
 
-            return null;
+            Vector3 pos = ray.At(t0);
+            pos = new Vector3(pos.X, pos.Y, pos.Z * -1);
+
+            return new RayHit(pos, pos - this.center.Normalized(), ray.Direction, this.material);
         }
-
-        //double hit_sphere(const point3& center, double radius, const ray& r) {
-        //    vec3 oc = r.origin() - center;
-        //    auto a = dot(r.direction(), r.direction());
-        //    auto b = 2.0 * dot(oc, r.direction());
-        //    auto c = dot(oc, oc) - radius*radius;
-        //    auto discriminant = b*b - 4*a*c;
-
-        //    if (discriminant < 0) {
-        //        return -1.0;
-        //    } else {
-        //        return (-b - sqrt(discriminant) ) / (2.0*a);
-        //    }
-        //}
 
         /// <summary>
         /// The material of the sphere.

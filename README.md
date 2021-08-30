@@ -115,3 +115,5 @@ Andrew's Ray Visualizer: https://github.com/shangzhel/RayTracer.Debug
 Microsoft's Stopwatch: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stopwatch?redirectedfrom=MSDN&view=net-5.0
 
 glm (referencing their vector methods against my own): https://github.com/g-truc/glm
+
+tinyraytracer: https://github.com/ssloy/tinyraytracer
