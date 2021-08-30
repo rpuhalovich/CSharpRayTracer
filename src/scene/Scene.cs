@@ -156,6 +156,7 @@ namespace RayTracer
             RayHit closest = RayHit.MaxRayHit();
             foreach (SceneEntity e in entities)
             {
+                if (cam.PixelIndexDebug(170, 170)) Debugger.Break(); // TODO: for debugging.
                 RayHit rh = e.Intersect(r);
                 if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin) && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
                     closest = rh;
