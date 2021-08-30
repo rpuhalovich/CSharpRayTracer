@@ -54,7 +54,7 @@ namespace RayTracer
         }
 
         /// <summary>
-        /// Offsets this ray by epsilon. 
+        /// Offsets this ray by epsilon.
         /// </summary>
         public Ray Offset()
         {

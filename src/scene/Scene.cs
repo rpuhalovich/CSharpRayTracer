@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace RayTracer
@@ -109,6 +110,8 @@ namespace RayTracer
         {
             if (depth <= 0) return Color.Black();
 
+            if (cam.PixelIndexDebug(170, 170)) Debugger.Break();
+
             // Input ray hit.
             RayHit sourceRh = ClosestHit(r);
 
@@ -117,6 +120,7 @@ namespace RayTracer
             if (sourceRh == null) return Color.Black();
 
             logger.LogRay(new int[] { cam.Pind.X, cam.Pind.Y }, r, sourceRh);
+
 
             Color c = Color.Black();
             foreach (PointLight pl in lights)
@@ -138,7 +142,7 @@ namespace RayTracer
 
                     if (sourceRh.Material.Type == Material.MaterialType.Reflective)
                     {
-                        Ray newRay = new Ray(sourceRh.Position, sourceRh.Reflect());
+                        Ray newRay = new Ray(sourceRh.Position, sourceRh.Reflect()).Offset();
                         return c += RayColor(newRay, depth - 1); // TODO: Make reflections work.
                     }
                 }

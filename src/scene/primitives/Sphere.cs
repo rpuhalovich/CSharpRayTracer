@@ -33,14 +33,15 @@ namespace RayTracer
         {
             Vector3 oc = ray.Origin - this.center;
             double a = ray.Direction.Dot(ray.Direction);
-            double halfb = ray.Direction.Dot(oc);
+            double b = 2.0f * oc.Dot(ray.Direction);
             double c = oc.Dot(oc) - (this.radius * this.radius);
-            double discriminant = (halfb * halfb) - (a * c);
-            double t = (-halfb - Math.Sqrt(discriminant)) / a;
+            double discriminant = (b * b) - (4.0f * a * c);
+            double t = (-b - Math.Sqrt(discriminant)) / (2.0f * a);
+            Vector3 pos = ray.At(t);
 
             if (discriminant >= 0.0f && t >= 0.0f) // Hit
             {
-                return new RayHit(ray.At(t), (ray.At(t) - this.center).Normalized(), ray.Direction, this.material);
+                return new RayHit(pos, pos - this.center, ray.Direction, this.material);
             }
 
             return null;
