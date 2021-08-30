@@ -36,7 +36,7 @@ namespace RayTracer
             Vector3 norm = (v1 - v0).Cross(v2 - v0).Normalized();
 
             double nDotRayDir = norm.Dot(ray.Direction);
-            if (Math.Abs(nDotRayDir) < Double.MinValue) return null; // Parallel, therefore no hit.
+            if (Math.Abs(nDotRayDir) < Double.Epsilon) return null; // Parallel, therefore no hit.
 
             double t = norm.Dot(v0 - ray.Origin) / nDotRayDir;
             if (t < 0.0f) return null;

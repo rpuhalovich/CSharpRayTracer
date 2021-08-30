@@ -28,6 +28,7 @@ namespace RayTracer
         /// <returns>Vector as string in form (x, y, z)</returns>
         public override string ToString()
         {
+            // return string.Format("({0:N3}, {0:N3}, {0:N3})", this.x, this.y, this.z);
             return "(" + this.x + "," + this.y + "," + this.z + ")";
         }
 
@@ -40,7 +41,7 @@ namespace RayTracer
         /// <returns>Length of the vector squared</returns>
         public double LengthSq()
         {
-            return Length() * Length();
+            return this.x * this.x + this.y * this.y + this.z * this.z;
         }
 
         /// <summary>

@@ -35,13 +35,18 @@ namespace RayTracer
             );
         }
 
+        public override string ToString()
+        {
+            return "[Position: " + this.position + ", Normal: " + this.normal + ", Incident: " + this.incident + "]";
+        }
+
         /// <summary>
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
         /// </summary>
         /// <returns>Vector3 incident reflected.</returns>
         public Vector3 Reflect()
         {
-            return this.Incident - 2 * this.Incident.Dot(this.Normal.Normalized()) * this.Normal.Normalized();
+            return (this.Incident - 2 * this.Incident.Dot(this.Normal.Normalized()) * this.Normal.Normalized()).Normalized();
         }
 
         public override bool Equals(object obj)

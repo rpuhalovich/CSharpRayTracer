@@ -33,7 +33,7 @@ namespace RayTracer
         public RayHit Intersect(Ray ray)
         {
             Vector3 L = this.center - ray.Origin;
-            double tc = L.Dot(ray.Direction.Normalized());
+            double tc = L.Dot(ray.Direction);
             if (tc < 0.0f) return null;
 
             double d2 = L.Dot(L) - tc * tc;
@@ -44,7 +44,7 @@ namespace RayTracer
             double t2 = tc + t1c;
 
             Vector3 pos = ray.At(t1);
-            if (ray.At(t2).LengthWith(ray.Origin) < ray.At(t1).LengthWith(ray.Origin)) pos = (ray.At(t2));
+            if (ray.At(t2).LengthWith(ray.Origin) < ray.At(t1).LengthWith(ray.Origin)) pos = ray.At(t2);
             return new RayHit(pos, (pos - this.center).Normalized(), ray.Direction, this.material);
         }
 

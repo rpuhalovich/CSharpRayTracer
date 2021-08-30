@@ -66,7 +66,7 @@ namespace RayTracer
                 x_adj *= Math.Tan(this.Fov / 2.0f);
                 y_adj *= Math.Tan(this.Fov / 2.0f) / this.AspectRatio;
 
-                rays.Add(new Ray(this.Origin, new Vector3(x_adj, y_adj, z)));
+                rays.Add(new Ray(this.Origin, new Vector3(x_adj, y_adj, z).Normalized()));
             }
             return rays.ToArray();
         }
@@ -82,9 +82,7 @@ namespace RayTracer
         /// </summary>
         public bool PixelIndexDebug(int x, int y)
         {
-            if (this.Pind.X == x && this.Pind.Y == y)
-                return true;
-            return false;
+            return this.Pind.X == x && this.Pind.Y == y;
         }
 
         public Image OutputImage { get => outputImage; set => outputImage = value; }
