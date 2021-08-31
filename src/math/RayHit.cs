@@ -52,11 +52,17 @@ namespace RayTracer
 
         public static Vector3 Refract(Vector3 incident, Vector3 norm, double eta_t, double eta_i=1.0f)
         {
-            double cosi = -1.0f * Math.Max(-1.0f, Math.Min(1.0f, incident.Dot(norm)));
-            if (cosi < 0.0f) return Refract(incident, -1.0f * norm, eta_i, eta_t);
+            incident = incident.Normalized();
+            norm = norm.Normalized();
+
+            double cosi = -Math.Max(-1.0f, Math.Min(1.0f, incident.Dot(norm)));
+            if (cosi < 0.0f)
+                return Refract(incident, -norm, eta_i, eta_t);
             double eta = eta_i / eta_t;
             double k = 1.0f - eta * eta * (1.0f - cosi * cosi);
             return k < 0.0f ? new Vector3(1.0f, 0.0f, 0.0f) : incident * eta + norm * (eta * cosi - Math.Sqrt(k));
+
+            //auto cosTheta = Math.Min(incident.Dot)
         }
 
         public RayHit BlankRayHit()

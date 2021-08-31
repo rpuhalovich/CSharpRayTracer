@@ -117,17 +117,14 @@ namespace RayTracer
 
             // TODO: maybe add bg color?
             RayHit sourceRh = ClosestHit(r);
-            if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg. Or depth is 0.
-
-            logger.LogRay(new int[] { cam.Pind.X, cam.Pind.Y }, r, sourceRh);
+            if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
             
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
                 reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect().Normalized()), depth - 1);
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                if (cam.PixelIndexDebug(260, 260)) Debugger.Break();
-                Vector3 dir = RayHit.Refract(sourceRh.Incident.Normalized(), sourceRh.Normal, sourceRh.Material.RefractiveIndex).Normalized();
+                Vector3 dir = RayHit.Refract(sourceRh.Incident, sourceRh.Normal, sourceRh.Material.RefractiveIndex).Normalized();
                 refractColor = RayColor(new Ray(sourceRh.Position, dir), depth - 1);
             }
 
@@ -146,6 +143,8 @@ namespace RayTracer
                     diffuseColor += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
                 }
             }
+
+            if (refractColor.R > 0.0f) Debugger.Break();
 
             return diffuseColor + reflectColor + refractColor;
         }
