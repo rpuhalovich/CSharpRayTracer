@@ -7,6 +7,7 @@ namespace RayTracer
     /// </summary>
     public readonly struct Vector3
     {
+        private const double EPSILON = 0.0001f;
         private readonly double x, y, z;
 
         /// <summary>
@@ -194,6 +195,22 @@ namespace RayTracer
                 if (p.LengthSq() >= 1.0f) continue;
                 return p;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vector3 vector &&
+                   Math.Abs(x - vector.x) < EPSILON &&
+                   Math.Abs(y - vector.y) < EPSILON &&
+                   Math.Abs(z - vector.z) < EPSILON &&
+                   Math.Abs(X - vector.X) < EPSILON &&
+                   Math.Abs(Y - vector.Y) < EPSILON &&
+                   Math.Abs(Z - vector.Z) < EPSILON;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y, z, X, Y, Z);
         }
 
         /// <summary>

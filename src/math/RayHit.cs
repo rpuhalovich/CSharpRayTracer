@@ -42,11 +42,12 @@ namespace RayTracer
 
         /// <summary>
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
+        /// return v - 2*dot(v,n)*n;
         /// </summary>
         /// <returns>Vector3 incident reflected.</returns>
         public Vector3 Reflect()
         {
-            return (this.Incident - 2 * this.Incident.Dot(this.Normal.Normalized()) * this.Normal.Normalized()).Normalized();
+            return (this.incident - 2.0f * this.incident.Dot(this.normal) * this.Normal).Normalized();
         }
 
         public override bool Equals(object obj)

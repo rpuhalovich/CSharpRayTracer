@@ -40,14 +40,13 @@ namespace RayTracer
             if (d2 > this.radius * this.radius) return null;
 
             double t1c = Math.Sqrt((this.radius * this.radius) - d2);
-            double t1 = tc - t1c;
-            double t2 = tc + t1c;
+            Vector3 posT1 = ray.At(tc - t1c);
+            Vector3 posT2 = ray.At(tc + t1c);
 
-            Vector3 pos = ray.At(t1);
-
-            if (ray.At(t2).LengthWith(ray.Origin) < ray.At(t1).LengthWith(ray.Origin)) pos = ray.At(t2);
-            double poslen = this.center.LengthWith(pos); // TODO: for debugging.
-            return new RayHit(pos, (pos - this.center).Normalized(), ray.Direction, this.material);
+            if (posT1.LengthWith(ray.Origin) < posT2.LengthWith(ray.Origin))
+                return new RayHit(posT1, (posT1 - this.center).Normalized(), ray.Direction, this.material);
+            else
+                return new RayHit(posT2, (posT2 - this.center).Normalized(), ray.Direction, this.material);
         }
 
         /// <summary>

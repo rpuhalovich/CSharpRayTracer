@@ -91,9 +91,9 @@ namespace RayTracer
                 for (int j = 0; j < outputImage.Height; j++)
                 {
                     cam.Pind = new PixelIndex(i, j);
-                    Color rayColor = Color.Black();
-                    foreach (Ray r in cam.CalcPixelRays()) rayColor += RayColor(r, MAX_DEPTH);
-                    cam.WriteColor(rayColor);
+                    Color pixelColor = Color.Black();
+                    foreach (Ray r in cam.CalcPixelRays()) pixelColor += RayColor(r, MAX_DEPTH);
+                    cam.WriteColor(pixelColor);
                 }
 
             if (DEBUG)
@@ -117,6 +117,8 @@ namespace RayTracer
             // TODO: maybe add bg color?
             if (sourceRh == null) return Color.Black();
 
+            if (sourceRh.Position.Equals(new Vector3(-0.15, 0.2, 1.65))) Debugger.Break(); // TODO: for debugging.
+
             logger.LogRay(new int[] { cam.Pind.X, cam.Pind.Y }, r, sourceRh);
 
             Color c = Color.Black();
@@ -134,14 +136,17 @@ namespace RayTracer
                     {
                         // Stage 2.1: C = (N^ · L^)CmCl
                         Color diffuseColor = sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
-                        return c += diffuseColor;
+                        c += diffuseColor;
                     }
 
                     if (sourceRh.Material.Type == Material.MaterialType.Reflective)
                     {
                         Ray newRay = new Ray(sourceRh.Position, sourceRh.Reflect()).Offset();
-                        return c += RayColor(newRay, depth - 1);
+                        c += RayColor(newRay, depth - 1);
                     }
+
+                    //Color diffuseColor = sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
+                    //c += diffuseColor;
                 }
             }
             return c;
@@ -156,7 +161,7 @@ namespace RayTracer
             RayHit closest = RayHit.MaxRayHit();
             foreach (SceneEntity e in entities)
             {
-                if (cam.PixelIndexDebug(170, 170)) Debugger.Break(); // TODO: for debugging.
+                if (cam.PixelIndexDebug(233, 163)) Debugger.Break(); // TODO: for debugging.
                 RayHit rh = e.Intersect(r);
                 if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin) && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
                     closest = rh;
