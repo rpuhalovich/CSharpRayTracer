@@ -26,24 +26,27 @@ namespace RayTracer
 
         /// <summary>
         /// Determine if a ray intersects with the sphere, and if so, return hit data.
+        /// From: http://kylehalladay.com/blog/tutorial/math/2013/12/24/Ray-Sphere-Intersection.html
         /// </summary>
         /// <param name="ray">Ray to check</param>
         /// <returns>Hit data (or null if no intersection)</returns>
         public RayHit Intersect(Ray ray)
         {
-            Vector3 oc = ray.Origin - this.center;
-            double a = ray.Direction.Dot(ray.Direction);
-            double halfb = ray.Direction.Dot(oc);
-            double c = oc.Dot(oc) - (this.radius * this.radius);
-            double discriminant = (halfb * halfb) - (a * c);
-            double t = (-halfb - Math.Sqrt(discriminant)) / a;
+            Vector3 L = this.center - ray.Origin;
+            double tc = L.Dot(ray.Direction);
+            if (tc < 0.0f) return null;
 
-            if (discriminant >= 0.0f && t >= 0.0f) // Hit
-            {
-                return new RayHit(ray.At(t), (ray.At(t) - this.center).Normalized(), new Vector3(0.0f, 0.0f, 0.0f), this.material);
-            }
+            double d2 = L.Dot(L) - tc * tc;
+            if (d2 > this.radius * this.radius) return null;
 
-            return null;
+            double t1c = Math.Sqrt((this.radius * this.radius) - d2);
+            Vector3 posT1 = ray.At(tc - t1c);
+            Vector3 posT2 = ray.At(tc + t1c);
+
+            if (posT1.LengthWith(ray.Origin) < posT2.LengthWith(ray.Origin))
+                return new RayHit(posT1, (posT1 - this.center).Normalized(), ray.Direction, this.material);
+            else
+                return new RayHit(posT2, (posT2 - this.center).Normalized(), ray.Direction, this.material);
         }
 
         /// <summary>

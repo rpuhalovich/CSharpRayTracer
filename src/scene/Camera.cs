@@ -54,7 +54,6 @@ namespace RayTracer
         public Ray[] CalcPixelRays()
         {
             List<Ray> rays = new List<Ray>();
-
             foreach (Vector2 offset in this.subPixelGrid)
             {
                 double x = (double)(this.Pind.X + offset.X) / this.OutputImage.Width;
@@ -67,9 +66,8 @@ namespace RayTracer
                 x_adj *= Math.Tan(this.Fov / 2.0f);
                 y_adj *= Math.Tan(this.Fov / 2.0f) / this.AspectRatio;
 
-                rays.Add(new Ray(this.Origin, new Vector3(x_adj, y_adj, z)));
+                rays.Add(new Ray(this.Origin, new Vector3(x_adj, y_adj, z).Normalized()));
             }
-
             return rays.ToArray();
         }
 
@@ -77,6 +75,14 @@ namespace RayTracer
         {
             double scale = 1.0f / this.numRays;
             this.outputImage.SetPixel(this.pind.X, this.pind.Y, Color.Clamp(c * scale));
+        }
+
+        /// <summary>
+        /// Because the conditional in Visual Studio is unpractically slow.
+        /// </summary>
+        public bool PixelIndexDebug(int x, int y)
+        {
+            return this.Pind.X == x && this.Pind.Y == y;
         }
 
         public Image OutputImage { get => outputImage; set => outputImage = value; }

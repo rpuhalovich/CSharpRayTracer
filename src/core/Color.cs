@@ -151,5 +151,13 @@ namespace RayTracer
             double min = 0.0f, max = 1.0f;
             return new Color(Math.Clamp(c.r, min, max), Math.Clamp(c.g, min, max), Math.Clamp(c.b, min, max));
         }
+
+        /// <summary>
+        /// Because typing out new Color(0.0f, 0.0f, 0.0f) is a chore.
+        /// </summary>
+        public static Color Black()
+        {
+            return new Color(0.0f, 0.0f, 0.0f);
+        }
     }
 }

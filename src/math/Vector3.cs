@@ -7,6 +7,7 @@ namespace RayTracer
     /// </summary>
     public readonly struct Vector3
     {
+        private const double EPSILON = 0.0001f;
         private readonly double x, y, z;
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace RayTracer
         /// <returns>Vector as string in form (x, y, z)</returns>
         public override string ToString()
         {
+            // return string.Format("({0:N3}, {0:N3}, {0:N3})", this.x, this.y, this.z);
             return "(" + this.x + "," + this.y + "," + this.z + ")";
         }
 
@@ -40,7 +42,7 @@ namespace RayTracer
         /// <returns>Length of the vector squared</returns>
         public double LengthSq()
         {
-            return Length() * Length();
+            return this.x * this.x + this.y * this.y + this.z * this.z;
         }
 
         /// <summary>
@@ -193,6 +195,22 @@ namespace RayTracer
                 if (p.LengthSq() >= 1.0f) continue;
                 return p;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vector3 vector &&
+                   Math.Abs(x - vector.x) < EPSILON &&
+                   Math.Abs(y - vector.y) < EPSILON &&
+                   Math.Abs(z - vector.z) < EPSILON &&
+                   Math.Abs(X - vector.X) < EPSILON &&
+                   Math.Abs(Y - vector.Y) < EPSILON &&
+                   Math.Abs(Z - vector.Z) < EPSILON;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y, z, X, Y, Z);
         }
 
         /// <summary>

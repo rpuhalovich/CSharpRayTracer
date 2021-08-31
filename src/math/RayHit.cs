@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RayTracer
 {
@@ -24,7 +25,7 @@ namespace RayTracer
         // You may wish to write methods to compute other vectors,
         // e.g. reflection, transmission, etc
 
-        static public RayHit MaxRayHit()
+        public static RayHit MaxRayHit()
         {
             return new RayHit(
                 new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
@@ -32,6 +33,40 @@ namespace RayTracer
                 new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
                 null
             );
+        }
+
+        public override string ToString()
+        {
+            return "[Position: " + this.position + ", Normal: " + this.normal + ", Incident: " + this.incident + "]";
+        }
+
+        /// <summary>
+        /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
+        /// return v - 2*dot(v,n)*n;
+        /// </summary>
+        /// <returns>Vector3 incident reflected.</returns>
+        public Vector3 Reflect()
+        {
+            return (this.incident - 2.0f * this.incident.Dot(this.normal) * this.Normal).Normalized();
+        }
+
+        public RayHit BlankRayHit()
+        {
+            return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Material(Material.MaterialType.Diffuse, Color.Black()));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RayHit hit &&
+                   EqualityComparer<Vector3>.Default.Equals(position, hit.position) &&
+                   EqualityComparer<Vector3>.Default.Equals(normal, hit.normal) &&
+                   EqualityComparer<Vector3>.Default.Equals(incident, hit.incident) &&
+                   EqualityComparer<Material>.Default.Equals(material, hit.material);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(position, normal, incident, material);
         }
 
         public Vector3 Position
