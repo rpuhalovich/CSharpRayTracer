@@ -74,7 +74,7 @@ namespace RayTracer
         public void WriteColor(Color c)
         {
             double scale = 1.0f / this.numRays;
-            this.outputImage.SetPixel(this.pind.X, this.pind.Y, Color.Clamp(c * scale));
+            this.outputImage.SetPixel(this.pind.X, this.pind.Y, (c * scale).Clamp());
         }
 
         /// <summary>

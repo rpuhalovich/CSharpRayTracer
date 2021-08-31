@@ -146,10 +146,10 @@ namespace RayTracer
         /// Returns the input color except all values below 0 and above 1 have been
         /// clamped down to 0 and 1 respectively.
         /// </summary>
-        public static Color Clamp(Color c)
+        public Color Clamp()
         {
             double min = 0.0f, max = 1.0f;
-            return new Color(Math.Clamp(c.r, min, max), Math.Clamp(c.g, min, max), Math.Clamp(c.b, min, max));
+            return new Color(Math.Clamp(this.r, min, max), Math.Clamp(this.g, min, max), Math.Clamp(this.b, min, max));
         }
 
         /// <summary>

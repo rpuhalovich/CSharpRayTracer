@@ -118,7 +118,7 @@ namespace RayTracer
             // TODO: maybe add bg color?
             RayHit sourceRh = ClosestHit(r);
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
-            
+
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
                 reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect().Normalized()), depth - 1);
 
