@@ -50,6 +50,11 @@ namespace RayTracer
             return (this.incident - 2.0f * this.incident.Dot(this.normal) * this.Normal).Normalized();
         }
 
+        public RayHit BlankRayHit()
+        {
+            return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Material(Material.MaterialType.Diffuse, Color.Black()));
+        }
+
         public override bool Equals(object obj)
         {
             return obj is RayHit hit &&

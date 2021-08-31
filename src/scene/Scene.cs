@@ -35,7 +35,7 @@ namespace RayTracer
         private MyLogger logger = new MyLogger();
 
         private const double FOV = 60.0f;
-        private const int MAX_DEPTH = 10;
+        private const int MAX_DEPTH = 4;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -92,7 +92,11 @@ namespace RayTracer
                 {
                     cam.Pind = new PixelIndex(i, j);
                     Color pixelColor = Color.Black();
-                    foreach (Ray r in cam.CalcPixelRays()) pixelColor += RayColor(r, MAX_DEPTH);
+                    foreach (Ray r in cam.CalcPixelRays())
+                    {
+                        //r = new Ray(r.At(options.FocalLength), r.Direction);
+                        pixelColor += RayColor(new Ray(r.At(options.FocalLength), r.Direction), MAX_DEPTH);
+                    }
                     cam.WriteColor(pixelColor);
                 }
 
@@ -108,48 +112,36 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(Ray r, int depth)
         {
-            if (depth <= 0) return Color.Black();
+            Color diffuseColor = Color.Black(), reflectColor = Color.Black();
 
-            // Input ray hit.
-            RayHit sourceRh = ClosestHit(r);
-
-            // If nothing is hit, you're off to the abyss so return black.
             // TODO: maybe add bg color?
-            if (sourceRh == null) return Color.Black();
+            RayHit sourceRh = ClosestHit(r);
+            if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg. Or depth is 0.
 
-            if (sourceRh.Position.Equals(new Vector3(-0.15, 0.2, 1.65))) Debugger.Break(); // TODO: for debugging.
-
-            logger.LogRay(new int[] { cam.Pind.X, cam.Pind.Y }, r, sourceRh);
-
-            Color c = Color.Black();
-            foreach (PointLight pl in lights)
+            if (sourceRh.Material.Type == Material.MaterialType.Reflective)
             {
-                // Ray to point light hit.
-                Vector3 lightDir = (pl.Position - sourceRh.Position).Normalized();
-                Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
-                RayHit shadowRh = ClosestHit(shadowRay);
+                if (cam.PixelIndexDebug(160, 160)) Debugger.Break();
+                Vector3 reflectDir = sourceRh.Reflect();
+                reflectColor = RayColor(new Ray(sourceRh.Position, reflectDir), depth - 1);
+            }
 
-                // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
-                if (!(shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)))
+            if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
+            {
+                foreach (PointLight pl in lights)
                 {
-                    if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
-                    {
-                        // Stage 2.1: C = (N^ · L^)CmCl
-                        Color diffuseColor = sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
-                        c += diffuseColor;
-                    }
+                    // Ray to point light hit.
+                    Vector3 lightDir = (pl.Position - sourceRh.Position).Normalized();
+                    Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
+                    RayHit shadowRh = ClosestHit(shadowRay);
 
-                    if (sourceRh.Material.Type == Material.MaterialType.Reflective)
-                    {
-                        Ray newRay = new Ray(sourceRh.Position, sourceRh.Reflect()).Offset();
-                        c += RayColor(newRay, depth - 1);
-                    }
+                    // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
+                    if (shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)) continue;
 
-                    //Color diffuseColor = sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
-                    //c += diffuseColor;
+                    diffuseColor += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
                 }
             }
-            return c;
+
+            return diffuseColor + reflectColor;
         }
 
         /// <summary>
@@ -161,9 +153,8 @@ namespace RayTracer
             RayHit closest = RayHit.MaxRayHit();
             foreach (SceneEntity e in entities)
             {
-                if (cam.PixelIndexDebug(233, 163)) Debugger.Break(); // TODO: for debugging.
                 RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin) && rh.Position.LengthWith(cam.Origin) > options.FocalLength)
+                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin))
                     closest = rh;
             }
             if (closest.Equals(RayHit.MaxRayHit())) return null;
