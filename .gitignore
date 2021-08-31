@@ -409,5 +409,3 @@ FodyWeavers.xsd
 # Another exception... allow .obj files in /tests/models
 # Annoyingly .obj is a shared file extension, not just for 3D models
 !tests/**/*.obj
-extern/RayTracer.Debug.Gui/
-extern/RayTracer.Debug.Gui
