@@ -92,9 +92,10 @@ namespace RayTracer
                 {
                     cam.Pind = new PixelIndex(i, j);
                     Color pixelColor = Color.Black();
+
+                    // Firing from the end of focal length to not have anything from the origin be rendered.
                     foreach (Ray r in cam.CalcPixelRays())
                     {
-                        //r = new Ray(r.At(options.FocalLength), r.Direction);
                         pixelColor += RayColor(new Ray(r.At(options.FocalLength), r.Direction), MAX_DEPTH);
                     }
                     cam.WriteColor(pixelColor);
@@ -154,8 +155,7 @@ namespace RayTracer
             foreach (SceneEntity e in entities)
             {
                 RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin))
-                    closest = rh;
+                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin)) closest = rh;
             }
             if (closest.Equals(RayHit.MaxRayHit())) return null;
             return closest;
