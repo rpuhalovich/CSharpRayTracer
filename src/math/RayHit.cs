@@ -51,19 +51,21 @@ namespace RayTracer
 
         /// <summary>
         /// From: https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
+        /// ^ignore above it's from tinyraytracer
         /// </summary>
-        public Vector3 Refract(double eta_i = 1.0f)
+        /// <param name="eta_i">The refraction index of the air.</param>
+        public static Vector3 Refract(Vector3 incident, Vector3 norm, double eta_t, double eta_i = 1.0f)
         {
-            this.normal = this.normal.Normalized();
+            //double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
+            //double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
 
-            // double eta_t, double eta_i=1.0f
-            double n = eta_i / this.material.RefractiveIndex;
-            double cosI = Math.Abs(this.normal.Dot(this.incident));
-            double sinT2 = n * n * (1.0f - cosI * cosI);
-            // if (sinT2 > 1.0f) return Refract(this.incident, this.normal, eta_i, eta_t);
-            double cosT = Math.Sqrt(1.0f - sinT2);
-
-            return (n * this.incident + (n * cosI - cosT) * this.normal).Normalized();
+            double cosi = -Math.Max(-1.0f, Math.Min(1.0f, incident.Dot(norm)));
+            double sinTheta = Math.Sqrt(1.0f - cosi * cosi);
+            //if (cosi < 0.0f) return Refract(incident, -norm, eta_i, eta_t);
+            double eta = eta_i / eta_t;
+            if (eta * sinTheta > 1.0f) return Refract(incident, -norm, eta_i, eta_t);
+            double k = 1.0f - eta * eta * (1.0f - cosi * cosi);
+            return k < 0.0f ? new Vector3(1.0f, 0.0f, 0.0f) : (incident * eta + norm * (eta * cosi - Math.Sqrt(k))).Normalized();
         }
 
         public RayHit BlankRayHit()

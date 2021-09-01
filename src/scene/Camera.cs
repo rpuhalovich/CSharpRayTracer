@@ -1,9 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace RayTracer
 {
+    /// <summary>
+    /// Groups x and y together because passing two variables around
+    /// is bad.
+    /// </summary>
+    public struct PixelIndex
+    {
+        private int y;
+        private int x;
+
+        public PixelIndex(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int X { get => x; set => x = value; }
+        public int Y { get => y; set => y = value; }
+    }
+
     /// <summary>
     /// Grouping camera parameters in case I want to create a
     /// custom camera controller.
@@ -84,7 +104,12 @@ namespace RayTracer
         /// </summary>
         public bool PixelIndexDebug(int x, int y)
         {
-            return this.Pind.X == x && this.Pind.Y == y;
+            if (this.Pind.X == x && this.Pind.Y == y)
+            {
+                Debugger.Break();
+                return true;
+            }
+            return false;
         }
 
         public Image OutputImage { get => outputImage; set => outputImage = value; }

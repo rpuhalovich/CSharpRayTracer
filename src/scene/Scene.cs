@@ -6,25 +6,6 @@ using System.IO;
 namespace RayTracer
 {
     /// <summary>
-    /// Groups x and y together because passing two variables around
-    /// is bad.
-    /// </summary>
-    public struct PixelIndex
-    {
-        private int y;
-        private int x;
-
-        public PixelIndex(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int X { get => x; set => x = value; }
-        public int Y { get => y; set => y = value; }
-    }
-
-    /// <summary>
     /// Class to represent a ray traced scene, including the objects,
     /// light sources, and associated rendering logic.
     /// </summary>
@@ -120,12 +101,17 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
             {
-                reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect()), depth - 1);
+                reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect()).Offset(), depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                refractColor = RayColor(new Ray(sourceRh.Position, sourceRh.Refract()), depth - 1);
+                SceneEntity e = ClosestHitEntity(r);
+                Console.WriteLine(e.ToString());
+                // cam.PixelIndexDebug(260, 260);
+
+                Vector3 dir = RayHit.Refract(sourceRh.Incident, sourceRh.Normal, sourceRh.Material.RefractiveIndex);
+                refractColor = RayColor(new Ray(sourceRh.Position, dir).Offset(), depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
@@ -153,14 +139,37 @@ namespace RayTracer
         /// </summary>
         private RayHit ClosestHit(Ray r)
         {
+            SceneEntity closestEntity;
+
             RayHit closest = RayHit.MaxRayHit();
             foreach (SceneEntity e in entities)
             {
                 RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin)) closest = rh;
+                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin))
+                {
+                    closestEntity = e;
+                    closest = rh;
+                }
             }
             if (closest.Equals(RayHit.MaxRayHit())) return null;
             return closest;
+        }
+
+        private SceneEntity ClosestHitEntity(Ray r)
+        {
+            SceneEntity closestEntity = null;
+            RayHit closest = RayHit.MaxRayHit();
+            foreach (SceneEntity e in entities)
+            {
+                RayHit rh = e.Intersect(r);
+                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin))
+                {
+                    closestEntity = e;
+                    closest = rh;
+                }
+            }
+            if (closest.Equals(RayHit.MaxRayHit())) return null;
+            return closestEntity;
         }
     }
 }
