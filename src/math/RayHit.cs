@@ -44,21 +44,26 @@ namespace RayTracer
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
         /// return v - 2*dot(v,n)*n;
         /// </summary>
-        /// <returns>Vector3 incident reflected.</returns>
         public Vector3 Reflect()
         {
             return (this.incident - 2.0f * this.incident.Dot(this.normal) * this.Normal).Normalized();
         }
 
-        public static Vector3 Refract(Vector3 incident, Vector3 norm, double eta_t, double eta_i=1.0f)
+        /// <summary>
+        /// From: https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
+        /// </summary>
+        public Vector3 Refract(double eta_i = 1.0f)
         {
-            norm = norm.Normalized();
-            double n = eta_i / eta_t;
-            double cosI = Math.Abs(norm.Dot(incident));
+            this.normal = this.normal.Normalized();
+
+            // double eta_t, double eta_i=1.0f
+            double n = eta_i / this.material.RefractiveIndex;
+            double cosI = Math.Abs(this.normal.Dot(this.incident));
             double sinT2 = n * n * (1.0f - cosI * cosI);
-            if (sinT2 > 1.0f) return Refract(incident, norm, eta_i, eta_t);
+            // if (sinT2 > 1.0f) return Refract(this.incident, this.normal, eta_i, eta_t);
             double cosT = Math.Sqrt(1.0f - sinT2);
-            return n * incident + (n * cosI - cosT) * norm;
+
+            return (n * this.incident + (n * cosI - cosT) * this.normal).Normalized();
         }
 
         public RayHit BlankRayHit()

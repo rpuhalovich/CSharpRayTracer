@@ -120,13 +120,12 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
             {
-                reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect().Normalized()), depth - 1);
+                reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect()), depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                Vector3 dir = RayHit.Refract(sourceRh.Incident, sourceRh.Normal, sourceRh.Material.RefractiveIndex).Normalized();
-                refractColor = RayColor(new Ray(sourceRh.Position, dir), depth - 1);
+                refractColor = RayColor(new Ray(sourceRh.Position, sourceRh.Refract()), depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)

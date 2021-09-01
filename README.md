@@ -117,3 +117,5 @@ Microsoft's Stopwatch: https://docs.microsoft.com/en-us/dotnet/api/system.diagno
 glm (referencing their vector methods against my own): https://github.com/g-truc/glm
 
 tinyraytracer: https://github.com/ssloy/tinyraytracer
+
+Refraction Paper: https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
