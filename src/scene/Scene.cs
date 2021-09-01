@@ -91,12 +91,11 @@ namespace RayTracer
                 for (int j = 0; j < outputImage.Height; j++)
                 {
                     cam.Pind = new PixelIndex(i, j);
-                    Color pixelColor = Color.Black();
 
-                    // Firing from the end of focal length to not have anything from the origin be rendered.
+                    Color pixelColor = Color.Black();
                     foreach (Ray r in cam.CalcPixelRays())
                     {
-                        pixelColor += RayColor(new Ray(r.At(options.FocalLength), r.Direction), MAX_DEPTH);
+                        pixelColor += RayColor(r, MAX_DEPTH);
                     }
                     cam.WriteColor(pixelColor);
                 }
@@ -120,7 +119,9 @@ namespace RayTracer
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
 
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
+            {
                 reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect().Normalized()), depth - 1);
+            }
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
@@ -143,8 +144,6 @@ namespace RayTracer
                     diffuseColor += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
                 }
             }
-
-            if (refractColor.R > 0.0f) Debugger.Break();
 
             return diffuseColor + reflectColor + refractColor;
         }

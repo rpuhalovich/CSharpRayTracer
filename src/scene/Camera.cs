@@ -66,7 +66,9 @@ namespace RayTracer
                 x_adj *= Math.Tan(this.Fov / 2.0f);
                 y_adj *= Math.Tan(this.Fov / 2.0f) / this.AspectRatio;
 
-                rays.Add(new Ray(this.Origin, new Vector3(x_adj, y_adj, z).Normalized()));
+                Ray tempRay = new Ray(this.Origin, new Vector3(x_adj, y_adj, z).Normalized());
+
+                rays.Add(new Ray(tempRay.At(this.focalLength), tempRay.Direction));
             }
             return rays.ToArray();
         }
