@@ -1,6 +1,3 @@
 [submodule "src/shangzhel.RayTracer.Debug"]
 	path = src/shangzhel.RayTracer.Debug
 	url = https://github.com/shangzhel/RayTracer.Debug.git
-[submodule "extern/RayTracer.Debug.Gui"]
-	path = extern/RayTracer.Debug.Gui
-	url = https://github.com/rpuhalovich/RayTracer.Debug.Gui.git
