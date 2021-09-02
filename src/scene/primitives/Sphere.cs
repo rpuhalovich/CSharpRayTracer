@@ -49,14 +49,9 @@ namespace RayTracer
             else
                 pos = posT2;
 
-            RayHit rh = new RayHit(pos, (pos - this.center).Normalized(), ray.Direction, this.material).OffsetNormal();
-            rh.SetFaceNormal();
-            return rh;
-        }
+            Vector3 norm = (pos - this.center).Normalized();
 
-        public Vector3 OutNormal(Vector3 point)
-        {
-            return (point - this.center).Normalized();
+            return new RayHit(pos, norm, ray.Direction, this.material);
         }
 
         /// <summary>

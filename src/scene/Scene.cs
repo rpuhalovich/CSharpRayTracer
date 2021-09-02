@@ -95,7 +95,6 @@ namespace RayTracer
         {
             Color diffuseColor = Color.Black(), reflectColor = Color.Black(), refractColor = Color.Black();
 
-            // TODO: maybe add bg color?
             RayHit sourceRh = ClosestHit(r);
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
 
@@ -106,15 +105,9 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                double refractRatio = sourceRh.FrontFace ? (1.0f / sourceRh.Material.RefractiveIndex) : sourceRh.Material.RefractiveIndex;
-
-                double cosTheta = Math.Min(sourceRh.Normal.Dot(-1 * sourceRh.Incident.Normalized()), 1.0f);
-                double sinTheta = Math.Sqrt(1.0f - cosTheta * cosTheta);
-
-                if (refractRatio * sinTheta > 1.0f)
-                    reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect()), depth - 1);
-                else
-                    refractColor = RayColor(new Ray(sourceRh.Position, sourceRh.Refract(refractRatio)), depth - 1);
+                // if (cam.PixelIndexDebug(220, 245) && depth == 15) Debugger.Break();
+                Vector3 refractDir = sourceRh.Refract(sourceRh.Material.RefractiveIndex);
+                refractColor = RayColor(new Ray(sourceRh.Position, refractDir).Offset(), depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)

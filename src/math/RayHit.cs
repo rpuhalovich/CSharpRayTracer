@@ -14,8 +14,6 @@ namespace RayTracer
         private Vector3 incident;
         private Material material;
 
-        private bool frontFace;
-
         public RayHit(Vector3 position, Vector3 normal, Vector3 incident, Material material)
         {
             this.position = position;
@@ -42,12 +40,6 @@ namespace RayTracer
             return "[Position: " + this.position + ", Normal: " + this.normal + ", Incident: " + this.incident + "]";
         }
 
-        public void SetFaceNormal()
-        {
-            this.FrontFace = this.incident.Dot(this.Normal) < 0.0f;
-            this.normal = this.FrontFace ? this.Normal : this.Normal * -1.0f;
-        }
-
         /// <summary>
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
         /// return v - 2*dot(v,n)*n;
@@ -60,12 +52,27 @@ namespace RayTracer
         /// <summary>
         /// 
         /// </summary>
-        public Vector3 Refract(double etaiOverEtat)
+        public Vector3 Refract(double ir)
         {
-            double cosTheta = Math.Clamp(this.Normal.Dot(this.incident), -1.0f, 1.0f);
-            Vector3 rOutPerp = etaiOverEtat * (this.incident + cosTheta * this.Normal);
-            Vector3 rOutParallell = -Math.Sqrt(Math.Abs(1.0f - rOutPerp.LengthSq())) * this.Normal;
-            return rOutPerp + rOutParallell;
+            Vector3 n = this.normal, i = this.incident;
+
+            double cosi = Math.Clamp(n.Dot(i), -1.0f, 1.0f);
+            double etai = 1.0f, etat = ir;
+
+            if (cosi < 0.0f)
+            {
+                cosi = -cosi;
+            }
+            else
+            {
+                n = -n;
+                MyMath.Swap(ref etai, ref etat);
+            }
+
+            double eta = etai / etat;
+
+            double k = 1 - eta * eta * (1 - cosi * cosi);
+            return k < 0 ? new Vector3(0.0f, 0.0f, 0.0f) : (eta * i + (eta * cosi - Math.Sqrt(k)) * n).Normalized();
         }
 
         /// <summary>
@@ -122,7 +129,5 @@ namespace RayTracer
                 return this.material;
             }
         }
-
-        public bool FrontFace { get => frontFace; set => frontFace = value; }
     }
 }

@@ -104,12 +104,7 @@ namespace RayTracer
         /// </summary>
         public bool PixelIndexDebug(int x, int y)
         {
-            if (this.Pind.X == x && this.Pind.Y == y)
-            {
-                Debugger.Break();
-                return true;
-            }
-            return false;
+            return this.Pind.X == x && this.Pind.Y == y;
         }
 
         public Image OutputImage { get => outputImage; set => outputImage = value; }
