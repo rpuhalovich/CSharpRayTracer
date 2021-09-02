@@ -106,12 +106,7 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                SceneEntity e = ClosestHitEntity(r);
-                Console.WriteLine(e.ToString());
-                // cam.PixelIndexDebug(260, 260);
-
-                Vector3 dir = RayHit.Refract(sourceRh.Incident, sourceRh.Normal, sourceRh.Material.RefractiveIndex);
-                refractColor = RayColor(new Ray(sourceRh.Position, dir).Offset(), depth - 1);
+                refractColor = RayColor(new Ray(sourceRh.Position, sourceRh.Refract(sourceRh.Material.RefractiveIndex)).Offset(), depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)

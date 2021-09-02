@@ -38,5 +38,12 @@ namespace RayTracer
             // x = x * (1.5f - xhalf * x * x); // 2nd iteration (can be removed)
             return (double)x;
         }
+
+        public static void Swap(ref double x, ref double y)
+        {
+            double tmp = x;
+            x = y;
+            y = tmp;
+        }
     }
 }

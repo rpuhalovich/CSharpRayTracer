@@ -50,22 +50,22 @@ namespace RayTracer
         }
 
         /// <summary>
-        /// From: https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
-        /// ^ignore above it's from tinyraytracer
+        /// 
         /// </summary>
         /// <param name="eta_i">The refraction index of the air.</param>
-        public static Vector3 Refract(Vector3 incident, Vector3 norm, double eta_t, double eta_i = 1.0f)
+        public Vector3 Refract(double eta_t, double eta_i = 1.0f)
         {
-            //double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
-            //double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+            double cosi = Math.Clamp(this.incident.Dot(this.normal), -1.0f, 1.0f);
 
-            double cosi = -Math.Max(-1.0f, Math.Min(1.0f, incident.Dot(norm)));
-            double sinTheta = Math.Sqrt(1.0f - cosi * cosi);
-            //if (cosi < 0.0f) return Refract(incident, -norm, eta_i, eta_t);
+            // The ray comes from inside the sphere, swap air and media.
+            if (cosi < 0.0f)
+                cosi = -cosi;
+            else
+                this.normal = -1 * this.normal; MyMath.Swap(ref eta_i, ref eta_t);
+
             double eta = eta_i / eta_t;
-            if (eta * sinTheta > 1.0f) return Refract(incident, -norm, eta_i, eta_t);
-            double k = 1.0f - eta * eta * (1.0f - cosi * cosi);
-            return k < 0.0f ? new Vector3(1.0f, 0.0f, 0.0f) : (incident * eta + norm * (eta * cosi - Math.Sqrt(k))).Normalized();
+            double k = 1 - eta * eta * (1 - cosi * cosi);
+            return k < 0.0f ? new Vector3(1.0f, 0.0f, 0.0f) : (this.incident * eta + this.normal * (eta * cosi - Math.Sqrt(k))).Normalized();
         }
 
         public RayHit BlankRayHit()
