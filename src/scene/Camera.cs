@@ -88,7 +88,7 @@ namespace RayTracer
 
                 Ray tempRay = new Ray(this.Origin, new Vector3(x_adj, y_adj, z).Normalized());
 
-                rays.Add(new Ray(tempRay.At(this.focalLength), tempRay.Direction));
+                rays.Add(tempRay.At(this.focalLength));
             }
             return rays.ToArray();
         }

@@ -16,7 +16,7 @@ namespace RayTracer
         private MyLogger logger = new MyLogger();
 
         private const double FOV = 60.0f;
-        private const int MAX_DEPTH = 4;
+        private const int MAX_DEPTH = 30;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -106,7 +106,15 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                refractColor = RayColor(new Ray(sourceRh.Position, sourceRh.Refract(sourceRh.Material.RefractiveIndex)).Offset(), depth - 1);
+                double refractRatio = sourceRh.FrontFace ? (1.0f / sourceRh.Material.RefractiveIndex) : sourceRh.Material.RefractiveIndex;
+
+                double cosTheta = Math.Min(sourceRh.Normal.Dot(-1 * sourceRh.Incident.Normalized()), 1.0f);
+                double sinTheta = Math.Sqrt(1.0f - cosTheta * cosTheta);
+
+                if (refractRatio * sinTheta > 1.0f)
+                    reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect()), depth - 1);
+                else
+                    refractColor = RayColor(new Ray(sourceRh.Position, sourceRh.Refract(refractRatio)), depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
@@ -148,23 +156,6 @@ namespace RayTracer
             }
             if (closest.Equals(RayHit.MaxRayHit())) return null;
             return closest;
-        }
-
-        private SceneEntity ClosestHitEntity(Ray r)
-        {
-            SceneEntity closestEntity = null;
-            RayHit closest = RayHit.MaxRayHit();
-            foreach (SceneEntity e in entities)
-            {
-                RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.LengthWith(r.Origin) < closest.Position.LengthWith(r.Origin))
-                {
-                    closestEntity = e;
-                    closest = rh;
-                }
-            }
-            if (closest.Equals(RayHit.MaxRayHit())) return null;
-            return closestEntity;
         }
     }
 }

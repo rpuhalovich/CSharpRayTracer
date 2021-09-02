@@ -8,6 +8,8 @@ namespace RayTracer
     public readonly struct Vector3
     {
         private const double EPSILON = 0.0001f;
+        private const double OFFSET = 0.0001f;
+
         private readonly double x, y, z;
 
         /// <summary>
@@ -195,6 +197,11 @@ namespace RayTracer
                 if (p.LengthSq() >= 1.0f) continue;
                 return p;
             }
+        }
+
+        public static Vector3 Offset(Vector3 pos, Vector3 dir)
+        {
+            return pos + (OFFSET * dir);
         }
 
         public override bool Equals(object obj)

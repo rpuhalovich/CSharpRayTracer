@@ -7,8 +7,6 @@ namespace RayTracer
     /// </summary>
     public readonly struct Ray
     {
-        private const double OFFSET = 0.0000001f;
-
         private readonly Vector3 origin;
         private readonly Vector3 direction;
 
@@ -48,9 +46,9 @@ namespace RayTracer
         /// <summary>
         /// Position of a ray at length t from origin.
         /// </summary>
-        public Vector3 At(double t)
+        public Ray At(double t)
         {
-            return this.origin + (t * this.direction);
+            return new Ray(this.origin + (t * this.direction), this.direction);
         }
 
         /// <summary>
@@ -58,7 +56,7 @@ namespace RayTracer
         /// </summary>
         public Ray Offset()
         {
-            return new Ray(this.At(OFFSET), this.direction);
+            return new Ray(Vector3.Offset(this.Origin, this.direction), this.direction);
         }
     }
 }

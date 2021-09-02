@@ -36,7 +36,7 @@ namespace RayTracer
             if (Math.Abs(denom) < Double.Epsilon) return null; // Parallel therefore no hit.
 
             double t = (this.center - ray.Origin).Dot(this.normal) / denom;
-            if (t >= 0.0f) return new RayHit(ray.At(t), this.normal, ray.Direction, this.material);
+            if (t >= 0.0f) return new RayHit(ray.At(t).Origin, this.normal, ray.Direction, this.material);
 
             return null;
         }

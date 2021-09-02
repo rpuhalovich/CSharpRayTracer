@@ -14,6 +14,8 @@ namespace RayTracer
         private Vector3 incident;
         private Material material;
 
+        private bool frontFace;
+
         public RayHit(Vector3 position, Vector3 normal, Vector3 incident, Material material)
         {
             this.position = position;
@@ -40,6 +42,12 @@ namespace RayTracer
             return "[Position: " + this.position + ", Normal: " + this.normal + ", Incident: " + this.incident + "]";
         }
 
+        public void SetFaceNormal()
+        {
+            this.FrontFace = this.incident.Dot(this.Normal) < 0.0f;
+            this.normal = this.FrontFace ? this.Normal : this.Normal * -1.0f;
+        }
+
         /// <summary>
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
         /// return v - 2*dot(v,n)*n;
@@ -52,25 +60,21 @@ namespace RayTracer
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="eta_i">The refraction index of the air.</param>
-        public Vector3 Refract(double eta_t, double eta_i = 1.0f)
+        public Vector3 Refract(double etaiOverEtat)
         {
-            double cosi = Math.Clamp(this.incident.Dot(this.normal), -1.0f, 1.0f);
-
-            // The ray comes from inside the sphere, swap air and media.
-            if (cosi < 0.0f)
-                cosi = -cosi;
-            else
-                this.normal = -1 * this.normal; MyMath.Swap(ref eta_i, ref eta_t);
-
-            double eta = eta_i / eta_t;
-            double k = 1 - eta * eta * (1 - cosi * cosi);
-            return k < 0.0f ? new Vector3(1.0f, 0.0f, 0.0f) : (this.incident * eta + this.normal * (eta * cosi - Math.Sqrt(k))).Normalized();
+            double cosTheta = Math.Clamp(this.Normal.Dot(this.incident), -1.0f, 1.0f);
+            Vector3 rOutPerp = etaiOverEtat * (this.incident + cosTheta * this.Normal);
+            Vector3 rOutParallell = -Math.Sqrt(Math.Abs(1.0f - rOutPerp.LengthSq())) * this.Normal;
+            return rOutPerp + rOutParallell;
         }
 
-        public RayHit BlankRayHit()
+        /// <summary>
+        /// Offsets the position (intersection pos) along the set normal.
+        /// </summary>
+        public RayHit OffsetNormal()
         {
-            return new RayHit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Material(Material.MaterialType.Diffuse, Color.Black()));
+            Vector3 newPos = new Ray(this.position, this.normal).Offset().Origin;
+            return new RayHit(newPos, this.normal, this.incident, this.material);
         }
 
         public override bool Equals(object obj)
@@ -99,7 +103,7 @@ namespace RayTracer
         {
             get
             {
-                return this.normal;
+                return this.normal.Normalized();
             }
         }
 
@@ -118,5 +122,7 @@ namespace RayTracer
                 return this.material;
             }
         }
+
+        public bool FrontFace { get => frontFace; set => frontFace = value; }
     }
 }
