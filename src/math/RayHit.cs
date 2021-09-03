@@ -64,6 +64,28 @@ namespace RayTracer
             return k < 0 ? new Vector3(0.0f, 0.0f, 0.0f) : (eta * i + (eta * cosi - Math.Sqrt(k)) * n).Normalized();
         }
 
+        public double Fresnel(double ir)
+        {
+            Vector3 n = this.normal, i = this.incident;
+            double cosi = Math.Clamp(n.Dot(i), -1.0f, 1.0f);
+            double etai = 1.0f, etat = ir;
+            if (cosi > 0) MyMath.Swap(ref etat, ref etai);
+            double sint = etai / etat * Math.Sqrt(Math.Max(0.0f, 1 - cosi * cosi));
+
+            if (sint >= 1)
+            {
+                return 1.0f;
+            }
+            else
+            {
+                double cost = Math.Sqrt(Math.Max(0.0f, 1 - sint * sint));
+                cosi = Math.Abs(cosi);
+                double rs = ((etat * cosi) - (etai * cost)) / ((etat * cosi) + (etai * cost));
+                double rp = ((etai * cosi) - (etat * cost)) / ((etai * cosi) + (etat * cost));
+                return (rs * rs + rp * rp) / 2.0f;
+            }
+        }
+
         /// <summary>
         /// Offsets the position (intersection pos) along the set normal.
         /// </summary>

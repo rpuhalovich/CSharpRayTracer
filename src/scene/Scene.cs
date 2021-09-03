@@ -16,7 +16,7 @@ namespace RayTracer
         private MyLogger logger = new MyLogger();
 
         private const double FOV = 60.0f;
-        private const int MAX_DEPTH = 30;
+        private const int MAX_DEPTH = 10;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -105,9 +105,18 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                Vector3 refractDir = sourceRh.Refract(sourceRh.Material.RefractiveIndex);
-                Ray recurseRay = new Ray(Vector3.Offset(sourceRh.Position, r.Direction), refractDir);
-                refractColor = RayColor(recurseRay, depth - 1);
+                double kr = sourceRh.Fresnel(sourceRh.Material.RefractiveIndex);
+
+                Color refractHitColor = Color.Black();
+                if (kr < 1.0f)
+                {
+                    Vector3 refractDir = sourceRh.Refract(sourceRh.Material.RefractiveIndex);
+                    Ray recurseRay = new Ray(Vector3.Offset(sourceRh.Position, r.Direction), refractDir);
+                    refractHitColor = RayColor(recurseRay, depth - 1);
+                }
+
+                Color reflectHitColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect()).Offset(), depth - 1);
+                refractColor += reflectHitColor * kr + refractHitColor * (1.0f - kr);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
