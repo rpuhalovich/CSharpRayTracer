@@ -88,7 +88,8 @@ namespace RayTracer
 
                 Ray tempRay = new Ray(this.Origin, new Vector3(x_adj, y_adj, z).Normalized());
 
-                rays.Add(tempRay.At(this.focalLength));
+                // Distance of 1.0f to have any objects in the view frustrum cut.
+                rays.Add(tempRay.At(1.0f));
             }
             return rays.ToArray();
         }

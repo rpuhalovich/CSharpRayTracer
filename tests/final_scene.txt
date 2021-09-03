@@ -1,1 +1,18 @@
 
+Material "WhiteMat" Diffuse (.9, .85, .9) 1
+Material "PurpleMat" Diffuse (.9, 0, .9) 1
+Material "GreyMat" Diffuse (.5, .5, .5) 1
+Material "RedMat" Diffuse (1, .5, .5) 1
+Material "GreenMat" Diffuse (.5, 1, .5) 1
+Material "BlueMat" Diffuse (.5, .5, 1) 1
+Material "GlassMat" Refractive (1, 1, 1) 1.4
+Material "MirrorMat" Reflective (1, 1, 1) 1
+
+PointLight "Light1" (0, 0.8, 1.5) (0.7924528, 0.6, 0.7924528)
+PointLight "Light2" (-0.5, 0.2, 0.5) (.5, .5, .5)
+
+Sphere "BigBoi" (-0.15, -0.5, 5) 1 "GreyMat"
+Sphere "BigBoi2" (0.35, -0.25, 3) 0.5 "BlueMat"
+Sphere "GlassSphere" (0.25, -0.2, 1.5) 0.25 "GreyMat"
+
+Plane "Floor" (0, -1, 0) (0, 1, 0) "WhiteMat"

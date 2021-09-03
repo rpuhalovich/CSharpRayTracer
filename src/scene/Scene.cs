@@ -97,6 +97,7 @@ namespace RayTracer
 
             RayHit sourceRh = ClosestHit(r);
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
+            // if (depth <= 0 || sourceRh == null) return new Color(0.8, 0.2, 0.5); // If nothing is hit, you're off to the abyss so return bg.
 
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
             {
