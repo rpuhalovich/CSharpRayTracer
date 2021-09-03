@@ -44,7 +44,7 @@ namespace RayTracer
             Vector3 posT2 = ray.At(tc + t1c).Origin;
 
             Vector3 pos;
-            if (posT1.LengthWith(ray.Origin) < posT2.LengthWith(ray.Origin))
+            if (posT1.LengthWith(ray.Origin) < posT2.LengthWith(ray.Origin) && ray.Origin.LengthWith(this.center) >= this.radius)
                 pos = posT1;
             else
                 pos = posT2;

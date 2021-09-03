@@ -105,9 +105,9 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Refractive)
             {
-                // if (cam.PixelIndexDebug(220, 245) && depth == 15) Debugger.Break();
                 Vector3 refractDir = sourceRh.Refract(sourceRh.Material.RefractiveIndex);
-                refractColor = RayColor(new Ray(sourceRh.Position, refractDir).Offset(), depth - 1);
+                Ray recurseRay = new Ray(Vector3.Offset(sourceRh.Position, r.Direction), refractDir);
+                refractColor = RayColor(recurseRay, depth - 1);
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)

@@ -58,19 +58,8 @@ namespace RayTracer
 
             double cosi = Math.Clamp(n.Dot(i), -1.0f, 1.0f);
             double etai = 1.0f, etat = ir;
-
-            if (cosi < 0.0f)
-            {
-                cosi = -cosi;
-            }
-            else
-            {
-                n = -n;
-                MyMath.Swap(ref etai, ref etat);
-            }
-
+            if (cosi < 0.0f) { cosi = -cosi; } else { n = -n; MyMath.Swap(ref etai, ref etat); }
             double eta = etai / etat;
-
             double k = 1 - eta * eta * (1 - cosi * cosi);
             return k < 0 ? new Vector3(0.0f, 0.0f, 0.0f) : (eta * i + (eta * cosi - Math.Sqrt(k)) * n).Normalized();
         }

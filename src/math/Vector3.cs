@@ -8,7 +8,7 @@ namespace RayTracer
     public readonly struct Vector3
     {
         private const double EPSILON = 0.0001f;
-        private const double OFFSET = 0.3f;
+        private const double OFFSET = 0.00000000005f;
 
         private readonly double x, y, z;
 
