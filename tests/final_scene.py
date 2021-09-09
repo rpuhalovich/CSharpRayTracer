@@ -37,7 +37,7 @@ def gen():
     f.write('Plane "Right" (' + str(sidelen) + ', 0, 0) (-1, 0, 0) "GreenMat"\n')
     f.write('\n')
 
-    for i in range(1, 201):
+    for i in range(1, 11):
         x = random.uniform(-sidelen, sidelen)
         z = random.uniform(-sidelen, sidelen)
 
