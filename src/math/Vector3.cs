@@ -54,7 +54,7 @@ namespace RayTracer
         /// <returns>Length of the vector</returns>
         public double Length()
         {
-            return Math.Sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+            return Math.Sqrt(LengthSq());
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace RayTracer
             {
                 Vector3 p = Random(-1.0f, 1.0f);
                 if (p.LengthSq() >= 1.0f) continue;
-                return p;
+                return p.Normalized();
             }
         }
 

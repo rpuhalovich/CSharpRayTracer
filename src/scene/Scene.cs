@@ -93,7 +93,7 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(Ray r, int depth)
         {
-            Color diffuseColor = Color.Black(), reflectColor = Color.Black(), refractColor = Color.Black();
+            Color diffuseColor = Color.Black(), reflectColor = Color.Black(), refractColor = Color.Black(), emissiveColor = Color.Black();
 
             RayHit sourceRh = ClosestHit(r);
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
@@ -135,7 +135,7 @@ namespace RayTracer
                 }
             }
 
-            return diffuseColor + reflectColor + refractColor;
+            return emissiveColor + diffuseColor + reflectColor + refractColor;
         }
 
         /// <summary>
