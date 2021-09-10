@@ -45,5 +45,11 @@ namespace RayTracer
             x = y;
             y = tmp;
         }
+
+        public static bool DoubleEquals(double x, double y)
+        {
+            double epsilon = 0.00001f;
+            return Math.Abs(x - y) < epsilon;
+        }
     }
 }

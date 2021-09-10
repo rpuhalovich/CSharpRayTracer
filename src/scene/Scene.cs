@@ -99,10 +99,10 @@ namespace RayTracer
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
 
             // Get emitted color.
-            Color emitted = sourceRh.Emitted();
             if (sourceRh.Material.Type == Material.MaterialType.Emissive)
             {
-                emissiveColor = RayColor(new Ray(sourceRh.Position, sourceRh.EmittedDir()).Offset(), depth - 1);
+                //emissiveColor = RayColor(new Ray(sourceRh.Position, sourceRh.EmittedDir()).Offset(), depth - 1);
+                emissiveColor = sourceRh.Emitted();
             }
 
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
@@ -139,6 +139,25 @@ namespace RayTracer
                     if (shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)) continue;
 
                     diffuseColor += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
+                }
+
+                foreach (SceneEntity e in entities)
+                {
+                    if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
+
+                    int samplenum = 200;
+                    for (int i = 0; i < samplenum; i++)
+                    {
+                        // Ray to point light hit.
+                        Vector3 lightDir = Vector3.RandomNormSphere();
+                        Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
+                        RayHit shadowRh = ClosestHit(shadowRay);
+
+                        // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
+                        if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
+
+                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) * (1.0f / samplenum);
+                    }
                 }
             }
 

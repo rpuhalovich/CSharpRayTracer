@@ -119,3 +119,7 @@ glm (referencing their vector methods against my own): https://github.com/g-truc
 tinyraytracer: https://github.com/ssloy/tinyraytracer
 
 Refraction Paper: https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
+
+Ray-tracing soft shadows in real-time: https://medium.com/@alexander.wester/ray-tracing-soft-shadows-in-real-time-a53b836d123b
+
+Ray tracing - soft shadow: https://stackoverflow.com/questions/31709332/ray-tracing-soft-shadow

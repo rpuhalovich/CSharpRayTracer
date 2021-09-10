@@ -14,7 +14,7 @@ FLOOR_HEIGHT = -1
 LEFT_RIGHT_DIST = 1
 
 # Light Parameters
-LIGHT_INTENSITY = 0.4
+LIGHT_INTENSITY = 0.2
 NUM_EDGE_LIGHTS = 2
 
 def gen():
@@ -33,16 +33,16 @@ def gen():
     f.write('Material "GlassMat" Refractive (1, 1, 1) 1.4\n')
     f.write('Material "MirrorMat" Reflective (1, 1, 1) 1\n')
 
-    f.write('Material "WhiteEmissive" Emissive (.9, .85, .9) 1\n')
+    f.write('Material "WhiteEmissive" Emissive (1, 1, 1) 1\n')
 
     # BIG MARBLES
     f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"\n')
     f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
     f.write('Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"\n')
 
-    f.write('Sphere "BigBoi4" (-3, 0, -1) 1 "WhiteEmissive"\n')
+    f.write('Sphere "BigBoi4" (3, 0, -1) 1 "WhiteEmissive"\n')
     f.write('Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"\n')
-    f.write('Sphere "BigBoi6" (3, 0, -1) 1 "MirrorMat"\n')
+    f.write('Sphere "BigBoi6" (-3, 0, -1) 1 "MirrorMat"\n')
 
     # BOX
     sideLenAdj = SIDE_LEN - MARBLE_RADIUS
@@ -68,7 +68,7 @@ def gen():
         mattype = ""
         mat = random.randint(0, 2)
         if mat == 0:
-            mattype = "GreyMat"
+            mattype = "WhiteEmissive"
         elif mat == 1:
             mattype = "GlassMat"
         elif mat == 2:

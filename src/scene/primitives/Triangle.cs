@@ -26,7 +26,7 @@ namespace RayTracer
         }
 
         /// <summary>
-        /// Determine if a ray intersects with the triangle, and if so, return hit data.
+        /// Determine if a ray intersects with the triangle,nd if so a, return hit data.
         /// </summary>
         /// <param name="ray">Ray to check</param>
         /// <returns>Hit data (or null if no intersection)</returns>
@@ -68,9 +68,50 @@ namespace RayTracer
             return new RayHit(P, norm, ray.Direction, this.material);
         }
 
-        Color Emitted()
+        /// <summary>
+        /// Generates ray array of points from the shadowpoint (world point) to this
+        /// entity. The rays are encapsulated inside a cone.
+        /// </summary>
+        public Ray[] ConeSamples(Ray shadowRay)
         {
-            return this.material.Color;
+            // Calculate Cone
+            double sideLen = 0.0f; // TODO: this is smelly.
+            Vector3 centerpos = CenterPos(ref sideLen);
+
+
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns center of the longest edge.
+        /// </summary>
+        private Vector3 CenterPos(ref double radius)
+        {
+            double l0 = (v0 - v1).Length();
+            double l1 = (v0 - v2).Length();
+            double l2 = (v1 - v2).Length();
+            double max = Math.Max(l0, Math.Max(l1, l2));
+
+            if (MyMath.DoubleEquals(l0, max))
+            {
+                radius = l0;
+                return (v0 + v1) / 2.0f;
+            }
+
+            if (MyMath.DoubleEquals(l1, max))
+            {
+                radius = l1;
+                return (v0 + v2) / 2.0f;
+            }
+
+            if (MyMath.DoubleEquals(l2, max))
+            {
+                radius = l2;
+                return (v1 + v2) / 2.0f;
+            }
+
+            return new Vector3(0.0f, 0.0f, 0.0f);
         }
 
         /// <summary>

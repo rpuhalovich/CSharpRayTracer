@@ -88,11 +88,12 @@ namespace RayTracer
 
         public Color Emitted()
         {
-            return Color.Black();
+            return this.material.Color;
         }
 
         public Vector3 EmittedDir()
         {
+
             return new Vector3(0.0f, 0.0f, 0.0f);
         }
 

@@ -54,10 +54,11 @@ namespace RayTracer
             return new RayHit(pos, norm, ray.Direction, this.material);
         }
 
-        Color Emitted()
+        public Ray[] ConeSamples(Vector3 shadowPoint)
         {
-            return this.material.Color;
+            return null;
         }
+
 
         /// <summary>
         /// The material of the sphere.

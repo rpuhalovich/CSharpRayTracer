@@ -33,6 +33,11 @@ namespace RayTracer
             return Color.Black();
         }
 
+        Ray[] ConeSamples(Vector3 shadowPoint)
+        {
+            return null;
+        }
+
         /// <summary>
         /// The material assigned to this entity.
         /// </summary>
