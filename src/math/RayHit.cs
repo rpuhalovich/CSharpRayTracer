@@ -86,6 +86,16 @@ namespace RayTracer
             }
         }
 
+        public Color Emitted()
+        {
+            return Color.Black();
+        }
+
+        public Vector3 EmittedDir()
+        {
+            return new Vector3(0.0f, 0.0f, 0.0f);
+        }
+
         /// <summary>
         /// Offsets the position (intersection pos) along the set normal.
         /// </summary>

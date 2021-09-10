@@ -98,6 +98,13 @@ namespace RayTracer
             RayHit sourceRh = ClosestHit(r);
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
 
+            // Get emitted color.
+            Color emitted = sourceRh.Emitted();
+            if (sourceRh.Material.Type == Material.MaterialType.Emissive)
+            {
+                emissiveColor = RayColor(new Ray(sourceRh.Position, sourceRh.EmittedDir()).Offset(), depth - 1);
+            }
+
             if (sourceRh.Material.Type == Material.MaterialType.Reflective)
             {
                 reflectColor = RayColor(new Ray(sourceRh.Position, sourceRh.Reflect()).Offset(), depth - 1);

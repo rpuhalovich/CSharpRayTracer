@@ -54,6 +54,11 @@ namespace RayTracer
             return new RayHit(pos, norm, ray.Direction, this.material);
         }
 
+        Color Emitted()
+        {
+            return this.material.Color;
+        }
+
         /// <summary>
         /// The material of the sphere.
         /// </summary>

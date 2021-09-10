@@ -1,23 +1,26 @@
 # Written by Ryan Puhalovich 1064808
-# Made because I wanted comments, variables, arithmetic and functions.
+# Made because I wanted comments, variables and arithmetic.
 # USAGE: Run scripts/final_scene.sh or scripts/final_scene.bat
 
 import random
 
 # Marble Parameters
-NUM_MARBLES = 100
+NUM_MARBLES = 10
 MARBLE_RADIUS = 0.12 # TODO: make random
 
 # Box Parameters
-SIDE_LEN = 8.0
+SIDE_LEN = 8.0 # where it's the length +- this value
 FLOOR_HEIGHT = -1
+LEFT_RIGHT_DIST = 1
 
 # Light Parameters
-LIGHT_INTENSITY = 0.5
+LIGHT_INTENSITY = 0.4
+NUM_EDGE_LIGHTS = 2
 
 def gen():
     f = open("tests/final_scene.txt", "w")
 
+    # COLORS
     f.write('Material "WhiteMat" Diffuse (.9, .85, .9) 1\n')
     f.write('Material "PurpleMat" Diffuse (.9, 0, .9) 1\n')
     f.write('Material "lightGreyMat" Diffuse (.9, .9, .9) 1\n')
@@ -26,21 +29,22 @@ def gen():
     f.write('Material "GreenMat" Diffuse (.5, 1, .5) 1\n')
     f.write('Material "BlueMat" Diffuse (.5, .5, 1) 1\n')
     f.write('Material "LightBlueMat" Diffuse (.8, .8, 1) 1\n')
+
     f.write('Material "GlassMat" Refractive (1, 1, 1) 1.4\n')
     f.write('Material "MirrorMat" Reflective (1, 1, 1) 1\n')
-    f.write('\n')
 
-    f.write('PointLight "Light1" (-1.0, 0.0, 0) (' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ')\n')
-    f.write('PointLight "Light2" (1, 0.0, 0) (' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ')\n')
-    # f.write('PointLight "Light3" (-4.0, 0.0, 10) (0.4, 0.4, 0.4)\n')
-    # f.write('PointLight "Light4" (4, 0.0, 10) (0.4, 0.4, 0.4)\n')
-    f.write('\n')
+    f.write('Material "WhiteEmissive" Emissive (.9, .85, .9) 1\n')
 
-    f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "GreyMat"\n')
+    # BIG MARBLES
+    f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"\n')
     f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
     f.write('Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"\n')
-    f.write('\n')
 
+    f.write('Sphere "BigBoi4" (-3, 0, -1) 1 "WhiteEmissive"\n')
+    f.write('Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"\n')
+    f.write('Sphere "BigBoi6" (3, 0, -1) 1 "MirrorMat"\n')
+
+    # BOX
     sideLenAdj = SIDE_LEN - MARBLE_RADIUS
     f.write('Plane "Floor" (0, -1, 0) (0, 1, 0) "lightGreyMat"\n')
     f.write('Plane "Roof" (0, ' + str(sideLenAdj) + ', 0) (0, -1, 0) "WhiteMat"\n')
@@ -48,8 +52,14 @@ def gen():
     f.write('Plane "BehindWall" (0, 0, -' + str(sideLenAdj) + ') (0, 0, 1) "WhiteMat"\n')
     f.write('Plane "Left" (-' + str(sideLenAdj / 2) + ', 0, 0) (1, 0, 0) "RedMat"\n')
     f.write('Plane "Right" (' + str(sideLenAdj / 2) + ', 0, 0) (-1, 0, 0) "GreenMat"\n')
-    f.write('\n')
 
+    lightIntensityStr = '(' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ')'
+    f.write('PointLight "Light1" (-' + str((sideLenAdj / 2) - 1) + ', 0.01, ' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+    f.write('PointLight "Light2" (' + str((sideLenAdj / 2) - 1) + ', 0.01, ' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+    f.write('PointLight "Light3" (-' + str((sideLenAdj / 2) - 1) + ', 0.01, -' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+    f.write('PointLight "Light4" (' + str((sideLenAdj / 2) - 1) + ', 0.01, -' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+
+    # MARBLES
     marbleHeight = MARBLE_RADIUS + FLOOR_HEIGHT
     for i in range(1, NUM_MARBLES + 1):
         x = random.uniform(-SIDE_LEN, SIDE_LEN)

@@ -26,6 +26,14 @@ namespace RayTracer
         RayHit Intersect(Ray ray);
 
         /// <summary>
+        /// To be overridden by emissive materials.
+        /// </summary>
+        Color Emitted()
+        {
+            return Color.Black();
+        }
+
+        /// <summary>
         /// The material assigned to this entity.
         /// </summary>
         Material Material
