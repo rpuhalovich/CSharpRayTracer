@@ -12,9 +12,9 @@ Material "WhiteEmissive" Emissive (1, 1, 1) 1
 Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"
 Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"
 Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"
-Sphere "BigBoi4" (-3, 0, -1) 1 "WhiteEmissive"
+Sphere "BigBoi4" (3, 0, -1) 1 "WhiteEmissive"
 Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"
-Sphere "BigBoi6" (3, 0, -1) 1 "MirrorMat"
+Sphere "BigBoi6" (-3, 0, -1) 1 "MirrorMat"
 Plane "Floor" (0, -1, 0) (0, 1, 0) "lightGreyMat"
 Plane "Roof" (0, 7.88, 0) (0, -1, 0) "WhiteMat"
 Plane "BackWall" (0, 0, 15.76) (0, 0, -1) "WhiteMat"
@@ -25,13 +25,3 @@ PointLight "Light1" (-2.94, 0.01, 6.88) (0.2, 0.2, 0.2)
 PointLight "Light2" (2.94, 0.01, 6.88) (0.2, 0.2, 0.2)
 PointLight "Light3" (-2.94, 0.01, -6.88) (0.2, 0.2, 0.2)
 PointLight "Light4" (2.94, 0.01, -6.88) (0.2, 0.2, 0.2)
-Sphere "Marble1" (-2.718011831225258, -0.88,-3.558817511983987) 0.12 "MirrorMat"
-Sphere "Marble2" (-4.240691551552098, -0.88,-4.5975789599962305) 0.12 "GlassMat"
-Sphere "Marble3" (-2.0609489880711287, -0.88,5.1925456906791485) 0.12 "WhiteEmissive"
-Sphere "Marble4" (-1.757611012837712, -0.88,7.57924941624621) 0.12 "WhiteEmissive"
-Sphere "Marble5" (-1.7291815050991524, -0.88,-7.9993141364618445) 0.12 "MirrorMat"
-Sphere "Marble6" (5.992543472868801, -0.88,7.9845566186384325) 0.12 "MirrorMat"
-Sphere "Marble7" (-2.9610600716001496, -0.88,2.530084200312187) 0.12 "GlassMat"
-Sphere "Marble8" (2.0760107260443874, -0.88,-3.102267428091487) 0.12 "MirrorMat"
-Sphere "Marble9" (1.6757953633421874, -0.88,-5.034379726391352) 0.12 "MirrorMat"
-Sphere "Marble10" (7.5940693613011785, -0.88,-5.197573053706536) 0.12 "WhiteEmissive"

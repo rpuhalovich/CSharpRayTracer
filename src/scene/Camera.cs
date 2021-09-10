@@ -56,7 +56,7 @@ namespace RayTracer
             this.aaMultiplier = options.AAMultiplier;
             this.numRays = options.AAMultiplier * options.AAMultiplier;
             this.subPixelGrid = new Vector2[aaMultiplier, aaMultiplier];
-            
+
             double increment = 1.0f / (aaMultiplier + 1);
             for (int i = 0; i < aaMultiplier; i++)
                 for (int j = 0; j < aaMultiplier; j++)

@@ -24,7 +24,6 @@ namespace RayTracer
 
         // You may wish to write methods to compute other vectors,
         // e.g. reflection, transmission, etc
-
         public static RayHit MaxRayHit()
         {
             return new RayHit(
@@ -49,9 +48,6 @@ namespace RayTracer
             return (this.incident - 2.0f * this.incident.Dot(this.normal) * this.Normal).Normalized();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public Vector3 Refract(double ir)
         {
             Vector3 n = this.normal, i = this.incident;

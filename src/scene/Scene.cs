@@ -145,7 +145,7 @@ namespace RayTracer
                 {
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
 
-                    int samplenum = 200;
+                    int samplenum = 10;
                     for (int i = 0; i < samplenum; i++)
                     {
                         // Ray to point light hit.

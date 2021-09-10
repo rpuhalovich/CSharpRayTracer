@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RayTracer.src.math
+namespace RayTracer
 {
     class Mat3
     {
@@ -19,7 +19,11 @@ namespace RayTracer.src.math
 
         public static Vector3 operator *(Mat3 x, Vector3 y)
         {
-            return new Vector3(x.x.X * );
+            double u = x.row0.X * y.X + x.row0.Y * y.Y + x.row0.Z * y.Z;
+            double v = x.row1.X * y.X + x.row1.Y * y.Y + x.row1.Z * y.Z;
+            double w = x.row2.X * y.X + x.row2.Y * y.Y + x.row2.Z * y.Z;
+
+            return new Vector3(u, v, w);
         }
 
         public override string ToString()
