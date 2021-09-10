@@ -9,19 +9,17 @@ Material "LightBlueMat" Diffuse (.8, .8, 1) 1
 Material "GlassMat" Refractive (1, 1, 1) 1.4
 Material "MirrorMat" Reflective (1, 1, 1) 1
 Material "WhiteEmissive" Emissive (1, 1, 1) 1
-Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"
-Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"
-Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"
-Sphere "BigBoi4" (3, 0, -1) 1 "WhiteEmissive"
-Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"
-Sphere "BigBoi6" (-3, 0, -1) 1 "MirrorMat"
+Material "RedEmissive" Emissive (1, 0.5, 0.6) 1
+Sphere "TestSphere1" (0, 1, 5) 1 "BlueMat"
+Sphere "TestSphere2" (-3, 0, 7) 1 "WhiteEmissive"
 Plane "Floor" (0, -1, 0) (0, 1, 0) "lightGreyMat"
-Plane "Roof" (0, 7.88, 0) (0, -1, 0) "WhiteMat"
-Plane "BackWall" (0, 0, 15.76) (0, 0, -1) "WhiteMat"
-Plane "BehindWall" (0, 0, -7.88) (0, 0, 1) "WhiteMat"
-Plane "Left" (-3.94, 0, 0) (1, 0, 0) "RedMat"
-Plane "Right" (3.94, 0, 0) (-1, 0, 0) "GreenMat"
-PointLight "Light1" (-2.94, 0.01, 6.88) (0.2, 0.2, 0.2)
-PointLight "Light2" (2.94, 0.01, 6.88) (0.2, 0.2, 0.2)
-PointLight "Light3" (-2.94, 0.01, -6.88) (0.2, 0.2, 0.2)
-PointLight "Light4" (2.94, 0.01, -6.88) (0.2, 0.2, 0.2)
+Plane "Roof" (0, 8.0, 0) (0, -1, 0) "WhiteMat"
+Plane "BackWall" (0, 0, 16.0) (0, 0, -1) "WhiteMat"
+Plane "BehindWall" (0, 0, -8.0) (0, 0, 1) "WhiteMat"
+Triangle "LeftA" (-4.0, -1, -16.0)(-4.0, 8.0, -8.0)(-4.0, 8.0, -16.0) "RedEmissive"
+Triangle "LeftB" (-4.0, -1, -8.0)(-4.0, 8.0, -8.0)(-4.0, -1, -16.0)  "RedEmissive"
+Plane "Right" (4.0, 0, 0) (-1, 0, 0) "GreenMat"
+PointLight "Light1" (-2.94, 0.01, 6.88) (0, 0, 0)
+PointLight "Light2" (2.94, 0.01, 6.88) (0, 0, 0)
+PointLight "Light3" (-2.94, 0.01, -6.88) (0, 0, 0)
+PointLight "Light4" (2.94, 0.01, -6.88) (0, 0, 0)

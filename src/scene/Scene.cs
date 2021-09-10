@@ -17,6 +17,7 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 10;
+        private const int SHADE_SAMPLES = 50;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -145,24 +146,25 @@ namespace RayTracer
                 {
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
 
-                    int samplenum = 10;
-                    for (int i = 0; i < samplenum; i++)
+                    for (int i = 0; i < SHADE_SAMPLES; i++)
                     {
                         // Ray to point light hit.
-                        Vector3 lightDir = Vector3.RandomNormSphere();
+                        Vector3 lightDir = Vector3.RandomHemisphere(sourceRh.Normal);
                         Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
                         RayHit shadowRh = ClosestHit(shadowRay);
 
                         // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                         if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
 
-                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) * (1.0f / samplenum);
+                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) * (1.0f / SHADE_SAMPLES) * 3.0f;
                     }
                 }
             }
 
             return emissiveColor + diffuseColor + reflectColor + refractColor;
         }
+
+
 
         /// <summary>
         /// Finds the nearest hit point to the ray origin.

@@ -74,11 +74,11 @@ namespace RayTracer
         /// entity. The rays are encapsulated inside a cone.
         /// Code adapted from: https://stackoverflow.com/questions/20923232/how-to-rotate-a-vector-by-a-given-direction
         /// </summary>
-        public Ray[] ConeSamples(Ray shadowRay)
+        public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
         {
             double sideLen = 0.0f; // TODO: this is smelly.
             Vector3 centerPos = CenterPos(ref sideLen);
-            Vector3 centerRayDir = (centerPos - shadowRay.Origin).Normalized();
+            Vector3 centerRayDir = (centerPos - shadowRh.Position).Normalized();
 
             Mat3 transform = new Mat3(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f));
 
@@ -100,7 +100,6 @@ namespace RayTracer
                 transform = new Mat3(newX, newY, newZ);
             }
 
-            int rayMultiplier = 4;
             Vector2[,] dirGrid = new Vector2[rayMultiplier, rayMultiplier];
             double increment = 1.0f / (rayMultiplier + 1);
             for (int i = 0; i < rayMultiplier; i++)
@@ -115,7 +114,7 @@ namespace RayTracer
                 double z = 1.0f;
                 Vector3 initVector = new Vector3(x, y, z);
 
-                rays.Add(new Ray(shadowRay.Origin, transform * initVector));
+                rays.Add(new Ray(shadowRh.Position, transform * initVector));
             }
             return rays.ToArray();
         }

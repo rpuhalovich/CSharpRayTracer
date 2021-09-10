@@ -26,6 +26,8 @@ namespace RayTracer
             return new Vector3(u, v, w);
         }
 
+        //public 
+
         public override string ToString()
         {
             return "(" + this.row0 + "," + this.row1 + "," + this.row2 + ")";

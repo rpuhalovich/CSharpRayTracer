@@ -199,6 +199,21 @@ namespace RayTracer
             }
         }
 
+
+        /// <summary>
+        /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html
+        /// </summary>
+        public static Vector3 RandomHemisphere(Vector3 norm)
+        {
+            while (true)
+            {
+                Vector3 p = Random(-1.0f, 1.0f);
+                if (p.LengthSq() >= 1.0f) continue;
+                if (norm.Dot(p) < 0.0f) continue;
+                return p.Normalized();
+            }
+        }
+
         public static Vector3 Offset(Vector3 pos, Vector3 dir)
         {
             return pos + (OFFSET * dir);

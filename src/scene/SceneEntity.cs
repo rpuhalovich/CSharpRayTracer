@@ -33,7 +33,7 @@ namespace RayTracer
             return Color.Black();
         }
 
-        Ray[] ConeSamples(Vector3 shadowPoint)
+        public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
         {
             return null;
         }
