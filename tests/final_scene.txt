@@ -10,14 +10,14 @@ Material "GlassMat" Refractive (1, 1, 1) 1.4
 Material "MirrorMat" Reflective (1, 1, 1) 1
 Material "WhiteEmissive" Emissive (1, 1, 1) 1
 Material "RedEmissive" Emissive (1, 0.5, 0.6) 1
-Sphere "TestSphere1" (0, 1, 5) 1 "BlueMat"
-Sphere "TestSphere2" (-3, 0, 7) 1 "WhiteEmissive"
+Sphere "TestSphere1" (0, 1, 5) 1 "WhiteEmissive"
+Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"
 Plane "Floor" (0, -1, 0) (0, 1, 0) "lightGreyMat"
 Plane "Roof" (0, 8.0, 0) (0, -1, 0) "WhiteMat"
 Plane "BackWall" (0, 0, 16.0) (0, 0, -1) "WhiteMat"
 Plane "BehindWall" (0, 0, -8.0) (0, 0, 1) "WhiteMat"
-Triangle "LeftA" (-4.0, -1, -16.0)(-4.0, 8.0, -8.0)(-4.0, 8.0, -16.0) "RedEmissive"
-Triangle "LeftB" (-4.0, -1, -8.0)(-4.0, 8.0, -8.0)(-4.0, -1, -16.0)  "RedEmissive"
+Triangle "LeftA" (-4.0, -1, -8.0)(-4.0, 8.0, -8.0)(-4.0, 8.0, -8.0) "RedEmissive"
+Triangle "LeftB" (-4.0, -1, -8.0)(-4.0, 8.0, -8.0)(-4.0, -1, -8.0)  "RedEmissive"
 Plane "Right" (4.0, 0, 0) (-1, 0, 0) "GreenMat"
 PointLight "Light1" (-2.94, 0.01, 6.88) (0, 0, 0)
 PointLight "Light2" (2.94, 0.01, 6.88) (0, 0, 0)

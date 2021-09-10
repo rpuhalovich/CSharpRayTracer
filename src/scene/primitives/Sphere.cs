@@ -55,60 +55,43 @@ namespace RayTracer
             return new RayHit(pos, norm, ray.Direction, this.material);
         }
 
-        public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
+        //public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
+        //{
+        //    double sideLen = this.radius * 2.0f;
+        //    Vector3 centerPos = this.center;
+        //    Vector3 centerRayDir = (centerPos - shadowRh.Position).Normalized();
+        //}
+        public void ShadowRayDir(RayHit srh, ref double angle, ref double radius)
         {
-            double sideLen = this.radius * 2.0f;
-            Vector3 centerPos = this.center;
-            Vector3 centerRayDir = (centerPos - shadowRh.Position).Normalized();
+            radius = this.radius;
 
-            Mat3 transform = new Mat3(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f));
-
-            if (centerRayDir.X.Equals(0.0f) && centerRayDir.Z.Equals(0.0f))
+            Vector3 toLight = (this.center - srh.Position).Normalized();
+            Vector3 perpL = toLight.Cross(new Vector3(0.0f, 1.0f, 0.0f));
+            if (perpL.Equals(new Vector3(0.0f, 0.0f, 0.0f)))
             {
-                if (centerRayDir.Y < 0.0f)
-                {
-                    Vector3 row0 = new Vector3(-1.0f, 0.0f, 0.0f);
-                    Vector3 row1 = new Vector3(0.0f, -1.0f, 0.0f);
-                    Vector3 row2 = new Vector3(0.0f, 0.0f, 1.0f);
-                    transform = new Mat3(row0, row1, row2);
-                }
-            }
-            else
-            {
-                Vector3 newY = centerRayDir.Normalized();
-                Vector3 newZ = newY.Cross(new Vector3(0.0f, 1.0f, 0.0f)).Normalized();
-                Vector3 newX = newY.Cross(newZ).Normalized();
-                transform = new Mat3(newX, newY, newZ);
+                perpL = new Vector3(1.0f, 0.0f, 0.0f);
             }
 
-            Vector2[,] dirGrid = new Vector2[rayMultiplier, rayMultiplier];
-            double increment = 1.0f / (rayMultiplier + 1);
-            for (int i = 0; i < rayMultiplier; i++)
-                for (int j = 0; j < rayMultiplier; j++)
-                    dirGrid[i, j] = new Vector2(increment * (1 + i), increment * (1 + j));
-
-            List<Ray> rays = new List<Ray>();
-            foreach (Vector2 offset in dirGrid)
-            {
-                double x = offset.X / sideLen * 2;
-                double y = offset.Y / sideLen * 2;
-                double z = 1.0f;
-
-                double x_adj = (x * 2.0f) - sideLen;
-                double y_adj = sideLen - (y * 2.0f);
-
-                Vector3 initVector = new Vector3(x, y, z);
-
-                rays.Add(new Ray(shadowRh.Position, initVector));
-            }
-            return rays.ToArray();
+            Vector3 toLightEdge = ((this.center + perpL * this.radius) - srh.Position).Normalized();
+            angle = Math.Acos(toLight.Dot(toLightEdge)) * 2.0f;
         }
 
+        //float3 toLight = normalize(light.position - worldPosition);
+        //// Calculate a vector perpendicular to L
+        //float3 perpL = cross(toLight, float3(0.f, 1.0f, 0.f));
+        //// Handle case where L = up -> perpL should then be (1,0,0)
+        //if (all(perpL == 0.0f)) {
+        //  perpL.x = 1.0;
+        //}
+        //// Use perpL to get a vector from worldPosition to the edge of the light sphere
+        //float3 toLightEdge = normalize((light.position + perpL * light.radius) - worldPosition);
+        //// Angle between L and toLightEdge. Used as the cone angle when sampling shadow rays
+        //float coneAngle = acos(dot(toLight, toLightEdge)) * 2.0f;
 
-        /// <summary>
-        /// The material of the sphere.
-        /// </summary>
-        public Material Material
+    /// <summary>
+    /// The material of the sphere.
+    /// </summary>
+    public Material Material
         {
             get
             {

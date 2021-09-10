@@ -17,7 +17,7 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 10;
-        private const int SHADE_SAMPLES = 50;
+        private const int SHADE_SAMPLES = 100;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -156,7 +156,8 @@ namespace RayTracer
                         // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                         if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
 
-                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) * (1.0f / SHADE_SAMPLES) * 3.0f;
+                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color);
+                        // break; // Once a hit is detected, move to next emissive material.
                     }
                 }
             }

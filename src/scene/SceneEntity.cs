@@ -38,6 +38,8 @@ namespace RayTracer
             return null;
         }
 
+        public void ShadowRayDir(RayHit srh, ref double angle, ref double radius);
+
         /// <summary>
         /// The material assigned to this entity.
         /// </summary>

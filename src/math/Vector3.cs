@@ -203,13 +203,13 @@ namespace RayTracer
         /// <summary>
         /// From: https://raytracing.github.io/books/RayTracingInOneWeekend.html
         /// </summary>
-        public static Vector3 RandomHemisphere(Vector3 norm)
+        public static Vector3 RandomHemisphere(Vector3 norm, double angle=0.0f)
         {
             while (true)
             {
                 Vector3 p = Random(-1.0f, 1.0f);
                 if (p.LengthSq() >= 1.0f) continue;
-                if (norm.Dot(p) < 0.0f) continue;
+                if (norm.Dot(p) < angle) continue;
                 return p.Normalized();
             }
         }

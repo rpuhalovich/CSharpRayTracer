@@ -74,50 +74,12 @@ namespace RayTracer
         /// entity. The rays are encapsulated inside a cone.
         /// Code adapted from: https://stackoverflow.com/questions/20923232/how-to-rotate-a-vector-by-a-given-direction
         /// </summary>
-        public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
-        {
-            double sideLen = 0.0f; // TODO: this is smelly.
-            Vector3 centerPos = CenterPos(ref sideLen);
-            Vector3 centerRayDir = (centerPos - shadowRh.Position).Normalized();
-
-            Mat3 transform = new Mat3(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f));
-
-            if (centerRayDir.X.Equals(0.0f) && centerRayDir.Z.Equals(0.0f))
-            {
-                if (centerRayDir.Y < 0.0f)
-                {
-                    Vector3 row0 = new Vector3(-1.0f, 0.0f, 0.0f);
-                    Vector3 row1 = new Vector3(0.0f, -1.0f, 0.0f);
-                    Vector3 row2 = new Vector3(0.0f, 0.0f, 1.0f);
-                    transform = new Mat3(row0, row1, row2);
-                }
-            }
-            else
-            {
-                Vector3 newY = centerRayDir.Normalized();
-                Vector3 newZ = newY.Cross(new Vector3(0.0f, 1.0f, 0.0f)).Normalized();
-                Vector3 newX = newY.Cross(newZ).Normalized();
-                transform = new Mat3(newX, newY, newZ);
-            }
-
-            Vector2[,] dirGrid = new Vector2[rayMultiplier, rayMultiplier];
-            double increment = 1.0f / (rayMultiplier + 1);
-            for (int i = 0; i < rayMultiplier; i++)
-                for (int j = 0; j < rayMultiplier; j++)
-                    dirGrid[i, j] = new Vector2(increment * (1 + i), increment * (1 + j));
-
-            List<Ray> rays = new List<Ray>();
-            foreach (Vector2 offset in dirGrid)
-            {
-                double x = offset.X / sideLen;
-                double y = offset.Y / sideLen;
-                double z = 1.0f;
-                Vector3 initVector = new Vector3(x, y, z);
-
-                rays.Add(new Ray(shadowRh.Position, transform * initVector));
-            }
-            return rays.ToArray();
-        }
+        //public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
+        //{
+        //    double sideLen = 0.0f; // TODO: this is smelly.
+        //    Vector3 centerPos = CenterPos(ref sideLen);
+        //    Vector3 centerRayDir = (centerPos - shadowRh.Position).Normalized();
+        //}
 
         /// <summary>
         /// Returns center of the longest edge.

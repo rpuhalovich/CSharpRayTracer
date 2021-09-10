@@ -37,8 +37,8 @@ def gen():
     f.write('Material "RedEmissive" Emissive (1, 0.5, 0.6) 1\n')
 
     # BIG MARBLES
-    f.write('Sphere "TestSphere1" (0, 1, 5) 1 "BlueMat"\n')
-    f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "WhiteEmissive"\n')
+    f.write('Sphere "TestSphere1" (0, 1, 5) 1 "WhiteEmissive"\n')
+    f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
 
     #f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"\n')
     #f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
@@ -53,13 +53,13 @@ def gen():
     f.write('Plane "BackWall" (0, 0, ' + str(SIDE_LEN * 2) + ') (0, 0, -1) "WhiteMat"\n')
     f.write('Plane "BehindWall" (0, 0, -' + str(SIDE_LEN) + ') (0, 0, 1) "WhiteMat"\n')
 
-    leftA0 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN * 2) + ')'
+    leftA0 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN) + ')'
     leftA1 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
-    leftA2 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN * 2) + ')'
+    leftA2 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
 
     leftB0 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN) + ')'
     leftB1 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
-    leftB2 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN * 2) + ')'
+    leftB2 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN) + ')'
 
     f.write('Triangle "LeftA" ' + leftA0 + leftA1 + leftA2 + ' "RedEmissive"\n')
     f.write('Triangle "LeftB" ' + leftB0 + leftB1 + leftB2 + '  "RedEmissive"\n')
