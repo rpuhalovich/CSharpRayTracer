@@ -37,6 +37,11 @@ namespace RayTracer
             this.refractiveIndex = refractiveIndex;
         }
 
+        public static Material Default()
+        {
+            return new Material(MaterialType.Diffuse, Color.Black());
+        }
+
         /// <summary>
         /// The type of the material.
         /// </summary>

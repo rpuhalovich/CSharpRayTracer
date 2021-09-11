@@ -17,8 +17,8 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 5;
-        private const int SHADE_SAMPLES = 5;
-        private const int NUM_DOF_RAYS = 4;
+        private const int SHADE_SAMPLES = 0;
+        private const int NUM_DOF_RAYS = 10;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -168,7 +168,7 @@ namespace RayTracer
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
                     for (int i = 0; i < SHADE_SAMPLES; i++)
                     {
-                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh), sourceRh.Position - e.GetCenter());
+                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh), (e.GetCenter() - sourceRh.Position).Normalized());
                         Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
                         RayHit shadowRh = ClosestHit(shadowRay);
 
@@ -206,13 +206,14 @@ namespace RayTracer
                 foreach (SceneEntity e in entities)
                 {
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
+
                     for (int i = 0; i < SHADE_SAMPLES; i++)
                     {
-                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh), sourceRh.Position - e.GetCenter());
+                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh), (e.GetCenter() - sourceRh.Position).Normalized());
+
                         Ray shadowRay = new Ray(sourceRh.Position, lightDir.Normalized()).Offset();
                         RayHit shadowRh = ClosestHit(shadowRay);
 
-                        if (shadowRh == null) continue;
                         // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                         if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
                         diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) / SHADE_SAMPLES;
