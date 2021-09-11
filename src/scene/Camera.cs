@@ -78,7 +78,7 @@ namespace RayTracer
             {
                 double x = (double)(this.Pind.X + offset.X) / this.OutputImage.Width;
                 double y = (double)(this.Pind.Y + offset.Y) / this.OutputImage.Height;
-                double z = this.FocalLength;
+                double z = 1.0f;
 
                 double x_adj = (x * 2.0f) - 1.0f;
                 double y_adj = 1.0f - (y * 2.0f);
@@ -89,9 +89,17 @@ namespace RayTracer
                 Ray tempRay = new Ray(this.Origin, new Vector3(x_adj, y_adj, z).Normalized());
 
                 // Distance of 1.0f to have any objects in the view frustrum cut.
-                rays.Add(tempRay.At(1.0f));
+                // rays.Add(tempRay.At(1.0f));
+                rays.Add(tempRay);
             }
             return rays.ToArray();
+        }
+
+        public Ray CalcAperatureColorRay(Ray r)
+        {
+            Vector3 focalPoint = r.At(focalLength).Origin;
+            Vector3 rd = apertureRadius * Vector3.RandomInUnitDisk();
+            return new Ray(rd, (focalPoint - rd).Normalized());
         }
 
         public void WriteColor(Color c)
