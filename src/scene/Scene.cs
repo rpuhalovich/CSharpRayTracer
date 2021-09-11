@@ -70,6 +70,8 @@ namespace RayTracer
             this.cam = new Camera(options, outputImage, FOV);
 
             for (int i = 0; i < outputImage.Width; i++)
+            {
+                if (DEBUG) Console.WriteLine("Scanlines remaining: " + (outputImage.Width - i));
                 for (int j = 0; j < outputImage.Height; j++)
                 {
                     cam.Pind = new PixelIndex(i, j);
@@ -81,6 +83,7 @@ namespace RayTracer
                     }
                     cam.WriteColor(pixelColor);
                 }
+            }
 
             if (DEBUG)
             {

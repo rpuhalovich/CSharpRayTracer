@@ -31,12 +31,12 @@ Tip: To tick, place an x between the square brackes [ ], like so: [x]
 - [x] Stage 2.2 - Shadow rays
 - [x] Stage 2.3 - Reflective materials
 - [x] Stage 2.4 - Refractive materials
-- [ ] Stage 2.5 - The Fresnel effect
+- [x] Stage 2.5 - The Fresnel effect
 - [x] Stage 2.6 - Anti-aliasing
 
 ##### Stage 3
 
-- [ ] Option A - Emissive materials (+6)
+- [x] Option A - Emissive materials (+6)
 - [ ] Option B - Ambient lighting/occlusion (+6)
 - [ ] Option C - OBJ models (+6)
 - [ ] Option D - Glossy materials (+3)
@@ -45,6 +45,13 @@ Tip: To tick, place an x between the square brackes [ ], like so: [x]
 - [ ] Option G - Depth of field (+3)
 
 _Please summarise your approach(es) to stage 3 here._
+
+My approach to emissive materials was to have a very similar approach to point lights. However for every point that is
+tested in shadows, a set number of rays is fired randomly from the hemisphere of the normal of the hit point. The number
+of ray hits on the emissive material is a function of how bright that point is.
+
+This method is very inefficient, hence the long render time. However a working implementation of a cone around the triangle
+or sphere to which to fire rays from wasn't able to be achieved.
 
 ## Final scene render
 
@@ -57,8 +64,14 @@ This render took **x** minutes and **y** seconds on my PC.
 I used the following command to render the image exactly as shown:
 
 ```
-dotnet run -- (... your command line args)
+dotnet run -- -f tests/final_scene.txt -o images/final_scene.png -w 2000 -h 2000 -x 8
 ```
+
+### A small extra
+
+In order to efficiently distribute the 'Marble' spheres around my scene, I had written a simple Python script
+(`tests/final_scene.py`) that generates the `tests/final_scene.txt` file. This also had the benifit of allowing for
+comments, variables and arithmatic.
 
 ## Sample outputs
 
