@@ -79,7 +79,11 @@ namespace RayTracer
                     Color pixelColor = Color.Black();
                     foreach (Ray r in cam.CalcPixelRays())
                     {
-                        pixelColor += RayColor(r, MAX_DEPTH);
+                        // pixelColor += RayColor(r, MAX_DEPTH);
+                        for (int k = 0; k < 50; k++)
+                        {
+                            pixelColor += RayColor(cam.CalcAperatureColorRay(r), MAX_DEPTH) / 50;
+                        }
                     }
                     cam.WriteColor(pixelColor);
                 }

@@ -214,6 +214,17 @@ namespace RayTracer
             }
         }
 
+        public static Vector3 RandomInUnitDisk()
+        {
+            while (true)
+            {
+                double min = -1.0f, max = 1.0f;
+                Vector3 p = new Vector3(MyMath.NextDoubleMinMax(min, max), MyMath.NextDoubleMinMax(min, max), 0.0f);
+                if (p.LengthSq() >= 1.0f) continue;
+                return p;
+            }
+        }
+
         public static Vector3 Offset(Vector3 pos, Vector3 dir)
         {
             return pos + (OFFSET * dir);

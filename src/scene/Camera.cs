@@ -44,6 +44,8 @@ namespace RayTracer
         private double cameraAngle;
 
         private readonly double apertureRadius, focalLength;
+        double focusDistance;
+        private Vector3 u, v, w;
 
         /// <param name="fov">Entered in degrees.</param>
         public Camera(SceneOptions options, Image outputImage, double fov)
@@ -92,6 +94,17 @@ namespace RayTracer
                 rays.Add(tempRay.At(1.0f));
             }
             return rays.ToArray();
+        }
+
+        public Ray CalcAperatureColorRay(Ray r)
+        {
+            Vector3 focalPoint = r.At(focalLength).Origin;
+            Vector3 rd = apertureRadius * Vector3.RandomInUnitDisk();
+            rd = new Vector3(rd.X, rd.Y, focalLength);
+
+            Ray aperatureRay = new Ray(rd, (focalPoint - rd).Normalized());
+
+            return aperatureRay;
         }
 
         public void WriteColor(Color c)

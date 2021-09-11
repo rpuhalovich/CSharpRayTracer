@@ -5,7 +5,7 @@
 import random
 
 # Marble Parameters
-NUM_MARBLES = 100
+NUM_MARBLES = 0
 MARBLE_RADIUS = 0.12 # TODO: make random
 
 # Box Parameters
@@ -14,7 +14,7 @@ FLOOR_HEIGHT = -1
 LEFT_RIGHT_DIST = 1
 
 # Light Parameters
-LIGHT_INTENSITY = 0
+LIGHT_INTENSITY = 0.2
 NUM_EDGE_LIGHTS = 2
 
 def gen():
@@ -40,10 +40,10 @@ def gen():
     # f.write('Sphere "TestSphere1" (0, 1, 5) 1 "WhiteMat"\n')
     # f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
 
-    f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"\n')
+    f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteMat"\n')
     f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
     f.write('Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"\n')
-    f.write('Sphere "BigBoi4" (3, 0, -1) 1 "WhiteEmissive"\n')
+    f.write('Sphere "BigBoi4" (3, 0, -1) 1 "WhiteMat"\n')
     f.write('Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"\n')
     f.write('Sphere "BigBoi6" (-3, 0, -1) 1 "MirrorMat"\n')
 
@@ -56,8 +56,8 @@ def gen():
     roofB1 = '(' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', ' + str(SIDE_LEN * 2) + ')'
     roofB2 = '(' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
 
-    f.write('Triangle "RoofA" ' + roofA0 + roofA1 + roofA2 + ' "WhiteEmissive"\n')
-    f.write('Triangle "RoofB" ' + roofB0 + roofB1 + roofB2 + '  "WhiteEmissive"\n')
+    f.write('Triangle "RoofA" ' + roofA0 + roofA1 + roofA2 + ' "WhiteMat"\n')
+    f.write('Triangle "RoofB" ' + roofB0 + roofB1 + roofB2 + '  "WhiteMat"\n')
     # f.write('Plane "Roof" (0, ' + str(SIDE_LEN) + ', 0) (0, -1, 0) "WhiteMat"\n')
 
     f.write('Plane "Floor" (0, -1, 0) (0, 1, 0) "lightGreyMat"\n')
@@ -68,10 +68,10 @@ def gen():
 
     sideLenAdj = SIDE_LEN - MARBLE_RADIUS
     lightIntensityStr = '(' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ')'
-    # f.write('PointLight "Light1" (-' + str((sideLenAdj / 2) - 1) + ', 0.01, ' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
-    # f.write('PointLight "Light2" (' + str((sideLenAdj / 2) - 1) + ', 0.01, ' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
-    # f.write('PointLight "Light3" (-' + str((sideLenAdj / 2) - 1) + ', 0.01, -' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
-    # f.write('PointLight "Light4" (' + str((sideLenAdj / 2) - 1) + ', 0.01, -' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+    f.write('PointLight "Light1" (-' + str((sideLenAdj / 2) - 1) + ', 0.01, ' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+    f.write('PointLight "Light2" (' + str((sideLenAdj / 2) - 1) + ', 0.01, ' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+    f.write('PointLight "Light3" (-' + str((sideLenAdj / 2) - 1) + ', 0.01, -' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
+    f.write('PointLight "Light4" (' + str((sideLenAdj / 2) - 1) + ', 0.01, -' + str(sideLenAdj - 1) + ') ' + lightIntensityStr + '\n')
 
     # MARBLES
     marbleHeight = MARBLE_RADIUS + FLOOR_HEIGHT
