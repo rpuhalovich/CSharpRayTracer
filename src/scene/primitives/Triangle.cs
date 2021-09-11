@@ -11,6 +11,8 @@ namespace RayTracer
         private Vector3 v0, v1, v2;
         private Material material;
 
+        private double longestLen;
+
         /// <summary>
         /// Construct a triangle object given three vertices.
         /// </summary>
@@ -69,17 +71,20 @@ namespace RayTracer
             return new RayHit(P, norm, ray.Direction, this.material);
         }
 
-        /// <summary>
-        /// Generates ray array of points from the shadowpoint (world point) to this
-        /// entity. The rays are encapsulated inside a cone.
-        /// Code adapted from: https://stackoverflow.com/questions/20923232/how-to-rotate-a-vector-by-a-given-direction
-        /// </summary>
-        //public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
-        //{
-        //    double sideLen = 0.0f; // TODO: this is smelly.
-        //    Vector3 centerPos = CenterPos(ref sideLen);
-        //    Vector3 centerRayDir = (centerPos - shadowRh.Position).Normalized();
-        //}
+        public double ShadowRayAngle(RayHit srh)
+        {
+            Vector3 center = GetCenter();
+            Vector3 toLight = (center - srh.Position).Normalized();
+            Vector3 perpL = toLight.Cross(new Vector3(0.0f, 1.0f, 0.0f));
+            if (perpL.Equals(new Vector3(0.0f, 0.0f, 0.0f)))
+            {
+                perpL = new Vector3(1.0f, 0.0f, 0.0f);
+            }
+
+            Vector3 toLightEdge = ((center + perpL * longestLen * 0.5f) - srh.Position).Normalized();
+            // return Math.Acos(toLight.Dot(toLightEdge)) * 2.0f; // Angle
+            return toLight.Dot(toLightEdge);
+        }
 
         /// <summary>
         /// Returns center of the longest edge.
@@ -89,19 +94,19 @@ namespace RayTracer
             double l0 = (v0 - v1).Length();
             double l1 = (v0 - v2).Length();
             double l2 = (v1 - v2).Length();
-            double max = Math.Max(l0, Math.Max(l1, l2));
+            longestLen = Math.Max(l0, Math.Max(l1, l2));
 
-            if (MyMath.DoubleEquals(l0, max))
+            if (MyMath.DoubleEquals(l0, longestLen))
             {
                 return (v0 + v1) / 2.0f;
             }
 
-            if (MyMath.DoubleEquals(l1, max))
+            if (MyMath.DoubleEquals(l1, longestLen))
             {
                 return (v0 + v2) / 2.0f;
             }
 
-            if (MyMath.DoubleEquals(l2, max))
+            if (MyMath.DoubleEquals(l2, longestLen))
             {
                 return (v1 + v2) / 2.0f;
             }

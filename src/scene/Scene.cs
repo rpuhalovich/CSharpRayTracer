@@ -16,8 +16,8 @@ namespace RayTracer
         private MyLogger logger = new MyLogger();
 
         private const double FOV = 60.0f;
-        private const int MAX_DEPTH = 10;
-        private const int SHADE_SAMPLES = 5;
+        private const int MAX_DEPTH = 5;
+        private const int SHADE_SAMPLES = 10;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -149,7 +149,7 @@ namespace RayTracer
 
                     for (int i = 0; i < SHADE_SAMPLES; i++)
                     {
-                        Vector3 lightDir = Vector3.RandomHemisphere(sourceRh.Normal, shadowRayAngle);
+                        Vector3 lightDir = Vector3.RandomHemisphere(sourceRh.Normal);
                         Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
                         RayHit shadowRh = ClosestHit(shadowRay);
 
