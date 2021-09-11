@@ -81,8 +81,7 @@ namespace RayTracer
                 perpL = new Vector3(1.0f, 0.0f, 0.0f);
             }
 
-            Vector3 toLightEdge = ((center + perpL * longestLen * 0.5f) - srh.Position).Normalized();
-            // return Math.Acos(toLight.Dot(toLightEdge)) * 2.0f; // Angle
+            Vector3 toLightEdge = ((center + perpL * longestLen / 2.0f) - srh.Position).Normalized();
             return toLight.Dot(toLightEdge);
         }
 

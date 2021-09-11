@@ -17,8 +17,8 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 5;
-        private const int SHADE_SAMPLES = 7;
-        private const int NUM_DOF_RAYS = 10;
+        private const int SHADE_SAMPLES = 5;
+        private const int NUM_DOF_RAYS = 4;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -172,7 +172,6 @@ namespace RayTracer
                         Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
                         RayHit shadowRh = ClosestHit(shadowRay);
 
-                        //if (shadowRh == null) Debugger.Break();
                         if (shadowRh == null) continue;
                         if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
 
@@ -209,8 +208,7 @@ namespace RayTracer
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
                     for (int i = 0; i < SHADE_SAMPLES; i++)
                     {
-                        //Console.WriteLine(e.ShadowRayAngle(sourceRh));
-                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh) / 2.0f, (e.GetCenter() - sourceRh.Position).Normalized());
+                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh), sourceRh.Position - e.GetCenter());
                         Ray shadowRay = new Ray(sourceRh.Position, lightDir.Normalized()).Offset();
                         RayHit shadowRh = ClosestHit(shadowRay);
 
