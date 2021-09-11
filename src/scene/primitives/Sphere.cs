@@ -67,7 +67,8 @@ namespace RayTracer
             }
 
             Vector3 toLightEdge = ((this.center + perpL * this.radius) - srh.Position).Normalized();
-            return Math.Acos(toLight.Dot(toLightEdge)) * 2.0f; // Angle
+            // return Math.Acos(toLight.Dot(toLightEdge)) * 2.0f; // Angle
+            return toLight.Dot(toLightEdge);
         }
 
         public Vector3 GetCenter()

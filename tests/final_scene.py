@@ -38,7 +38,7 @@ def gen():
 
     # BIG MARBLES
     f.write('Sphere "TestSphere1" (0, 1, 5) 1 "WhiteEmissive"\n')
-    # f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
+    f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
 
     # f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"\n')
     # f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
@@ -61,8 +61,8 @@ def gen():
     leftB1 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', ' + str(SIDE_LEN) + ')'
     leftB2 = '(-' + str(SIDE_LEN / 2) + ', -1, ' + str(SIDE_LEN) + ')'
 
-    #f.write('Triangle "LeftA" ' + leftA0 + leftA1 + leftA2 + ' "RedEmissive"\n')
-    #f.write('Triangle "LeftB" ' + leftB0 + leftB1 + leftB2 + '  "RedEmissive"\n')
+    # f.write('Triangle "LeftA" ' + leftA0 + leftA1 + leftA2 + ' "RedEmissive"\n')
+    # f.write('Triangle "LeftB" ' + leftB0 + leftB1 + leftB2 + '  "RedEmissive"\n')
     f.write('Plane "Left" (-' + str(SIDE_LEN / 2) + ', 0, 0) (1, 0, 0) "RedMat"\n')
 
     f.write('Plane "Right" (' + str(SIDE_LEN / 2) + ', 0, 0) (-1, 0, 0) "GreenMat"\n')

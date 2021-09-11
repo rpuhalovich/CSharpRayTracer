@@ -17,7 +17,7 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 10;
-        private const int SHADE_SAMPLES = 10;
+        private const int SHADE_SAMPLES = 5;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -102,7 +102,6 @@ namespace RayTracer
             // Get emitted color.
             if (sourceRh.Material.Type == Material.MaterialType.Emissive)
             {
-                //emissiveColor = RayColor(new Ray(sourceRh.Position, sourceRh.EmittedDir()).Offset(), depth - 1);
                 emissiveColor = sourceRh.Emitted();
             }
 
@@ -146,8 +145,6 @@ namespace RayTracer
                 {
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
 
-                    Vector3 lightCenterDir = (e.GetCenter() - sourceRh.Position).Normalized();
-                    Ray centerShadowRay = new Ray(sourceRh.Position, lightCenterDir);
                     double shadowRayAngle = e.ShadowRayAngle(sourceRh);
 
                     for (int i = 0; i < SHADE_SAMPLES; i++)
@@ -184,26 +181,6 @@ namespace RayTracer
             }
             if (closest.Equals(RayHit.MaxRayHit())) return null;
             return closest;
-        }
-
-        /// <summary>
-        /// To return the angle for a more efficient distribution of shadow rays.
-        /// </summary>
-        private ShadowRay ClosestShadowRayHit(Ray r)
-        {
-            ShadowRay shr = new ShadowRay(RayHit.MaxRayHit(), new Ray(Vector3.MaxValue(), Vector3.MaxValue()), 0.0f);
-            foreach (SceneEntity e in entities)
-            {
-                RayHit rh = e.Intersect(r);
-                if (rh != null && rh.Position.LengthWith(r.Origin) < shr.Rh.Position.LengthWith(r.Origin))
-                {
-                    shr.Rh = rh;
-                    shr.ConeAngle = e.ShadowRayAngle(shr.Rh);
-                    shr.Shr = new Ray(rh.Position, e.GetCenter());
-                }
-            }
-            if (shr.Rh.Equals(RayHit.MaxRayHit())) return null;
-            return shr;
         }
     }
 }
