@@ -14,7 +14,7 @@ FLOOR_HEIGHT = -1
 LEFT_RIGHT_DIST = 1
 
 # Light Parameters
-LIGHT_INTENSITY = 0
+LIGHT_INTENSITY = 0.01
 NUM_EDGE_LIGHTS = 2
 
 def gen():
@@ -38,14 +38,14 @@ def gen():
 
     # BIG MARBLES
     f.write('Sphere "TestSphere1" (0, 1, 5) 1 "WhiteEmissive"\n')
-    f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
+    # f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
 
-    #f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"\n')
-    #f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
-    #f.write('Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"\n')
-    #f.write('Sphere "BigBoi4" (3, 0, -1) 1 "WhiteMat"\n')
-    #f.write('Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"\n')
-    #f.write('Sphere "BigBoi6" (-3, 0, -1) 1 "MirrorMat"\n')
+    # f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteEmissive"\n')
+    # f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
+    # f.write('Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"\n')
+    # f.write('Sphere "BigBoi4" (3, 0, -1) 1 "WhiteMat"\n')
+    # f.write('Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"\n')
+    # f.write('Sphere "BigBoi6" (-3, 0, -1) 1 "MirrorMat"\n')
 
     # BOX
     f.write('Plane "Floor" (0, -1, 0) (0, 1, 0) "lightGreyMat"\n')
@@ -55,15 +55,15 @@ def gen():
 
     leftA0 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN) + ')'
     leftA1 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
-    leftA2 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
+    leftA2 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', ' + str(SIDE_LEN) + ')'
 
     leftB0 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN) + ')'
-    leftB1 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
-    leftB2 = '(-' + str(SIDE_LEN / 2) + ', -1, -' + str(SIDE_LEN) + ')'
+    leftB1 = '(-' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', ' + str(SIDE_LEN) + ')'
+    leftB2 = '(-' + str(SIDE_LEN / 2) + ', -1, ' + str(SIDE_LEN) + ')'
 
-    f.write('Triangle "LeftA" ' + leftA0 + leftA1 + leftA2 + ' "RedEmissive"\n')
-    f.write('Triangle "LeftB" ' + leftB0 + leftB1 + leftB2 + '  "RedEmissive"\n')
-    #f.write('Plane "Left" (-' + str(sideLenAdj / 2) + ', 0, 0) (1, 0, 0) "RedMat"\n')
+    #f.write('Triangle "LeftA" ' + leftA0 + leftA1 + leftA2 + ' "RedEmissive"\n')
+    #f.write('Triangle "LeftB" ' + leftB0 + leftB1 + leftB2 + '  "RedEmissive"\n')
+    f.write('Plane "Left" (-' + str(SIDE_LEN / 2) + ', 0, 0) (1, 0, 0) "RedMat"\n')
 
     f.write('Plane "Right" (' + str(SIDE_LEN / 2) + ', 0, 0) (-1, 0, 0) "GreenMat"\n')
 
@@ -81,7 +81,7 @@ def gen():
         z = random.uniform(-SIDE_LEN, SIDE_LEN)
 
         mattype = ""
-        mat = random.randint(0, 1)
+        mat = random.randint(0, 2)
         if mat == 0:
             mattype = "MirrorMat"
         elif mat == 1:

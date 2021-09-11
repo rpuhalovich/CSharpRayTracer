@@ -55,15 +55,9 @@ namespace RayTracer
             return new RayHit(pos, norm, ray.Direction, this.material);
         }
 
-        //public Ray[] ShadowSamples(RayHit shadowRh, int rayMultiplier)
-        //{
-        //    double sideLen = this.radius * 2.0f;
-        //    Vector3 centerPos = this.center;
-        //    Vector3 centerRayDir = (centerPos - shadowRh.Position).Normalized();
-        //}
-        public void ShadowRayDir(RayHit srh, ref double angle, ref double radius)
+        public double ShadowRayAngle(RayHit srh)
         {
-            radius = this.radius;
+            //radius = this.radius;
 
             Vector3 toLight = (this.center - srh.Position).Normalized();
             Vector3 perpL = toLight.Cross(new Vector3(0.0f, 1.0f, 0.0f));
@@ -73,31 +67,24 @@ namespace RayTracer
             }
 
             Vector3 toLightEdge = ((this.center + perpL * this.radius) - srh.Position).Normalized();
-            angle = Math.Acos(toLight.Dot(toLightEdge)) * 2.0f;
+            return Math.Acos(toLight.Dot(toLightEdge)) * 2.0f; // Angle
         }
 
-        //float3 toLight = normalize(light.position - worldPosition);
-        //// Calculate a vector perpendicular to L
-        //float3 perpL = cross(toLight, float3(0.f, 1.0f, 0.f));
-        //// Handle case where L = up -> perpL should then be (1,0,0)
-        //if (all(perpL == 0.0f)) {
-        //  perpL.x = 1.0;
-        //}
-        //// Use perpL to get a vector from worldPosition to the edge of the light sphere
-        //float3 toLightEdge = normalize((light.position + perpL * light.radius) - worldPosition);
-        //// Angle between L and toLightEdge. Used as the cone angle when sampling shadow rays
-        //float coneAngle = acos(dot(toLight, toLightEdge)) * 2.0f;
-
-    /// <summary>
-    /// The material of the sphere.
-    /// </summary>
-    public Material Material
+        public Vector3 GetCenter()
         {
-            get
+            return this.center;
+        }
+
+        /// <summary>
+        /// The material of the sphere.
+        /// </summary>
+        public Material Material
             {
-                return this.material;
+                get
+                {
+                    return this.material;
+                }
             }
         }
-    }
 
 }

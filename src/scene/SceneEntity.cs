@@ -38,7 +38,15 @@ namespace RayTracer
             return null;
         }
 
-        public void ShadowRayDir(RayHit srh, ref double angle, ref double radius);
+        public double ShadowRayAngle(RayHit srh)
+        {
+            return 0.0f;
+        }
+
+        public Vector3 GetCenter()
+        {
+            return Vector3.MaxValue();
+        }
 
         /// <summary>
         /// The material assigned to this entity.

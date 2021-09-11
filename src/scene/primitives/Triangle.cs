@@ -84,7 +84,7 @@ namespace RayTracer
         /// <summary>
         /// Returns center of the longest edge.
         /// </summary>
-        private Vector3 CenterPos(ref double radius)
+        private Vector3 GetCenter()
         {
             double l0 = (v0 - v1).Length();
             double l1 = (v0 - v2).Length();
@@ -93,23 +93,20 @@ namespace RayTracer
 
             if (MyMath.DoubleEquals(l0, max))
             {
-                radius = l0;
                 return (v0 + v1) / 2.0f;
             }
 
             if (MyMath.DoubleEquals(l1, max))
             {
-                radius = l1;
                 return (v0 + v2) / 2.0f;
             }
 
             if (MyMath.DoubleEquals(l2, max))
             {
-                radius = l2;
                 return (v1 + v2) / 2.0f;
             }
 
-            return new Vector3(0.0f, 0.0f, 0.0f);
+            return Vector3.MaxValue();
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 10;
-        private const int SHADE_SAMPLES = 100;
+        private const int SHADE_SAMPLES = 10;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -146,26 +146,26 @@ namespace RayTracer
                 {
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
 
+                    Vector3 lightCenterDir = (e.GetCenter() - sourceRh.Position).Normalized();
+                    Ray centerShadowRay = new Ray(sourceRh.Position, lightCenterDir);
+                    double shadowRayAngle = e.ShadowRayAngle(sourceRh);
+
                     for (int i = 0; i < SHADE_SAMPLES; i++)
                     {
-                        // Ray to point light hit.
-                        Vector3 lightDir = Vector3.RandomHemisphere(sourceRh.Normal);
+                        Vector3 lightDir = Vector3.RandomHemisphere(sourceRh.Normal, shadowRayAngle);
                         Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
                         RayHit shadowRh = ClosestHit(shadowRay);
 
                         // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                         if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
 
-                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color);
-                        // break; // Once a hit is detected, move to next emissive material.
+                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) / SHADE_SAMPLES;
                     }
                 }
             }
 
             return emissiveColor + diffuseColor + reflectColor + refractColor;
         }
-
-
 
         /// <summary>
         /// Finds the nearest hit point to the ray origin.
@@ -184,6 +184,26 @@ namespace RayTracer
             }
             if (closest.Equals(RayHit.MaxRayHit())) return null;
             return closest;
+        }
+
+        /// <summary>
+        /// To return the angle for a more efficient distribution of shadow rays.
+        /// </summary>
+        private ShadowRay ClosestShadowRayHit(Ray r)
+        {
+            ShadowRay shr = new ShadowRay(RayHit.MaxRayHit(), new Ray(Vector3.MaxValue(), Vector3.MaxValue()), 0.0f);
+            foreach (SceneEntity e in entities)
+            {
+                RayHit rh = e.Intersect(r);
+                if (rh != null && rh.Position.LengthWith(r.Origin) < shr.Rh.Position.LengthWith(r.Origin))
+                {
+                    shr.Rh = rh;
+                    shr.ConeAngle = e.ShadowRayAngle(shr.Rh);
+                    shr.Shr = new Ray(rh.Position, e.GetCenter());
+                }
+            }
+            if (shr.Rh.Equals(RayHit.MaxRayHit())) return null;
+            return shr;
         }
     }
 }

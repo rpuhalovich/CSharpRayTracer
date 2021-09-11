@@ -22,16 +22,9 @@ namespace RayTracer
             this.material = material;
         }
 
-        // You may wish to write methods to compute other vectors,
-        // e.g. reflection, transmission, etc
         public static RayHit MaxRayHit()
         {
-            return new RayHit(
-                new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
-                new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
-                new Vector3(Double.MaxValue, Double.MaxValue, Double.MaxValue),
-                null
-            );
+            return new RayHit(Vector3.MaxValue(), Vector3.MaxValue(), Vector3.MaxValue(), null);
         }
 
         public override string ToString()
