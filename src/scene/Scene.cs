@@ -16,9 +16,9 @@ namespace RayTracer
         private MyLogger logger = new MyLogger();
 
         private const double FOV = 60.0f;
-        private const int MAX_DEPTH = 5;
-        private const int SHADE_SAMPLES = 0;
-        private const int NUM_DOF_RAYS = 10;
+        private const int MAX_DEPTH = 4;
+        private const int SHADE_SAMPLES = 10;
+        private const int NUM_DOF_RAYS = 50;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;

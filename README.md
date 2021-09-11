@@ -36,22 +36,21 @@ Tip: To tick, place an x between the square brackes [ ], like so: [x]
 
 ##### Stage 3
 
-- [x] Option A - Emissive materials (+6)
+- [ ] Option A - Emissive materials (+6)
 - [ ] Option B - Ambient lighting/occlusion (+6)
 - [ ] Option C - OBJ models (+6)
-- [ ] Option D - Glossy materials (+3)
+- [x] Option D - Glossy materials (+3)
 - [ ] Option E - Custom camera orientation (+3)
 - [ ] Option F - Beer's law (+3)
-- [ ] Option G - Depth of field (+3)
+- [x] Option G - Depth of field (+3)
 
 _Please summarise your approach(es) to stage 3 here._
 
-My approach to emissive materials was to have a very similar approach to point lights. However for every point that is
-tested in shadows, a set number of rays is fired randomly from the hemisphere of the normal of the hit point. The number
-of ray hits on the emissive material is a function of how bright that point is.
+Depth of field was calculated by utilising a disk that was of radius `options.AperatureRadius`. A random point on this disk would be calculated and a ray would then be fired from it, through a point that corresponds to a pixel direction, at the length of the focalLength. Doing a number of these samples will give us a depth of field effect.
 
-This method is very inefficient, hence the long render time. However a working implementation of a cone around the triangle
-or sphere to which to fire rays from wasn't able to be achieved.
+My particular approach to glossy materials was to have it such that 85% of the colour information coming from a regular diffuse calculation. The other 15% would be to have a reflection where the reflected ray is rotated by a small amount to give the surface a very slight blur. In my opinion, this gives a more convincing 'glossy' look to say, a single specular highlight, however I've implemented that too. In the `/images/final_image.png` submission, the red sphere in the centre, as well as the floor plane are both glossy.
+
+My approach to emissive materials was to have a very similar approach to point lights. However for every point that is tested in shadows, a set number of rays fired in a random cone (currently set to 10), whos circle radius is the same length as the sphere or longest edge of the triangle, from the shadowPoint to to the emissive entity. Unfortunately, I was not able to debug the issue where triangles would not emit light, thus I omitted it from my marking choice. Spheres are functioning, and can be seen in the `/images/final_image.png` as well as `images/final_scene_ineffcient_emissive` shows an extremely inefficient yet working implementation.
 
 ## Final scene render
 
@@ -64,14 +63,12 @@ This render took **x** minutes and **y** seconds on my PC.
 I used the following command to render the image exactly as shown:
 
 ```
-dotnet run -- -f tests/final_scene.txt -o images/final_scene.png -w 2000 -h 2000 -x 8
+dotnet run -- -f tests/final_scene.txt -o images/final_scene.png -w 1000 -h 1000 --aperture-radius 0.1 --focal-length 7.5
 ```
 
 ### A small extra
 
-In order to efficiently distribute the 'Marble' spheres around my scene, I had written a simple Python script
-(`tests/final_scene.py`) that generates the `tests/final_scene.txt` file. This also had the benifit of allowing for
-comments, variables and arithmatic.
+In order to efficiently distribute the 'Marble' spheres around my scene, I had written a simple Python script (`tests/final_scene.py`) that generates the `tests final_scene.txt` file with the randomly placed marbles. This also had the benefit of allowing for comments, variables and arithmatic.
 
 ## Sample outputs
 
@@ -136,3 +133,9 @@ Refraction Paper: https://graphics.stanford.edu/courses/cs148-10-summer/docs/200
 Ray-tracing soft shadows in real-time: https://medium.com/@alexander.wester/ray-tracing-soft-shadows-in-real-time-a53b836d123b
 
 Ray tracing - soft shadow: https://stackoverflow.com/questions/31709332/ray-tracing-soft-shadow
+
+References for depth of field implementation in a raytracer?: https://stackoverflow.com/questions/13532947/references-for-depth-of-field-implementation-in-a-raytracer
+
+Rotating a Vector in 3D Space: https://stackoverflow.com/questions/14607640/rotating-a-vector-in-3d-space
+
+Ray-tracing soft shadows in real-time: https://medium.com/@alexander.wester/ray-tracing-soft-shadows-in-real-time-a53b836d123b
