@@ -17,8 +17,8 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 5;
-        private const int SHADE_SAMPLES = 4;
-        private const int NUM_DOF_RAYS = 4;
+        private const int SHADE_SAMPLES = 7;
+        private const int NUM_DOF_RAYS = 50;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -109,7 +109,7 @@ namespace RayTracer
         /// </summary>
         private Color RayColor(Ray r, int depth)
         {
-            Color diffuseColor = Color.Black(), reflectColor = Color.Black(), refractColor = Color.Black(), emissiveColor = Color.Black();
+            Color diffuseColor = Color.Black(), reflectColor = Color.Black(), refractColor = Color.Black(), emissiveColor = Color.Black(), glossyColor = Color.Black();
 
             RayHit sourceRh = ClosestHit(r);
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
@@ -140,6 +140,50 @@ namespace RayTracer
                 refractColor += reflectHitColor * kr + refractHitColor * (1.0f - kr);
             }
 
+            if (sourceRh.Material.Type == Material.MaterialType.Glossy)
+            {
+                Color diffColor = Color.Black(), specColor = Color.Black();
+                double n = 7.0f; // Where this is the exponent of a specular refleciton.
+                double Kd = 0.8f; // phong model diffuse weight
+                double Ks = 0.3f; // phong model specular weight
+
+                foreach (PointLight pl in lights)
+                {
+                    Vector3 lightDir = (pl.Position - sourceRh.Position).Normalized();
+                    Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
+                    RayHit shadowRh = ClosestHit(shadowRay);
+                    if (shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)) continue;
+
+                    // Diffuse component.
+                    diffColor += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
+
+                    // Spec component.
+                    Vector3 reflection = shadowRh.Reflect();
+                    specColor += pl.Color * Math.Pow(Math.Max(0.0f, reflection.Dot(-shadowRh.Incident)), n);
+                }
+
+                foreach (SceneEntity e in entities)
+                {
+                    if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
+                    for (int i = 0; i < SHADE_SAMPLES; i++)
+                    {
+                        Vector3 lightDir = Vector3.RandomHemisphere(sourceRh.Normal);
+                        Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
+                        RayHit shadowRh = ClosestHit(shadowRay);
+                        if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
+
+                        // Diffuse component.
+                        diffColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) / SHADE_SAMPLES;
+
+                        // Spec component.
+                        Vector3 reflection = shadowRh.Reflect();
+                        specColor += e.Material.Color * Math.Pow(Math.Max(0.0f, reflection.Dot(-shadowRh.Incident)), n) / SHADE_SAMPLES;
+                    }
+                }
+
+                glossyColor = (diffColor * Kd + specColor * Ks) * 0.85f + RayColor(new Ray(sourceRh.Position, sourceRh.RandomishReflect()).Offset(), depth - 1) * 0.15f;
+            }
+
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
             {
                 foreach (PointLight pl in lights)
@@ -158,9 +202,6 @@ namespace RayTracer
                 foreach (SceneEntity e in entities)
                 {
                     if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
-
-                    double shadowRayAngle = e.ShadowRayAngle(sourceRh);
-
                     for (int i = 0; i < SHADE_SAMPLES; i++)
                     {
                         Vector3 lightDir = Vector3.RandomHemisphere(sourceRh.Normal);
@@ -175,7 +216,7 @@ namespace RayTracer
                 }
             }
 
-            return emissiveColor + diffuseColor + reflectColor + refractColor;
+            return emissiveColor + diffuseColor + reflectColor + refractColor + glossyColor;
         }
 
         /// <summary>

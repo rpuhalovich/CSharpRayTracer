@@ -26,7 +26,45 @@ namespace RayTracer
             return new Vector3(u, v, w);
         }
 
-        //public 
+        // angle in radians.
+        public static Vector3 RotateZ(double angle, Vector3 vec)
+        {
+            return new Vector3(
+                vec.X * Math.Cos(angle) - vec.Y * Math.Sin(angle),
+                vec.X * Math.Sin(angle) + vec.Y * Math.Cos(angle),
+                vec.Z
+                );
+        }
+
+        public static Vector3 RotateY(double angle, Vector3 vec)
+        {
+            return new Vector3(
+                vec.X * Math.Cos(angle) + vec.Z * Math.Sin(angle),
+                vec.Y,
+                -1.0f * vec.X * Math.Sin(angle) + vec.Z * Math.Cos(angle)
+                );
+        }
+
+        public static Vector3 RotateX(double angle, Vector3 vec)
+        {
+            return new Vector3(
+                vec.X,
+                vec.Y * Math.Cos(angle) - vec.Z * Math.Sin(angle),
+                vec.Y * Math.Sin(angle) + vec.Z * Math.Cos(angle)
+                );
+        }
+
+        // where rotateamt is in radians
+        public static Vector3 RandomRotate(double rotateAmt, Vector3 vec)
+        {
+            double amt = MyMath.NextDoubleMinMax(-rotateAmt, rotateAmt);
+            vec = RotateZ(amt, vec);
+            amt = MyMath.NextDoubleMinMax(-rotateAmt, rotateAmt);
+            vec = RotateY(amt, vec);
+            amt = MyMath.NextDoubleMinMax(-rotateAmt, rotateAmt);
+            vec = RotateX(amt, vec);
+            return vec;
+        }
 
         public override string ToString()
         {

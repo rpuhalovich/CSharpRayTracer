@@ -41,6 +41,12 @@ namespace RayTracer
             return (this.incident - 2.0f * this.incident.Dot(this.normal) * this.Normal).Normalized();
         }
 
+        public Vector3 RandomishReflect()
+        {
+            Vector3 reflected = Reflect();
+            return Mat3.RandomRotate(0.1f, reflected);
+        }
+
         public Vector3 Refract(double ir)
         {
             Vector3 n = this.normal, i = this.incident;
