@@ -214,7 +214,7 @@ namespace RayTracer
             }
         }
 
-        public static Vector3 RandomInUnitDisk()
+        public static Vector3 RandomInUnitDisk(double focalDistance=0.0f)
         {
             while (true)
             {

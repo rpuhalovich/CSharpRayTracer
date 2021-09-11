@@ -10,14 +10,14 @@ Material "GlassMat" Refractive (1, 1, 1) 1.4
 Material "MirrorMat" Reflective (1, 1, 1) 1
 Material "WhiteEmissive" Emissive (1, 1, 1) 1
 Material "RedEmissive" Emissive (1, 0.5, 0.6) 1
-Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteMat"
-Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"
+Sphere "BigBoi1" (-1.5, 0, 10) 1 "GlassMat"
+Sphere "BigBoi2" (0, 0, 7.5) 1 "BlueMat"
 Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"
 Sphere "BigBoi4" (3, 0, -1) 1 "WhiteMat"
 Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"
 Sphere "BigBoi6" (-3, 0, -1) 1 "MirrorMat"
-Triangle "RoofA" (-4.0, 8.0, -8.0)(-4.0, 8.0, 16.0)(4.0, 8.0, 16.0) "WhiteMat"
-Triangle "RoofB" (-4.0, 8.0, -8.0)(4.0, 8.0, 16.0)(4.0, 8.0, -8.0)  "WhiteMat"
+Triangle "RoofA" (-4.0, 8.0, -8.0)(-4.0, 8.0, 16.0)(4.0, 8.0, 16.0) "WhiteEmissive"
+Triangle "RoofB" (-4.0, 8.0, -8.0)(4.0, 8.0, 16.0)(4.0, 8.0, -8.0)  "WhiteEmissive"
 Plane "Floor" (0, -1, 0) (0, 1, 0) "lightGreyMat"
 Plane "BackWall" (0, 0, 16.0) (0, 0, -1) "WhiteMat"
 Plane "BehindWall" (0, 0, -8.0) (0, 0, 1) "WhiteMat"

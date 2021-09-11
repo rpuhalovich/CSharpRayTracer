@@ -40,8 +40,8 @@ def gen():
     # f.write('Sphere "TestSphere1" (0, 1, 5) 1 "WhiteMat"\n')
     # f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
 
-    f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "WhiteMat"\n')
-    f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "GlassMat"\n')
+    f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "GlassMat"\n')
+    f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "BlueMat"\n')
     f.write('Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"\n')
     f.write('Sphere "BigBoi4" (3, 0, -1) 1 "WhiteMat"\n')
     f.write('Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"\n')

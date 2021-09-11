@@ -57,8 +57,6 @@ namespace RayTracer
 
         public double ShadowRayAngle(RayHit srh)
         {
-            //radius = this.radius;
-
             Vector3 toLight = (this.center - srh.Position).Normalized();
             Vector3 perpL = toLight.Cross(new Vector3(0.0f, 1.0f, 0.0f));
             if (perpL.Equals(new Vector3(0.0f, 0.0f, 0.0f)))
@@ -67,7 +65,6 @@ namespace RayTracer
             }
 
             Vector3 toLightEdge = ((this.center + perpL * this.radius) - srh.Position).Normalized();
-            // return Math.Acos(toLight.Dot(toLightEdge)) * 2.0f; // Angle
             return toLight.Dot(toLightEdge);
         }
 

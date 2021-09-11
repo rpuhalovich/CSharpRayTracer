@@ -17,7 +17,8 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 5;
-        private const int SHADE_SAMPLES = 10;
+        private const int SHADE_SAMPLES = 4;
+        private const int NUM_DOF_RAYS = 4;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
@@ -79,10 +80,17 @@ namespace RayTracer
                     Color pixelColor = Color.Black();
                     foreach (Ray r in cam.CalcPixelRays())
                     {
-                        // pixelColor += RayColor(r, MAX_DEPTH);
-                        for (int k = 0; k < 50; k++)
+                        if (options.ApertureRadius > 0.0f)
                         {
-                            pixelColor += RayColor(cam.CalcAperatureColorRay(r), MAX_DEPTH) / 50;
+                            for (int k = 0; k < NUM_DOF_RAYS; k++)
+                            {
+                                Ray adj = cam.CalcAperatureColorRay(r).At(1.0f);
+                                pixelColor += RayColor(adj, MAX_DEPTH) / NUM_DOF_RAYS;
+                            }
+                        }
+                        else
+                        {
+                            pixelColor += RayColor(r.At(1.0f), MAX_DEPTH);
                         }
                     }
                     cam.WriteColor(pixelColor);
@@ -106,7 +114,6 @@ namespace RayTracer
             RayHit sourceRh = ClosestHit(r);
             if (depth <= 0 || sourceRh == null) return Color.Black(); // If nothing is hit, you're off to the abyss so return bg.
 
-            // Get emitted color.
             if (sourceRh.Material.Type == Material.MaterialType.Emissive)
             {
                 emissiveColor = sourceRh.Emitted();
