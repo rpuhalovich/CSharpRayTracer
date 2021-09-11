@@ -14,7 +14,7 @@ FLOOR_HEIGHT = -1
 LEFT_RIGHT_DIST = 1
 
 # Light Parameters
-LIGHT_INTENSITY = 0.2
+LIGHT_INTENSITY = 0
 NUM_EDGE_LIGHTS = 2
 
 def gen():
@@ -37,6 +37,8 @@ def gen():
     f.write('Material "RedEmissive" Emissive (1, 0.5, 0.6) 1\n')
 
     f.write('Material "BlueGlossy" Glossy (.5, .5, 1) 1\n')
+    f.write('Material "GreenGlossy" Glossy (.5, 1, .5) 1\n')
+    f.write('Material "RedGlossy" Glossy (1, .5, .5) 1\n')
     f.write('Material "LightGreyGlossy" Glossy (.9, .9, .9) 1\n')
 
     # BIG MARBLES
@@ -44,7 +46,7 @@ def gen():
     # f.write('Sphere "TestSphere2" (-3, 0, 7) 1 "BlueMat"\n')
 
     f.write('Sphere "BigBoi1" (-1.5, 0, 10) 1 "GlassMat"\n')
-    f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "BlueGlossy"\n')
+    f.write('Sphere "BigBoi2" (0, 0, 7.5) 1 "WhiteEmissive"\n')
     f.write('Sphere "BigBoi3" (1.25, 0, 5) 1 "MirrorMat"\n')
     f.write('Sphere "BigBoi4" (3, 0, -1) 1 "WhiteMat"\n')
     f.write('Sphere "BigBoi5" (0, 0, -1) 1 "GlassMat"\n')
@@ -59,8 +61,8 @@ def gen():
     roofB1 = '(' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', ' + str(SIDE_LEN * 2) + ')'
     roofB2 = '(' + str(SIDE_LEN / 2) + ', ' + str(SIDE_LEN) + ', -' + str(SIDE_LEN) + ')'
 
-    f.write('Triangle "RoofA" ' + roofA0 + roofA1 + roofA2 + ' "WhiteMat"\n')
-    f.write('Triangle "RoofB" ' + roofB0 + roofB1 + roofB2 + ' "WhiteMat"\n')
+    f.write('Triangle "RoofA" ' + roofA0 + roofA1 + roofA2 + ' "WhiteEmissive"\n')
+    f.write('Triangle "RoofB" ' + roofB0 + roofB1 + roofB2 + ' "WhiteEmissive"\n')
     # f.write('Plane "Roof" (0, ' + str(SIDE_LEN) + ', 0) (0, -1, 0) "WhiteMat"\n')
 
     f.write('Plane "Floor" (0, -1, 0) (0, 1, 0) "LightGreyMat"\n')
