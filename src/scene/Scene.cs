@@ -17,7 +17,6 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 4;
-        private const int SHADE_SAMPLES = 10;
         private const int NUM_DOF_RAYS = 50;
 
         private SceneOptions options;
@@ -163,27 +162,6 @@ namespace RayTracer
                     specColor += pl.Color * Math.Pow(Math.Max(0.0f, reflection.Dot(-shadowRh.Incident)), n);
                 }
 
-                foreach (SceneEntity e in entities)
-                {
-                    if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
-                    for (int i = 0; i < SHADE_SAMPLES; i++)
-                    {
-                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh), (e.GetCenter() - sourceRh.Position).Normalized());
-                        Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
-                        RayHit shadowRh = ClosestHit(shadowRay);
-
-                        if (shadowRh == null) continue;
-                        if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
-
-                        // Diffuse component.
-                        diffColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) / SHADE_SAMPLES;
-
-                        // Spec component.
-                        Vector3 reflection = shadowRh.Reflect();
-                        specColor += e.Material.Color * Math.Pow(Math.Max(0.0f, reflection.Dot(-shadowRh.Incident)), n) / SHADE_SAMPLES;
-                    }
-                }
-
                 glossyColor = (diffColor * Kd + specColor * Ks) * 0.85f + RayColor(new Ray(sourceRh.Position, sourceRh.RandomishReflect()).Offset(), depth - 1) * 0.15f;
             }
 
@@ -201,23 +179,6 @@ namespace RayTracer
                     if (shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)) continue;
 
                     diffuseColor += sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * pl.Color;
-                }
-
-                foreach (SceneEntity e in entities)
-                {
-                    if (!(e.Material.Type == Material.MaterialType.Emissive)) continue;
-
-                    for (int i = 0; i < SHADE_SAMPLES; i++)
-                    {
-                        Vector3 lightDir = Mat3.RandomRotate(e.ShadowRayAngle(sourceRh), (e.GetCenter() - sourceRh.Position).Normalized());
-
-                        Ray shadowRay = new Ray(sourceRh.Position, lightDir.Normalized()).Offset();
-                        RayHit shadowRh = ClosestHit(shadowRay);
-
-                        // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
-                        if (shadowRh != null && shadowRh.Material.Type != Material.MaterialType.Emissive) continue;
-                        diffuseColor += (sourceRh.Normal.Normalized().Dot(lightDir) * sourceRh.Material.Color * e.Material.Color) / SHADE_SAMPLES;
-                    }
                 }
             }
 

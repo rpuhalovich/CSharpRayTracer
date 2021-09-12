@@ -50,7 +50,9 @@ Depth of field was calculated by utilising a disk that was of radius `options.Ap
 
 My particular approach to glossy materials was to have it such that 85% of the colour information coming from a regular diffuse calculation. The other 15% would be to have a reflection where the reflected ray is rotated by a small amount to give the surface a very slight blur. In my opinion, this gives a more convincing 'glossy' look to say, a single specular highlight, however I've implemented that too. In the `/images/final_image.png` submission, the red sphere in the centre, as well as the floor plane are both glossy.
 
-My approach to emissive materials was to have a very similar approach to point lights. However for every point that is tested in shadows, a set number of rays fired in a random cone (currently set to 10), whos circle radius is the same length as the sphere or longest edge of the triangle, from the shadowPoint to to the emissive entity. Unfortunately, I was not able to debug the issue where triangles would not emit light, thus I omitted it from my marking choice. Spheres are functioning, and can be seen in the `/images/final_image.png` as well as `images/final_scene_ineffcient_emissive` shows an extremely inefficient yet working implementation.
+_Below is an explanation to my attempt at emissive materials which could not be debugged in time. A solution that works for spheres can be found on the `emissive` branch._
+
+My approach to emissive materials was to have a very similar approach to point lights. However for every point that is tested in shadows, a set number of rays fired in a random cone (currently set to 10), whos circle radius is the same length as the sphere or longest edge of the triangle, from the shadowPoint to to the emissive entity. Unfortunately, I was not able to debug the issue where triangles would not emit light, thus I omitted it from my marking choice. Spheres are functioning, and can be seen in the `images/sphere_emissive.png`. `images/naive_emissive.png` shows an extremely inefficient yet fully functional implementation.
 
 ## Final scene render
 
@@ -58,7 +60,7 @@ Be sure to replace `/images/final_scene.png` with your final render so it shows 
 
 ![My final render](/images/final_scene.png)
 
-This render took **x** minutes and **y** seconds on my PC.
+This render took **88** minutes and **51** seconds on my PC.
 
 I used the following command to render the image exactly as shown:
 
