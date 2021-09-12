@@ -2,7 +2,7 @@
   "profiles": {
     "RayTracer": {
       "commandName": "Project",
-      "commandLineArgs": "dotnet run -- -f tests/final_scene.txt -o images/final_scene.png -w 200 -h 200",
+      "commandLineArgs": "-f tests/sample_scene_1.txt -o images/my_images/my_sample_scene_1.png",
       "workingDirectory": "C:\\dev\\project-1-ray-tracer-rpuhalovich"
     }
   }

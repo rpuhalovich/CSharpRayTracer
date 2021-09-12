@@ -142,7 +142,7 @@ namespace RayTracer
             if (sourceRh.Material.Type == Material.MaterialType.Glossy)
             {
                 Color diffColor = Color.Black(), specColor = Color.Black();
-                double n = 7.0f; // Where this is the exponent of a specular refleciton.
+                double n = 30.0f; // Where this is the exponent of a specular refleciton.
                 double Kd = 0.8f; // phong model diffuse weight
                 double Ks = 0.3f; // phong model specular weight
 
@@ -167,6 +167,7 @@ namespace RayTracer
 
             if (sourceRh.Material.Type == Material.MaterialType.Diffuse)
             {
+                if (cam.PixelIndexDebug(170, 170)) Debugger.Break();
                 foreach (PointLight pl in lights)
                 {
                     // Ray to point light hit.
@@ -174,7 +175,7 @@ namespace RayTracer
                     Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
                     RayHit shadowRh = ClosestHit(shadowRay);
 
-                    if (shadowRh == null) continue;
+                    //if (shadowRh == null) continue;
                     // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                     if (shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)) continue;
 
