@@ -72,7 +72,7 @@ dotnet run -- -f tests/final_scene.txt -o images/final_scene.png -w 1000 -h 1000
 
 ### A small extra
 
-In order to efficiently distribute the 'Marble' spheres around my scene, I had written a simple Python script (`tests/final_scene.py`) that generates the `tests final_scene.txt` file with the randomly placed marbles. This also had the benefit of allowing for comments, variables and arithmatic.
+In order to efficiently distribute the 'Marble' spheres around my scene, I had written a simple Python script (`tests/final_scene.py`) that generates the `tests/final_scene.txt` file with the randomly placed marbles. This also had the benefit of allowing for comments, variables and arithmatic.
 
 ## Sample outputs
 
