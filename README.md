@@ -54,6 +54,8 @@ _Below is an explanation to my attempt at emissive materials which could not be 
 
 My approach to emissive materials was to have a very similar approach to point lights. However for every point that is tested in shadows, a set number of rays fired in a random cone (currently set to 10), whos circle radius is the same length as the sphere or longest edge of the triangle, from the shadowPoint to to the emissive entity. Unfortunately, I was not able to debug the issue where triangles would not emit light, thus I omitted it from my marking choice. Spheres are functioning, and can be seen in the `images/sphere_emissive.png`. `images/naive_emissive.png` shows an extremely inefficient yet fully functional implementation.
 
+Note that I still process ray hits with emissive materials such that no shadow is cast, as can be seen in the sphere on the left in `/images/final_image.png`. I just think it looks quite cool, with the glossy ground giving the illusion of emission.
+
 ## Final scene render
 
 Be sure to replace `/images/final_scene.png` with your final render so it shows up here:
