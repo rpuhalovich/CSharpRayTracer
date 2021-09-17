@@ -5,7 +5,7 @@
 import random
 
 # Marble Parameters
-NUM_MARBLES = 100
+NUM_MARBLES = 0
 MARBLE_RADIUS = 0.12 # TODO: make random
 
 # Box Parameters
@@ -13,7 +13,7 @@ SIDE_LEN = 8.0 # where it's the length +- this value
 FLOOR_HEIGHT = -1
 
 # Light Parameters
-LIGHT_INTENSITY = 0.15
+LIGHT_INTENSITY = 0
 NUM_EDGE_LIGHTS = 2
 
 def gen():
@@ -69,6 +69,8 @@ def gen():
     f.write('Plane "BehindWall" (0, 0, -' + str(SIDE_LEN) + ') (0, 0, 1) "WhiteMat"\n')
     f.write('Plane "Left" (-' + str(SIDE_LEN / 2) + ', 0, 0) (1, 0, 0) "RedMat"\n')
     f.write('Plane "Right" (' + str(SIDE_LEN / 2) + ', 0, 0) (-1, 0, 0) "GreenMat"\n')
+
+    # f.write('Triangle "RightTri" (-3.9, 0, 8.0) (-3.9, 0, 0) (-3.9, 8, 0) "WhiteEmissive"\n')
 
     sideLenAdj = SIDE_LEN - MARBLE_RADIUS
     lightIntensityStr = '(' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ', ' + str(LIGHT_INTENSITY) + ')'

@@ -11,8 +11,6 @@ namespace RayTracer
         private Vector3 v0, v1, v2;
         private Material material;
 
-        private double longestLen;
-
         /// <summary>
         /// Construct a triangle object given three vertices.
         /// </summary>
@@ -81,39 +79,28 @@ namespace RayTracer
                 perpL = new Vector3(1.0f, 0.0f, 0.0f);
             }
 
-            Vector3 toLightEdge = ((center + perpL * longestLen) - srh.Position).Normalized();
-
-            double returnstuff = toLight.Dot(toLightEdge);
-
-            return returnstuff;
+            Vector3 toLightEdge = ((center + perpL * GetRadius()) - srh.Position).Normalized();
+            return toLight.Dot(toLightEdge);
         }
 
         /// <summary>
         /// Returns center of the longest edge.
         /// </summary>
-        private Vector3 GetCenter()
+        public Vector3 GetCenter()
         {
-            double l0 = (v0 - v1).Length();
-            double l1 = (v0 - v2).Length();
-            double l2 = (v1 - v2).Length();
-            longestLen = Math.Max(l0, Math.Max(l1, l2));
+            double x = this.v0.X + this.v1.X + this.v2.X;
+            double y = this.v0.Y + this.v1.Y + this.v2.Y;
+            double z = this.v0.Z + this.v1.Z + this.v2.Z;
+            return new Vector3(x, y, z) / 3.0f;
+        }
 
-            if (MyMath.DoubleEquals(l0, longestLen))
-            {
-                return (v0 + v1) / 2.0f;
-            }
-
-            if (MyMath.DoubleEquals(l1, longestLen))
-            {
-                return (v0 + v2) / 2.0f;
-            }
-
-            if (MyMath.DoubleEquals(l2, longestLen))
-            {
-                return (v1 + v2) / 2.0f;
-            }
-
-            return Vector3.MaxValue();
+        public double GetRadius()
+        {
+            Vector3 center = GetCenter();
+            double r0 = (v0 - center).Length();
+            double r1 = (v1 - center).Length();
+            double r2 = (v2 - center).Length();
+            return Math.Max(Math.Max(r0, r1), r2);
         }
 
         /// <summary>
