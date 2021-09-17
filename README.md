@@ -48,7 +48,7 @@ _Please summarise your approach(es) to stage 3 here._
 
 Depth of field was calculated by utilising a disk that was of radius `options.AperatureRadius`. A random point on this disk would be calculated and a ray would then be fired from it, through a point that corresponds to a pixel direction, at the length of the focalLength. Doing a number of these samples will give us a depth of field effect.
 
-My particular approach to glossy materials was to have it such that 85% of the colour information coming from a regular diffuse calculation. The other 15% would be to have a reflection where the reflected ray is rotated by a small amount to give the surface a very slight blur. In my opinion, this gives a more convincing 'glossy' look to say, a single specular highlight, however I've implemented that too. In the `/images/final_image.png` submission, the red sphere in the centre, as well as the floor plane are both glossy.
+My particular approach to glossy materials was to have it such that 85% of the colour information coming from a regular diffuse calculation. The other 15% would be to have a reflection where the reflected ray is rotated by a small amount to give the surface a very slight blur. In my opinion, this gives a more convincing 'glossy' look to say, a single specular highlight, however I've implemented that too. The specular highlight, being a Phong model specular highlight (see references). In the `/images/final_image.png` submission, the red sphere in the centre, as well as the floor plane are both glossy.
 
 _Below is an explanation to my attempt at emissive materials which could not be debugged in time. A solution that works for spheres can be found on the `emissive` branch._
 
@@ -143,3 +143,5 @@ References for depth of field implementation in a raytracer?: https://stackoverf
 Rotating a Vector in 3D Space: https://stackoverflow.com/questions/14607640/rotating-a-vector-in-3d-space
 
 Ray-tracing soft shadows in real-time: https://medium.com/@alexander.wester/ray-tracing-soft-shadows-in-real-time-a53b836d123b
+
+Phong Model Introduction: https://www.scratchapixel.com/lessons/3d-basic-rendering/phong-shader-BRDF
