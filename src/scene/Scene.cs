@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -17,8 +18,8 @@ namespace RayTracer
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 4;
-        private const int SHADE_SAMPLES = 10;
-        private const int NUM_DOF_RAYS = 50;
+        private const int SHADE_SAMPLES = 50;
+        private const int NUM_DOF_RAYS = 150;
 
         private SceneOptions options;
         private ISet<SceneEntity> entities;
