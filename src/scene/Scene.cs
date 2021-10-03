@@ -14,7 +14,6 @@ namespace RayTracer
     {
         private const bool DEBUG = true;
         private MyStopwatch msw = new MyStopwatch();
-        private MyLogger logger = new MyLogger();
 
         private const double FOV = 60.0f;
         private const int MAX_DEPTH = 4;
@@ -101,7 +100,6 @@ namespace RayTracer
             if (DEBUG)
             {
                 msw.Stop();
-                logger.WriteFile();
             }
         }
 
