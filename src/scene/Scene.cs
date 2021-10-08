@@ -195,7 +195,7 @@ namespace RayTracer
                     Ray shadowRay = new Ray(sourceRh.Position, lightDir).Offset();
                     RayHit shadowRh = ClosestHit(shadowRay);
 
-                    if (shadowRh == null) continue;
+                    // if (shadowRh == null) continue;
                     // If the current ray (r) is NOT in shadow (ray from intersection to light is blocked by entity).
                     if (shadowRh != null && shadowRay.Origin.LengthWith(shadowRh.Position) < shadowRay.Origin.LengthWith(pl.Position)) continue;
 
